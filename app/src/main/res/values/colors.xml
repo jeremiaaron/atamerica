@@ -15,5 +15,5 @@
     <color name="info">#206edd</color>          <!-- light blue -->
     <color name="danger">#cf0039</color>        <!-- red -->
     <color name="warning">#ffc107</color>       <!-- orange -->
-    <color name="secondary">#6c757d</color>     <!-- gray -->
+    <color name="secondary">#D9D9D9</color>     <!-- gray -->
 </resources>

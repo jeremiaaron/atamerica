@@ -9,17 +9,17 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class ArchivePageActivity extends AppCompatActivity {
+public class UpcomingPageActivity extends AppCompatActivity {
 
 //    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_archive_page);
+        setContentView(R.layout.activity_upcoming_page);
 
 //        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-//        bottomNavigationView.setSelectedItemId(R.id.archived);
+//        bottomNavigationView.setSelectedItemId(R.id.upcoming);
 //
 //        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 //            @Override
@@ -30,10 +30,10 @@ public class ArchivePageActivity extends AppCompatActivity {
 //                        overridePendingTransition(0, 0);
 //                        return true;
 //                    case R.id.upcoming:
-//                        startActivity(new Intent(getApplicationContext(), UpcomingPageActivity.class));
-//                        overridePendingTransition(0, 0);
 //                        return true;
 //                    case R.id.archived:
+//                        startActivity(new Intent(getApplicationContext(), ArchivePageActivity.class));
+//                        overridePendingTransition(0, 0);
 //                        return true;
 //                }
 //
