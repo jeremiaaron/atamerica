@@ -6,11 +6,448 @@
     android:layout_height="match_parent"
     tools:context=".UpcomingPageActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="upcoming"
-        tools:layout_editor_absoluteX="169dp"
-        tools:layout_editor_absoluteY="389dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="60dp">
+
+        <LinearLayout
+            android:id="@+id/page_vertical_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Top Bar -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="18dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/applicationLogo"
+                    android:layout_width="144dp"
+                    android:layout_height="33dp"
+                    android:layout_marginStart="-18dp"
+                    app:srcCompat="@drawable/application_logo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btnAccount"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:onClick="moveToProfile"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/user_icon"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginTop="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <HorizontalScrollView
+                    android:id="@+id/filterContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="23dp"
+                    android:paddingBottom="18dp"
+                    android:scrollbars="none"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/filterScroll_linear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/filterEntertainment"
+                            android:layout_width="93dp"
+                            android:layout_height="29dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="18dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:fontFamily="@font/sf_pro_text_medium"
+                            android:letterSpacing="0.03"
+                            android:text="Entertainment"
+                            android:textAllCaps="false"
+                            android:textSize="9dp"
+                            android:backgroundTint="@color/black" />
+
+                        <Button
+                            android:id="@+id/filterEducation"
+                            android:layout_width="81dp"
+                            android:layout_height="29dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="18dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:fontFamily="@font/sf_pro_text_medium"
+                            android:letterSpacing="0.03"
+                            android:text="Education"
+                            android:textAllCaps="false"
+                            android:textSize="9dp"
+                            android:textColor="@color/black"
+                            android:backgroundTint="@color/light_gray" />
+
+                        <Button
+                            android:id="@+id/filterMusic"
+                            android:layout_width="119dp"
+                            android:layout_height="29dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="18dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:fontFamily="@font/sf_pro_text_medium"
+                            android:letterSpacing="0.03"
+                            android:text="Music &amp; Culture"
+                            android:textAllCaps="false"
+                            android:textSize="9dp"
+                            android:textColor="@color/black"
+                            android:backgroundTint="@color/light_gray" />
+
+                        <Button
+                            android:id="@+id/filterEntrepreneur"
+                            android:layout_width="100dp"
+                            android:layout_height="29dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="18dp"
+                            android:layout_marginEnd="18dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:fontFamily="@font/sf_pro_text_medium"
+                            android:letterSpacing="0.03"
+                            android:text="Entrepreneur"
+                            android:textAllCaps="false"
+                            android:textSize="9dp"
+                            android:textColor="@color/black"
+                            android:backgroundTint="@color/light_gray" />
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/pageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <ImageView
+                    android:id="@+id/upEventImg1"
+                    android:layout_width="152dp"
+                    android:layout_height="225dp"
+                    android:layout_marginEnd="15dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/grayimage_152x225" />
+
+                <ImageView
+                    android:id="@+id/upEventImg2"
+                    android:layout_width="152dp"
+                    android:layout_height="225dp"
+                    android:layout_marginStart="15dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toEndOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/grayimage_152x225" />
+
+                <Button
+                    android:id="@+id/upEventBtn1"
+                    app:layout_constraintStart_toStartOf="@+id/upEventImg1"
+                    app:layout_constraintEnd_toEndOf="@+id/upEventImg1"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventImg1"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="@+id/upEventImg1"
+                    android:layout_height="39dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/black"
+                    android:fontFamily="@font/sf_pro_text_medium"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:letterSpacing="0.03"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Fully Booked"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/upEventBtn2"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:layout_constraintStart_toStartOf="@+id/upEventImg2"
+                    app:layout_constraintEnd_toEndOf="@+id/upEventImg2"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventImg2"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="@+id/upEventImg2"
+                    android:layout_height="39dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Book Now"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:letterSpacing="0.03"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:strokeColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/upEventImg3"
+                    android:layout_width="152dp"
+                    android:layout_height="225dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventBtn2"
+                    app:srcCompat="@drawable/grayimage_152x225" />
+
+                <ImageView
+                    android:id="@+id/upEventImg4"
+                    android:layout_width="152dp"
+                    android:layout_height="225dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="15dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toEndOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventBtn2"
+                    app:srcCompat="@drawable/grayimage_152x225" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/upEventBtn3"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:layout_constraintStart_toStartOf="@+id/upEventImg3"
+                    app:layout_constraintEnd_toEndOf="@+id/upEventImg3"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventImg3"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="@+id/upEventImg3"
+                    android:layout_height="39dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Book Now"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:letterSpacing="0.03"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:strokeColor="@color/black" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/upEventBtn4"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:layout_constraintStart_toStartOf="@+id/upEventImg4"
+                    app:layout_constraintEnd_toEndOf="@+id/upEventImg4"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventImg4"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="@+id/upEventImg4"
+                    android:layout_height="39dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Book Now"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:letterSpacing="0.03"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:strokeColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/upEventImg5"
+                    android:layout_width="152dp"
+                    android:layout_height="225dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventBtn3"
+                    app:srcCompat="@drawable/grayimage_152x225" />
+
+                <ImageView
+                    android:id="@+id/upEventImg6"
+                    android:layout_width="152dp"
+                    android:layout_height="225dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="15dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toEndOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventBtn4"
+                    app:srcCompat="@drawable/grayimage_152x225" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/upEventBtn5"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:layout_constraintStart_toStartOf="@+id/upEventImg5"
+                    app:layout_constraintEnd_toEndOf="@+id/upEventImg5"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventImg5"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="@+id/upEventImg5"
+                    android:layout_height="39dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Book Now"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:letterSpacing="0.03"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:strokeColor="@color/black" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/upEventBtn6"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:layout_constraintStart_toStartOf="@+id/upEventImg6"
+                    app:layout_constraintEnd_toEndOf="@+id/upEventImg6"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventImg6"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="@+id/upEventImg6"
+                    android:layout_height="39dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Book Now"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:letterSpacing="0.03"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:strokeColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/upEventImg7"
+                    android:layout_width="152dp"
+                    android:layout_height="225dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventBtn5"
+                    app:srcCompat="@drawable/grayimage_152x225" />
+
+                <ImageView
+                    android:id="@+id/upEventImg8"
+                    android:layout_width="152dp"
+                    android:layout_height="225dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="15dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toEndOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventBtn6"
+                    app:srcCompat="@drawable/grayimage_152x225" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/upEventBtn7"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="@+id/upEventImg7"
+                    android:layout_height="39dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:letterSpacing="0.03"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Book Now"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/upEventImg7"
+                    app:layout_constraintStart_toStartOf="@+id/upEventImg7"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventImg7"
+                    app:strokeColor="@color/black" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/upEventBtn8"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_width="@+id/upEventImg8"
+                    android:layout_height="39dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Book Now"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:letterSpacing="0.03"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="@+id/upEventImg8"
+                    app:layout_constraintEnd_toEndOf="@+id/upEventImg8"
+                    app:layout_constraintTop_toBottomOf="@+id/upEventImg8"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:strokeColor="@color/black" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/secondary"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
