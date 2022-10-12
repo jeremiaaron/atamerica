@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="america_blue">#003777</color>       <!-- blue -->
+    <color name="america_red">#cf0039</color>        <!-- red -->
+
+    <color name="primary">#003777</color>       <!-- blue -->
+    <color name="info">#206edd</color>          <!-- light blue -->
+    <color name="danger">#cf0039</color>        <!-- red -->
+    <color name="warning">#ffc107</color>       <!-- orange -->
+    <color name="secondary">#6c757d</color>     <!-- gray -->
 </resources>
