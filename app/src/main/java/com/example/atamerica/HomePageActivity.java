@@ -13,6 +13,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 public class HomePageActivity extends AppCompatActivity {
 
@@ -49,5 +50,10 @@ public class HomePageActivity extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.viewPager);
         Adapter adapter = new Adapter(this);
         viewPager.setAdapter(adapter);
+    }
+
+    public void moveToProfile(View view) {
+        Intent intent = new Intent(HomePageActivity.this, ProfilePageActivity.class);
+        startActivity(intent);
     }
 }

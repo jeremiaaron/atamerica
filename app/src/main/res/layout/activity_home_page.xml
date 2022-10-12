@@ -57,6 +57,7 @@
                     android:layout_height="33dp"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/user_icon"
+                    android:onClick="moveToProfile"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -69,12 +70,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/eyml"
-                android:fontFamily="@font/sf_pro_text_regular"
+                android:fontFamily="@font/sf_pro_text_bold"
                 android:textFontWeight="800"
                 android:textSize="18dp"
-                android:paddingVertical="19dp"
                 android:textColor="@color/black"
-                android:layout_marginStart="19dp"
+                android:padding="18dp"
                 app:layout_constraintTop_toBottomOf="@+id/viewPager"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -117,7 +117,7 @@
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
                         android:scaleType="fitXY"
-                        android:layout_margin="18dp"
+                        android:layout_marginStart="18dp"
                         app:srcCompat="@drawable/eeeeee" />
 
                     <ImageView
@@ -127,7 +127,7 @@
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
                         android:scaleType="fitXY"
-                        android:layout_margin="18dp"
+                        android:layout_marginStart="18dp"
                         app:srcCompat="@drawable/eeeeee" />
 
                     <ImageView
@@ -137,7 +137,7 @@
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
                         android:scaleType="fitXY"
-                        android:layout_margin="18dp"
+                        android:layout_marginStart="18dp"
                         app:srcCompat="@drawable/eeeeee" />
 
                     <ImageView
@@ -146,8 +146,7 @@
                         android:layout_height="189dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
-                        android:scaleType="fitXY"
-                        android:layout_margin="18dp"
+                        android:layout_marginStart="18dp"
                         app:srcCompat="@drawable/eeeeee" />
 
                 </LinearLayout>
@@ -160,10 +159,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/top_events"
-                android:fontFamily="@font/sf_pro_text_regular"
+                android:fontFamily="@font/sf_pro_text_bold"
                 android:textFontWeight="800"
                 android:textSize="18dp"
-                android:paddingVertical="19dp"
+                android:paddingVertical="18dp"
                 android:textColor="@color/black"
                 android:layout_marginStart="19dp"
                 app:layout_constraintTop_toBottomOf="@+id/eymlContainer"
@@ -192,7 +191,8 @@
                 app:layout_constraintTop_toBottomOf="@id/topEvent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:scrollbars="none" >
+                android:scrollbars="none"
+                android:paddingBottom="18dp">
 
                 <LinearLayout
                     android:id="@+id/horizontalScroll_linear_top_event"
@@ -208,7 +208,7 @@
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
                         android:scaleType="fitXY"
-                        android:layout_margin="18dp"
+                        android:layout_marginStart="18dp"
                         app:srcCompat="@drawable/eeeeee" />
 
                     <ImageView
@@ -218,7 +218,7 @@
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
                         android:scaleType="fitXY"
-                        android:layout_margin="18dp"
+                        android:layout_marginStart="18dp"
                         app:srcCompat="@drawable/eeeeee" />
 
                     <ImageView
@@ -228,7 +228,7 @@
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
                         android:scaleType="fitXY"
-                        android:layout_margin="18dp"
+                        android:layout_marginStart="18dp"
                         app:srcCompat="@drawable/eeeeee" />
 
                     <ImageView
@@ -238,7 +238,7 @@
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
                         android:scaleType="fitXY"
-                        android:layout_margin="18dp"
+                        android:layout_marginStart="18dp"
                         app:srcCompat="@drawable/eeeeee" />
 
                 </LinearLayout>
