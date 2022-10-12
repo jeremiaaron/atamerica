@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">atamerica</string>
+    <string name="profile_image">profile_image</string>
+    <string name="profile_name">your name</string>
+    <string name="profile_email">youremail@email.com</string>
+    <string name="PN1">Riwayat Pencarian</string>
+    <string name="PN2">Voucher Promo</string>
+    <string name="PN3">Ubah Bahasa</string>
+    <string name="PN4">FAQ</string>
+    <string name="PN5">Pemberitahuan</string>
 </resources>
