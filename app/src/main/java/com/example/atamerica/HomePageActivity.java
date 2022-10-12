@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -43,5 +45,9 @@ public class HomePageActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        Adapter adapter = new Adapter(this);
+        viewPager.setAdapter(adapter);
     }
 }
