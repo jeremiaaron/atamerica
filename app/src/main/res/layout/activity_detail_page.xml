@@ -159,6 +159,9 @@
         android:layout_gravity="bottom"
         android:backgroundTint="@color/black"
         android:text="@string/button_register"
+        android:ems="22"
+        android:fontFamily="@font/sf_pro_text_bold"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
