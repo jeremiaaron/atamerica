@@ -27,12 +27,14 @@
           android:id="@+id/applicationLogo"
           android:layout_width="20dp"
           android:layout_height="20dp"
-          android:layout_marginTop="14dp"
           android:layout_marginStart="20dp"
-          app:srcCompat="@drawable/arrow_back"
-          app:layout_constraintTop_toTopOf="parent"
+          android:layout_marginTop="14dp"
+          android:onClick="moveToPrevious"
           app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toStartOf="parent" />
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:srcCompat="@drawable/arrow_back"
+          tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
       <TextView
           android:id="@+id/title_event"

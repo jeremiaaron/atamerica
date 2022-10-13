@@ -23,4 +23,8 @@ public class DetailPageActivity extends AppCompatActivity {
         Intent intent = new Intent(DetailPageActivity.this, RegisterPageActivity.class);
         startActivity(intent);
     }
+
+    public void moveToPrevious(View view) {
+        finish();
+    }
 }
