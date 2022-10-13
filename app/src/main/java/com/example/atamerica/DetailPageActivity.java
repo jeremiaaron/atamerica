@@ -24,7 +24,7 @@ public class DetailPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void moveToPrevious(View view) {
-        finish();
+    public void backActivity(View view) {
+        this.finish();
     }
 }

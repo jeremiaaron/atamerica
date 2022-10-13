@@ -49,4 +49,9 @@ public class ArchivePageActivity extends AppCompatActivity {
         Intent intent = new Intent(ArchivePageActivity.this, ProfilePageActivity.class);
         startActivity(intent);
     }
+
+    public void moveToDetail(View view) {
+        Intent intent = new Intent(ArchivePageActivity.this, DetailPageActivity.class);
+        startActivity(intent);
+    }
 }

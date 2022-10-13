@@ -12,6 +12,17 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="18dp"
+        android:onClick="backActivity"
+        app:srcCompat="@drawable/arrow_back_vector"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
@@ -21,20 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-      <ImageView
-          android:id="@+id/applicationLogo"
-          android:layout_width="20dp"
-          android:layout_height="20dp"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="14dp"
-          android:onClick="moveToPrevious"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:srcCompat="@drawable/arrow_back"
-          tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        app:layout_constraintTop_toBottomOf="@id/btnBack">
 
       <TextView
           android:id="@+id/title_event"

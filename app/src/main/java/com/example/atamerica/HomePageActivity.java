@@ -56,4 +56,9 @@ public class HomePageActivity extends AppCompatActivity {
         Intent intent = new Intent(HomePageActivity.this, ProfilePageActivity.class);
         startActivity(intent);
     }
+
+    public void moveToDetail(View view) {
+        Intent intent = new Intent(HomePageActivity.this, DetailPageActivity.class);
+        startActivity(intent);
+    }
 }
