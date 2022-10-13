@@ -3,10 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_detail_page.xml" value="0.5" />
+        <entry key="..\:/AndroidStudioProjects/atamerica/app/src/main/res/drawable/textfield_border.xml" value="0.1945" />
+        <entry key="..\:/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_detail_page.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_home_page.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_register_page.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_register_page.xml" value="0.33" />
         <entry key="..\:/Users/roger/AndroidStudioProjects/atamerica/app/src/main/res/drawable/home_icon.xml" value="0.505" />
         <entry key="..\:/Users/roger/AndroidStudioProjects/atamerica/app/src/main/res/drawable/home_icon_background.xml" value="0.505" />
         <entry key="..\:/Users/roger/AndroidStudioProjects/atamerica/app/src/main/res/drawable/home_icon_foreground.xml" value="0.505" />
