@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="contentDescription"
     tools:context=".DetailPageActivity">
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +29,7 @@
           android:fontFamily="@font/sf_pro_text_bold"
           android:paddingLeft="12dp"
           android:paddingRight="12dp"
-          android:text="Learn about US Embassy"
+          android:text="@string/title"
           android:textColor="@color/black"
           android:textSize="24sp" />
 
@@ -37,11 +38,12 @@
           android:layout_width="match_parent"
           android:layout_height="@android:dimen/thumbnail_width"
           android:layout_gravity="center"
-
+          android:contentDescription=""
           android:paddingLeft="12dp"
           android:paddingRight="12dp"
           android:paddingBottom="10dp"
           android:scaleType="fitXY"
+          tools:ignore="ImageContrastCheck"
           tools:srcCompat="@color/secondary" />
 
       <View
@@ -53,7 +55,8 @@
           android:paddingTop="10dp"
           android:paddingRight="10dp"
           android:paddingBottom="10dp"
-          android:scaleType="fitXY" />
+          android:scaleType="fitXY"
+          tools:ignore="SmallSp" />
 
       <TableLayout
           android:layout_width="match_parent"
@@ -69,11 +72,11 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:fontFamily="@font/sf_pro_text_bold"
-              android:paddingLeft="12dp"
+              android:paddingStart="12dp"
               android:paddingEnd="10dp"
               android:textColor="@color/black"
-              android:text="Detail"
-              android:textSize="16dp" />
+              android:text="@string/detail_event"
+              android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -85,8 +88,9 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_weight="1"
-              android:paddingLeft="12dp"
-              android:text="Date:\n12/01/2021"
+              android:paddingStart="12dp"
+              android:paddingEnd="5dp"
+              android:text="@string/date_dummy"
               android:textColor="@color/black" />
 
           <TextView
@@ -94,8 +98,9 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_weight="1"
-              android:paddingRight="12dp"
-              android:text="Time:\n07:00 PM"
+              android:paddingStart="5dp"
+              android:paddingEnd="12dp"
+              android:text="@string/time_dummy"
               android:textColor="@color/black" />
         </TableRow>
 
@@ -107,8 +112,9 @@
               android:id="@+id/Guest_Event"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:paddingLeft="12dp"
-              android:text="Guest:\nChairul Anwar"
+              android:paddingStart="12dp"
+              android:paddingEnd="5dp"
+              android:text="@string/guest_dummy"
               android:textColor="@color/black" />
         </TableRow>
 
@@ -119,11 +125,12 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="@font/sf_pro_text_bold"
-          android:paddingLeft="10dp"
+          android:paddingStart="10dp"
+          android:paddingEnd="5dp"
           android:paddingBottom="10dp"
-          android:text="Description"
+          android:text="@string/description"
           android:textColor="@color/black"
-          android:textSize="16dp" />
+          android:textSize="16sp" />
 
       <ScrollView
           android:layout_width="match_parent"
@@ -151,7 +158,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/black"
-        android:text="Register Now"
+        android:text="@string/button_register"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
