@@ -1,4 +1,4 @@
-package com.example.bookedpageactivity;
+package com.example.atamerica;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;

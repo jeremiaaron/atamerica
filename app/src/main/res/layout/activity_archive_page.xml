@@ -23,7 +23,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-
             <!-- Top Bar -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/topBar"
@@ -34,7 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <ImageView
-                    android:id="@+id/applicationLogo"
+                    android:id="@+id/arrowBack"
                     android:layout_width="144dp"
                     android:layout_height="33dp"
                     android:layout_marginStart="-18dp"
