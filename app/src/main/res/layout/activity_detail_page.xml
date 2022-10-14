@@ -16,156 +16,210 @@
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
         android:layout_marginTop="18dp"
         android:onClick="backActivity"
         app:srcCompat="@drawable/arrow_back_vector"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
         android:layout_marginBottom="84dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack">
+        app:layout_constraintBottom_toBottomOf="parent" >
 
-      <TextView
-          android:id="@+id/title_event"
+      <LinearLayout
+          android:id="@+id/linearLayout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="18dp"
-          android:layout_marginStart="18dp"
-          android:layout_marginEnd="18dp"
-          android:fontFamily="@font/sf_pro_text_bold"
-          android:text="@string/title"
-          android:letterSpacing="-0.01"
-          android:textColor="@color/black"
-          android:textSize="25sp" />
+          android:orientation="vertical" >
 
-      <ImageView
-          android:id="@+id/imageView3"
-          android:layout_width="match_parent"
-          android:layout_height="225dp"
-          android:layout_gravity="center"
-          android:layout_marginTop="18dp"
-          android:layout_marginStart="18dp"
-          android:layout_marginEnd="18dp"
-          android:contentDescription=""
-          android:scaleType="fitXY"
-          tools:ignore="ImageContrastCheck"
-          app:srcCompat="@color/secondary" />
-
-      <View
-          android:id="@+id/divider"
-          android:layout_width="wrap_content"
-          android:layout_height="1sp"
-          android:layout_marginStart="18dp"
-          android:layout_marginEnd="18dp"
-          android:layout_marginTop="18dp"
-          android:background="@color/black"
-          android:scaleType="fitXY"
-          tools:ignore="SmallSp" />
-
-      <TableLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
-
-        <TableRow
+        <TextView
+            android:id="@+id/evtTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:fontFamily="@font/sf_pro_text_bold"
+            android:text="@string/evt1_title"
+            android:letterSpacing="-0.01"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
 
-          <TextView
-              android:id="@+id/Detail_event"
+        <ImageView
+            android:id="@+id/evtImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:contentDescription=""
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            tools:ignore="ImageContrastCheck"
+            app:srcCompat="@drawable/evt1_detail_img" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="wrap_content"
+            android:layout_height="1sp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginTop="18dp"
+            android:background="@color/black"
+            android:scaleType="fitXY"
+            tools:ignore="SmallSp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/pageContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" >
+
+          <androidx.constraintlayout.widget.Guideline
+              android:id="@+id/guideline"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginTop="18dp"
+              android:orientation="vertical"
+              app:layout_constraintGuide_percent="0.5" />
+
+          <TextView
+              android:id="@+id/evtDetails"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="0dp"
               android:layout_marginStart="18dp"
               android:fontFamily="@font/sf_pro_text_bold"
               android:textColor="@color/black"
               android:text="@string/detail_event"
-              android:textSize="20sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+              android:textSize="20sp"
+              app:layout_constraintTop_toTopOf="parent"/>
 
           <TextView
-              android:id="@+id/Date_event"
-              android:layout_width="match_parent"
+              android:id="@+id/evtDate"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginTop="5dp"
+              android:layout_marginStart="18dp"
+              android:text="Date:"
+              android:includeFontPadding="false"
+              android:textStyle="bold"
+              android:textSize="17sp"
+              android:textColor="@color/black"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toBottomOf="@+id/evtDetails" />
+
+          <TextView
+              android:id="@+id/dateContent"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginTop="5dp"
+              android:layout_marginStart="18dp"
+              android:text="@string/evt1_date"
+              android:textSize="17sp"
+              android:textColor="@color/black"
+              android:includeFontPadding="false"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toBottomOf="@+id/evtDate" />
+
+          <TextView
+              android:id="@+id/evtTime"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_weight="1"
               android:layout_marginTop="0dp"
               android:layout_marginStart="18dp"
-              android:text="@string/date_dummy"
+              android:text="Time:"
+              android:includeFontPadding="false"
+              android:textStyle="bold"
               android:textSize="17sp"
-              android:textColor="@color/black" />
+              android:textColor="@color/black"
+              app:layout_constraintTop_toTopOf="@+id/evtDate"
+              app:layout_constraintStart_toEndOf="@+id/guideline"/>
 
           <TextView
-              android:id="@+id/Time_event"
-              android:layout_width="match_parent"
+              android:id="@+id/timeContent"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_weight="1"
-              android:layout_marginTop="0dp"
+              android:layout_marginTop="5dp"
               android:layout_marginStart="18dp"
-              android:text="@string/time_dummy"
+              android:text="@string/evt1_time"
               android:textSize="17sp"
-              android:textColor="@color/black" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+              android:textColor="@color/black"
+              android:includeFontPadding="false"
+              app:layout_constraintStart_toStartOf="@+id/guideline"
+              app:layout_constraintTop_toBottomOf="@+id/evtTime" />
 
           <TextView
-              android:id="@+id/Guest_Event"
+              android:id="@+id/evtGuest"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:layout_marginStart="18dp"
+              android:text="Guest"
+              android:textStyle="bold"
+              android:textSize="17sp"
+              android:textColor="@color/black"
+              android:includeFontPadding="false"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toBottomOf="@+id/dateContent" />
+
+          <TextView
+              android:id="@+id/guestContent"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginTop="5dp"
+              android:text="@string/evt1_guest"
+              android:textSize="17sp"
+              android:textColor="@color/black"
+              android:includeFontPadding="false"
+              app:layout_constraintStart_toStartOf="@+id/dateContent"
+              app:layout_constraintTop_toBottomOf="@+id/evtGuest" />
+
+          <TextView
+              android:id="@+id/evtDescription"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:layout_marginStart="18dp"
+              android:fontFamily="@font/sf_pro_text_bold"
+              android:text="@string/description"
+              android:textColor="@color/black"
+              android:textSize="20sp"
+              app:layout_constraintTop_toBottomOf="@+id/guestContent" />
+
+          <TextView
+              android:id="@+id/evtDesc"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginTop="0dp"
               android:layout_marginStart="18dp"
-              android:text="@string/guest_dummy"
-              android:textSize="17sp"
-              android:textColor="@color/black" />
-        </TableRow>
+              android:layout_marginEnd="18dp"
+              android:justificationMode="inter_word"
+              android:scrollHorizontally="true"
+              android:ellipsize="end"
+              android:maxLines="10"
+              android:textColor="@color/black"
+              android:text="@string/evt1_desc"
+              app:layout_constraintTop_toBottomOf="@+id/evtDescription" />
 
-      </TableLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-      <TextView
-          android:id="@+id/Description_event"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="10dp"
-          android:layout_marginStart="18dp"
-          android:fontFamily="@font/sf_pro_text_bold"
-          android:text="@string/description"
-          android:textColor="@color/black"
-          android:textSize="20sp" />
+      </LinearLayout>
 
-      <ScrollView
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginEnd="18dp"
-            android:justificationMode="inter_word"
-            android:scrollHorizontally="true"
-            android:ellipsize="end"
-            android:maxLines="10"
-            android:textColor="@color/black"
-            android:text="@string/dummy" />
-      </ScrollView>
-
-    </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/button"

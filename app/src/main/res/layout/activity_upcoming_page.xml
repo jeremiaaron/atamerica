@@ -178,11 +178,11 @@
                     android:layout_marginEnd="15dp"
                     android:adjustViewBounds="true"
                     android:cropToPadding="false"
-                    android:onClick="moveToDetail"
+                    android:onClick="moveToEvt1Detail"
                     android:scaleType="fitXY"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/grayimage_152x225" />
+                    app:srcCompat="@drawable/evt6_enviropitch" />
 
                 <ImageView
                     android:id="@+id/upEventImg2"
@@ -191,11 +191,11 @@
                     android:layout_marginStart="15dp"
                     android:adjustViewBounds="true"
                     android:cropToPadding="false"
-                    android:onClick="moveToDetail"
+                    android:onClick="moveToEvt2Detail"
                     android:scaleType="fitXY"
                     app:layout_constraintStart_toEndOf="@+id/guideline"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/grayimage_152x225" />
+                    app:srcCompat="@drawable/evt1_unfolding" />
 
                 <Button
                     android:id="@+id/upEventBtn1"
@@ -246,11 +246,11 @@
                     android:layout_marginEnd="15dp"
                     android:adjustViewBounds="true"
                     android:cropToPadding="false"
-                    android:onClick="moveToDetail"
+                    android:onClick="moveToEvt3Detail"
                     android:scaleType="fitXY"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/upEventBtn2"
-                    app:srcCompat="@drawable/grayimage_152x225" />
+                    app:srcCompat="@drawable/evt3_sustainable_development" />
 
                 <ImageView
                     android:id="@+id/upEventImg4"
@@ -260,11 +260,11 @@
                     android:layout_marginTop="30dp"
                     android:adjustViewBounds="true"
                     android:cropToPadding="false"
-                    android:onClick="moveToDetail"
+                    android:onClick="moveToEvt4Detail"
                     android:scaleType="fitXY"
                     app:layout_constraintStart_toEndOf="@+id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/upEventBtn2"
-                    app:srcCompat="@drawable/grayimage_152x225" />
+                    app:srcCompat="@drawable/evt5_live_from_usa_mas" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/upEventBtn3"
@@ -314,11 +314,11 @@
                     android:layout_marginEnd="15dp"
                     android:adjustViewBounds="true"
                     android:cropToPadding="false"
-                    android:onClick="moveToDetail"
+                    android:onClick="moveToEvt5Detail"
                     android:scaleType="fitXY"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/upEventBtn3"
-                    app:srcCompat="@drawable/grayimage_152x225" />
+                    app:srcCompat="@drawable/evt7_digital_marketing" />
 
                 <ImageView
                     android:id="@+id/upEventImg6"
@@ -328,11 +328,11 @@
                     android:layout_marginTop="30dp"
                     android:adjustViewBounds="true"
                     android:cropToPadding="false"
-                    android:onClick="moveToDetail"
+                    android:onClick="moveToEvt6Detail"
                     android:scaleType="fitXY"
                     app:layout_constraintStart_toEndOf="@+id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/upEventBtn4"
-                    app:srcCompat="@drawable/grayimage_152x225" />
+                    app:srcCompat="@drawable/evt8_live_from_usa_dc" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/upEventBtn5"

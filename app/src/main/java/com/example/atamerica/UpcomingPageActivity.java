@@ -3,8 +3,10 @@ package com.example.atamerica;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -150,6 +152,144 @@ public class UpcomingPageActivity extends AppCompatActivity {
 
     public void moveToDetail(View view) {
         Intent intent = new Intent(UpcomingPageActivity.this, DetailPageActivity.class);
+        startActivity(intent);
+    }
+
+    public void moveToEvt1Detail(View view) {
+        Intent intent = new Intent(UpcomingPageActivity.this, DetailPageActivity.class);
+        String titleStr = getResources().getString(R.string.evt6_title);
+        intent.putExtra("title", titleStr);
+
+        String descStr = getResources().getString(R.string.evt6_desc);
+        intent.putExtra("desc", descStr);
+
+        Integer imgId = R.drawable.evt6_detail_img;
+        intent.putExtra("imgId", Integer.toString(imgId));
+
+        String dateStr = getResources().getString(R.string.evt6_date);
+        intent.putExtra("date", dateStr);
+
+        String timeStr = getResources().getString(R.string.evt6_time);
+        intent.putExtra("time", timeStr);
+
+        String guestStr = getResources().getString(R.string.evt6_guest);
+        intent.putExtra("guest", guestStr);
+
+        startActivity(intent);
+    }
+
+    public void moveToEvt2Detail(View view) {
+        Intent intent = new Intent(UpcomingPageActivity.this, DetailPageActivity.class);
+        String titleStr = getResources().getString(R.string.evt1_title);
+        intent.putExtra("title", titleStr);
+
+        String descStr = getResources().getString(R.string.evt1_desc);
+        intent.putExtra("desc", descStr);
+
+        Integer imgId = R.drawable.evt1_detail_img;
+        intent.putExtra("imgId", Integer.toString(imgId));
+
+        String dateStr = getResources().getString(R.string.evt1_date);
+        intent.putExtra("date", dateStr);
+
+        String timeStr = getResources().getString(R.string.evt1_time);
+        intent.putExtra("time", timeStr);
+
+        String guestStr = getResources().getString(R.string.evt1_guest);
+        intent.putExtra("guest", guestStr);
+
+        startActivity(intent);
+    }
+
+    public void moveToEvt3Detail(View view) {
+        Intent intent = new Intent(UpcomingPageActivity.this, DetailPageActivity.class);
+        String titleStr = getResources().getString(R.string.evt3_title);
+        intent.putExtra("title", titleStr);
+
+        String descStr = getResources().getString(R.string.evt3_desc);
+        intent.putExtra("desc", descStr);
+
+        Integer imgId = R.drawable.evt3_detail_img;
+        intent.putExtra("imgId", Integer.toString(imgId));
+
+        String dateStr = getResources().getString(R.string.evt3_date);
+        intent.putExtra("date", dateStr);
+
+        String timeStr = getResources().getString(R.string.evt3_time);
+        intent.putExtra("time", timeStr);
+
+        String guestStr = getResources().getString(R.string.evt3_guest);
+        intent.putExtra("guest", guestStr);
+
+        startActivity(intent);
+    }
+
+    public void moveToEvt4Detail(View view) {
+        Intent intent = new Intent(UpcomingPageActivity.this, DetailPageActivity.class);
+        String titleStr = getResources().getString(R.string.evt5_title);
+        intent.putExtra("title", titleStr);
+
+        String descStr = getResources().getString(R.string.evt5_desc);
+        intent.putExtra("desc", descStr);
+
+        Integer imgId = R.drawable.evt5_detail_img;
+        intent.putExtra("imgId", Integer.toString(imgId));
+
+        String dateStr = getResources().getString(R.string.evt5_date);
+        intent.putExtra("date", dateStr);
+
+        String timeStr = getResources().getString(R.string.evt5_time);
+        intent.putExtra("time", timeStr);
+
+        String guestStr = getResources().getString(R.string.evt5_guest);
+        intent.putExtra("guest", guestStr);
+
+        startActivity(intent);
+    }
+
+    public void moveToEvt5Detail(View view) {
+        Intent intent = new Intent(UpcomingPageActivity.this, DetailPageActivity.class);
+        String titleStr = getResources().getString(R.string.evt7_title);
+        intent.putExtra("title", titleStr);
+
+        String descStr = getResources().getString(R.string.evt7_desc);
+        intent.putExtra("desc", descStr);
+
+        Integer imgId = R.drawable.evt7_detail_img;
+        intent.putExtra("imgId", Integer.toString(imgId));
+
+        String dateStr = getResources().getString(R.string.evt7_date);
+        intent.putExtra("date", dateStr);
+
+        String timeStr = getResources().getString(R.string.evt7_time);
+        intent.putExtra("time", timeStr);
+
+        String guestStr = getResources().getString(R.string.evt7_guest);
+        intent.putExtra("guest", guestStr);
+
+        startActivity(intent);
+    }
+
+    public void moveToEvt6Detail(View view) {
+        Intent intent = new Intent(UpcomingPageActivity.this, DetailPageActivity.class);
+        String titleStr = getResources().getString(R.string.evt8_title);
+        intent.putExtra("title", titleStr);
+
+        String descStr = getResources().getString(R.string.evt8_desc);
+        intent.putExtra("desc", descStr);
+
+        Integer imgId = R.drawable.evt8_detail_img;
+        intent.putExtra("imgId", Integer.toString(imgId));
+
+        String dateStr = getResources().getString(R.string.evt8_date);
+        intent.putExtra("date", dateStr);
+
+        String timeStr = getResources().getString(R.string.evt8_time);
+        intent.putExtra("time", timeStr);
+
+        String guestStr = getResources().getString(R.string.evt8_guest);
+        intent.putExtra("guest", guestStr);
+
         startActivity(intent);
     }
 }

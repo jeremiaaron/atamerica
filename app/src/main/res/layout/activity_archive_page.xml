@@ -91,44 +91,46 @@
                         android:id="@+id/eymlImg1"
                         android:layout_width="166dp"
                         android:layout_height="250dp"
+                        android:layout_marginStart="18dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
+                        android:onClick="moveToEvt1Detail"
                         android:scaleType="fitXY"
-                        android:onClick="moveToDetail"
-                        android:layout_marginStart="18dp"
-                        app:srcCompat="@drawable/eeeeee" />
+                        app:srcCompat="@drawable/evt1_unfolding" />
 
                     <ImageView
                         android:id="@+id/eymlImg2"
                         android:layout_width="166dp"
                         android:layout_height="250dp"
+                        android:layout_marginStart="18dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
+                        android:onClick="moveToEvt2Detail"
                         android:scaleType="fitXY"
-                        android:onClick="moveToDetail"
-                        android:layout_marginStart="18dp"
-                        app:srcCompat="@drawable/eeeeee" />
+                        app:srcCompat="@drawable/evt2_margarita_theater" />
 
                     <ImageView
                         android:id="@+id/eymlImg3"
                         android:layout_width="166dp"
                         android:layout_height="250dp"
+                        android:layout_marginStart="18dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
+                        android:onClick="moveToEvt3Detail"
                         android:scaleType="fitXY"
-                        android:onClick="moveToDetail"
-                        android:layout_marginStart="18dp"
-                        app:srcCompat="@drawable/eeeeee" />
+                        app:srcCompat="@drawable/evt3_sustainable_development" />
 
                     <ImageView
                         android:id="@+id/eymlImg4"
                         android:layout_width="166dp"
                         android:layout_height="250dp"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginEnd="18dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
-                        android:onClick="moveToDetail"
-                        android:layout_marginStart="18dp"
-                        app:srcCompat="@drawable/eeeeee" />
+                        android:onClick="moveToEvt4Detail"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/evt4_ama" />
 
                 </LinearLayout>
 
@@ -171,45 +173,46 @@
                         android:id="@+id/topEventImg1"
                         android:layout_width="166dp"
                         android:layout_height="250dp"
+                        android:layout_marginStart="18dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
+                        android:onClick="moveToEvt5Detail"
                         android:scaleType="fitXY"
-                        android:onClick="moveToDetail"
-                        android:layout_marginStart="18dp"
-                        app:srcCompat="@drawable/eeeeee" />
+                        app:srcCompat="@drawable/evt5_live_from_usa_mas" />
 
                     <ImageView
                         android:id="@+id/topEventImg2"
                         android:layout_width="166dp"
                         android:layout_height="250dp"
+                        android:layout_marginStart="18dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
+                        android:onClick="moveToEvt6Detail"
                         android:scaleType="fitXY"
-                        android:onClick="moveToDetail"
-                        android:layout_marginStart="18dp"
-                        app:srcCompat="@drawable/eeeeee" />
+                        app:srcCompat="@drawable/evt6_enviropitch" />
 
                     <ImageView
                         android:id="@+id/topEventImg3"
                         android:layout_width="166dp"
                         android:layout_height="250dp"
+                        android:layout_marginStart="18dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
+                        android:onClick="moveToEvt7Detail"
                         android:scaleType="fitXY"
-                        android:onClick="moveToDetail"
-                        android:layout_marginStart="18dp"
-                        app:srcCompat="@drawable/eeeeee" />
+                        app:srcCompat="@drawable/evt7_digital_marketing" />
 
                     <ImageView
                         android:id="@+id/topEventImg4"
                         android:layout_width="166dp"
                         android:layout_height="250dp"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginEnd="18dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="false"
+                        android:onClick="moveToEvt8Detail"
                         android:scaleType="fitXY"
-                        android:onClick="moveToDetail"
-                        android:layout_marginStart="18dp"
-                        app:srcCompat="@drawable/eeeeee" />
+                        app:srcCompat="@drawable/evt8_live_from_usa_dc" />
 
                 </LinearLayout>
 

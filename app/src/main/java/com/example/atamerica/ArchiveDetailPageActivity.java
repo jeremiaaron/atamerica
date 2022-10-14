@@ -15,12 +15,12 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class DetailPageActivity extends AppCompatActivity {
+public class ArchiveDetailPageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_page);
+        setContentView(R.layout.activity_archive_detail_page);
 
         Intent i = getIntent();
         String title = i.getStringExtra("title");
@@ -43,11 +43,6 @@ public class DetailPageActivity extends AppCompatActivity {
         evtDate.setText(date);
         evtTime.setText(time);
         evtGuest.setText(guest);
-    }
-
-    public void moveToRegister(View view) {
-        Intent intent = new Intent(DetailPageActivity.this, RegisterPageActivity.class);
-        startActivity(intent);
     }
 
     public void backActivity(View view) {

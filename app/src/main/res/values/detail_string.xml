@@ -1,7 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="detail_event">Details</string>
-    <string name="title">Learn about US Embassy</string>
+
+    <string name="evt1_title">Unfolding by Margarita Blush</string>
+    <string name="evt2_title">Workshop\@america: Margarita Blush Shadow Theater</string>
+    <string name="evt3_title">Sustainable Development Goals Heroes: Let\'s Go All Out to End Poverty!</string>
+    <string name="evt4_title">AMA (Ask Me Anything) about Graduate Schools in the United States</string>
+    <string name="evt5_title">Live from the USA: How to Have Fun in Massachusetts</string>
+    <string name="evt6_title">EnviroPitch\@america: Meet the Finalists!</string>
+    <string name="evt7_title">\@america Academy: Digital Marketing: Choosing the Right Channel for Your Needs! (Part 2 out of 3)</string>
+    <string name="evt8_title">Live from the USA: How to Have Fun in Washington DC</string>
+
+    <string name="evt1_date">14/10/2022</string>
+    <string name="evt2_date">15/10/2022</string>
+    <string name="evt3_date">18/10/2022</string>
+    <string name="evt4_date">18/10/2022</string>
+    <string name="evt5_date">19/10/2022</string>
+    <string name="evt6_date">19/10/2022</string>
+    <string name="evt7_date">20/10/2022</string>
+    <string name="evt8_date">26/10/2022</string>
+
+    <string name="evt1_time">19:00 \- 21:00</string>
+    <string name="evt2_time">14:00 \- 16:00</string>
+    <string name="evt3_time">16:30 \- 18:00</string>
+    <string name="evt4_time">19:00 \- 20:30</string>
+    <string name="evt5_time">10:00 \- 18:00</string>
+    <string name="evt6_time">18:30 \- 20:30</string>
+    <string name="evt7_time">16:30 \- 18:00</string>
+    <string name="evt8_time">10:00 \- 18:00</string>
+
+    <string name="evt1_guest">Margarita Blush</string>
+    <string name="evt2_guest">Margarita Blush</string>
+    <string name="evt3_guest">Yanuar Nugroho, Geraldine Christina</string>
+    <string name="evt4_guest">Dr. Michael Lazzara</string>
+    <string name="evt5_guest">Listia Khairunnisa</string>
+    <string name="evt6_guest">Wahyuwidi Cinthya</string>
+    <string name="evt7_guest">Felicia Stefani</string>
+    <string name="evt8_guest">Naura Nabila Haryanto</string>
+
+    <string name="evt1_desc">Kita semua menyukai wayang! Dongeng kontemporer ini akan membawamu melintasi ruang dan waktu saat kamu mengikuti perjalanan penemuan diri seorang wanita. Ayo nikmati seni wayang modern versi Amerika yang menggabungkan pertunjukan manusia, boneka, bayangan, dan musik secara langsung!</string>
+    <string name="evt2_desc">Jelajahi dan ekspresikan dirimu melalui lokakarya teater bayangan! Pelajari seni pertunjukan bayangan dan siluet dengan salah satu penampil bayangan paling berbakat di Amerika Serikat, Margarita Blush!</string>
+    <string name="evt3_desc">Memberantas kemiskinan bukanlah tindakan amal. Ini adalah tindakan keadilan dan kunci untuk membuka potensi manusia yang sangat besar! Pelajari lebih lanjut dari para pahlawan akar rumput ini tentang apa yang dapat kita lakukan untuk mendukung tujuan ini!</string>
+    <string name="evt4_desc">Berencana untuk mengejar gelar master atau PhD di Amerika Serikat tapi tidak yakin mulai dari mana? Bergabunglah dengan sesi interaktif dan networking bersama EducationUSA dengan perwakilan resmi dari universitas AS. Dapatkan juga tips dari penasihat EducationUSA @america tentang cara membuat profil pendaftaran ke universitas AS.</string>
+    <string name="evt5_desc">New England terkenal dengan dedaunan musim gugur yang menarik, sejarah revolusioner, dan tim olahraga yang luar biasa. Bergabunglah dengan kami untuk menjelajahi pemandangan dan situs Boston, Massachusetts, secara langsung bersama Listi!</string>
+    <string name="evt6_desc">3 finalis teratas telah dipilih untuk ide-ide luar biasa mereka untuk memperpanjang hidup kita di bumi! Bergabunglah dengan @america untuk melihat mereka mengajukan ide mereka ke para juri dan menangkan hadiah nya!</string>
+    <string name="evt7_desc">Memilih channel yang tepat adalah bagian penting dari pemasaran digital. Kabar baiknya, kita akan membahas semuanya dalam beberapa cara. Sesi ini akan memberikan panduan langkah demi langkah untuk menguasai keterampilan pemasaran digital!</string>
+    <string name="evt8_desc">Kunjungi pusat beberapa taman nasional dan museum terbaik di dunia, serta restoran terkenal! Tonton Instagram kami untuk merasakan keseruan Washington DC bersama Naura, langsung dari AS!</string>
+
     <string name="description">Description</string>
     <string name="button_register">Register Now</string>
 
