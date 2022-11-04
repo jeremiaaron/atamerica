@@ -13,7 +13,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="60dp">
+        android:layout_marginBottom="80dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -53,10 +53,10 @@
 
                 <ImageView
                     android:id="@+id/btnAccount"
-                    android:layout_width="33dp"
-                    android:layout_height="33dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:scaleType="fitXY"
-                    app:srcCompat="@drawable/user_icon"
+                    app:srcCompat="@drawable/profile_icon"
                     android:onClick="moveToProfile"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +70,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/eyml"
-                android:fontFamily="@font/sf_pro_text_bold"
                 android:textFontWeight="800"
                 android:textSize="18dp"
                 android:textColor="@color/black"
@@ -83,80 +82,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/view_more"
-                android:fontFamily="@font/sf_pro_text_regular"
                 android:textFontWeight="700"
                 android:textSize="10dp"
-                android:textColor="@color/black"
+                android:textColor="@color/blue"
                 android:layout_marginStart="19dp"
                 android:layout_marginEnd="24dp"
                 app:layout_constraintTop_toBottomOf="@+id/viewPager"
-                app:layout_constraintBottom_toTopOf="@+id/eymlContainer"
+                app:layout_constraintBottom_toTopOf="@+id/recyclerViewHomeLike"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <!-- Event You Might Like Scroll -->
-            <HorizontalScrollView
-                android:id="@+id/eymlContainer"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHomeLike"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@id/eyml"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:scrollbars="none" >
-
-                <LinearLayout
-                    android:id="@+id/horizontalScroll_linear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentRight="true">
-
-                    <ImageView
-                        android:id="@+id/eymlImg1"
-                        android:layout_width="125dp"
-                        android:layout_height="189dp"
-                        android:layout_marginStart="18dp"
-                        android:adjustViewBounds="true"
-                        android:cropToPadding="false"
-                        android:onClick="moveToEvt1Detail"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/evt1_unfolding" />
-
-                    <ImageView
-                        android:id="@+id/eymlImg2"
-                        android:layout_width="125dp"
-                        android:layout_height="189dp"
-                        android:layout_marginStart="18dp"
-                        android:adjustViewBounds="true"
-                        android:cropToPadding="false"
-                        android:onClick="moveToEvt2Detail"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/evt2_margarita_theater" />
-
-                    <ImageView
-                        android:id="@+id/eymlImg3"
-                        android:layout_width="125dp"
-                        android:layout_height="189dp"
-                        android:layout_marginStart="18dp"
-                        android:adjustViewBounds="true"
-                        android:cropToPadding="false"
-                        android:onClick="moveToEvt3Detail"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/evt3_sustainable_development" />
-
-                    <ImageView
-                        android:id="@+id/eymlImg4"
-                        android:layout_width="125dp"
-                        android:layout_height="189dp"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginEnd="18dp"
-                        android:adjustViewBounds="true"
-                        android:cropToPadding="false"
-                        android:onClick="moveToEvt4Detail"
-                        app:srcCompat="@drawable/evt4_ama" />
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <!-- Top Event -->
             <TextView
@@ -164,13 +106,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/top_events"
-                android:fontFamily="@font/sf_pro_text_bold"
                 android:textFontWeight="800"
                 android:textSize="18dp"
                 android:paddingVertical="18dp"
                 android:textColor="@color/black"
                 android:layout_marginStart="19dp"
-                app:layout_constraintTop_toBottomOf="@+id/eymlContainer"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewHomeLike"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
@@ -178,82 +119,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/view_more"
-                android:fontFamily="@font/sf_pro_text_regular"
                 android:textFontWeight="700"
                 android:textSize="10dp"
-                android:textColor="@color/black"
+                android:textColor="@color/blue"
                 android:layout_marginStart="19dp"
                 android:layout_marginEnd="24dp"
-                app:layout_constraintTop_toBottomOf="@+id/eymlContainer"
-                app:layout_constraintBottom_toTopOf="@+id/topEventContainer"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewHomeLike"
+                app:layout_constraintBottom_toTopOf="@+id/recyclerViewHomeTop"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <!-- Event You Might Like Scroll -->
-            <HorizontalScrollView
-                android:id="@+id/topEventContainer"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHomeTop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@id/topEvent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:scrollbars="none"
-                android:paddingBottom="18dp">
-
-                <LinearLayout
-                    android:id="@+id/horizontalScroll_linear_top_event"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentRight="true">
-
-                    <ImageView
-                        android:id="@+id/topEventImg1"
-                        android:layout_width="125dp"
-                        android:layout_height="189dp"
-                        android:layout_marginStart="18dp"
-                        android:adjustViewBounds="true"
-                        android:cropToPadding="false"
-                        android:onClick="moveToEvt5Detail"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/evt5_live_from_usa_mas" />
-
-                    <ImageView
-                        android:id="@+id/topEventImg2"
-                        android:layout_width="125dp"
-                        android:layout_height="189dp"
-                        android:layout_marginStart="18dp"
-                        android:adjustViewBounds="true"
-                        android:cropToPadding="false"
-                        android:onClick="moveToEvt6Detail"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/evt6_enviropitch" />
-
-                    <ImageView
-                        android:id="@+id/topEventImg3"
-                        android:layout_width="125dp"
-                        android:layout_height="189dp"
-                        android:layout_marginStart="18dp"
-                        android:adjustViewBounds="true"
-                        android:cropToPadding="false"
-                        android:onClick="moveToEvt7Detail"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/evt7_digital_marketing" />
-
-                    <ImageView
-                        android:id="@+id/topEventImg4"
-                        android:layout_width="125dp"
-                        android:layout_height="189dp"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginEnd="18dp"
-                        android:adjustViewBounds="true"
-                        android:cropToPadding="false"
-                        android:onClick="moveToEvt8Detail"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/evt8_live_from_usa_dc" />
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -261,10 +143,9 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/secondary"
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:itemIconSize="26dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="eyml">Event You Might Like</string>
-    <string name="top_events">Top Event</string>
-    <string name="view_more">View more ></string>
+    <string name="eyml">Events You Might Like</string>
+    <string name="top_events">Top Events</string>
+    <string name="view_more">View more</string>
 </resources>

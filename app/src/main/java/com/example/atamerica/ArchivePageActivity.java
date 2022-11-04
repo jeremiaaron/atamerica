@@ -4,13 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Fade;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.transition.platform.MaterialFade;
+import com.google.android.material.transition.platform.SlideDistanceProvider;
 
 public class ArchivePageActivity extends AppCompatActivity {
 
@@ -21,6 +26,15 @@ public class ArchivePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_archive_page);
 
+        Fade fade = new Fade();
+        fade.excludeTarget(R.id.bottomNavigationView, true);
+        fade.excludeTarget(android.R.id.statusBarBackground, true);
+        fade.excludeTarget(android.R.id.navigationBarBackground, true);
+        fade.setDuration(250);
+        getWindow().setExitTransition(fade);
+        getWindow().setEnterTransition(fade);
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ArchivePageActivity.this);
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.archived);
 
@@ -30,11 +44,11 @@ public class ArchivePageActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 switch(id){
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), HomePageActivity.class));
+                        startActivity(new Intent(getApplicationContext(), HomePageActivity.class), options.toBundle());
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.upcoming:
-                        startActivity(new Intent(getApplicationContext(), UpcomingPageActivity.class));
+                        startActivity(new Intent(getApplicationContext(), UpcomingPageActivity.class), options.toBundle());
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.archived:

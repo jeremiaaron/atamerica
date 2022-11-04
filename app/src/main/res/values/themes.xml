@@ -1,22 +1,39 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <!-- <style name="Theme.Atamerica" parent="Theme.MaterialComponents.DayNight.DarkActionBar"> -->
-    <style name="Theme.Atamerica" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:fontFamily">@font/sf_pro_text_regular</item>
+
+    <style name="Theme.Atamerica" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:fontFamily">@font/montserrat_bold</item>
 
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primary</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
         <item name="colorOnPrimary">@color/white</item>
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondary</item>
+        <item name="colorSecondary">@color/gray</item>
+        <item name="colorSecondaryVariant">@color/gray</item>
         <item name="colorOnSecondary">@color/black</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
-        <!-- Customize your theme here. -->
 
+        <!-- Customize your theme here. -->
+        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+        <item name="itemTextAppearanceActive">@style/Widget.App.BottomNavigationView.TextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/Widget.App.BottomNavigationView.TextAppearance</item>
+    </style>
+
+    <style name="Widget.App.BottomNavigationView.TextAppearance" parent="@style/TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorOnSurfaceVariant">@color/blue</item>
+    </style>
+
 </resources>
