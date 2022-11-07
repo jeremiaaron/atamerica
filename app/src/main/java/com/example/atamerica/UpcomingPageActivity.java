@@ -2,19 +2,34 @@ package com.example.atamerica;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.widget.CompoundButtonCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
 
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.Fade;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +38,8 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
     BottomNavigationView bottomNavigationView;
     RecyclerView recyclerView;
     AdapterRecyclerUpcoming adapter;
+    Button categoryButton;
+    CheckBox cbMusic, cbMovie, cbEducation, cbScience, cbDemocracy, cbEntrepreneurship, cbArts, cbProtecting, cbWomen, cbYseali;
 
     List<String> evt_titles, evt_dates, evt_times, evt_guests, evt_descs;
     TypedArray evt_front_images_ids, evt_detail_images_ids;
@@ -62,6 +79,50 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
 
+        // Category button on click
+        categoryButton = findViewById(R.id.categoryButton);
+        categoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(UpcomingPageActivity.this);
+
+                View bottomSheetView = LayoutInflater.from(UpcomingPageActivity.this).inflate(
+                        R.layout.bottom_sheet_layout, (LinearLayout) findViewById(R.id.bottomSheetContainer)
+                );
+
+                TextView clearFilter = (TextView) bottomSheetView.findViewById(R.id.clear_filter);
+                clearFilter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        clearFilter();
+                    }
+                });
+
+                cbMusic = (CheckBox) bottomSheetView.findViewById(R.id.musicCheck); setOnClick(cbMusic);
+                cbMovie = (CheckBox) bottomSheetView.findViewById(R.id.movieCheck); setOnClick(cbMovie);
+                cbEducation = (CheckBox) bottomSheetView.findViewById(R.id.educationCheck); setOnClick(cbEducation);
+                cbScience = (CheckBox) bottomSheetView.findViewById(R.id.scienceCheck); setOnClick(cbScience);
+                cbDemocracy = (CheckBox) bottomSheetView.findViewById(R.id.democracyCheck); setOnClick(cbDemocracy);
+                cbEntrepreneurship = (CheckBox) bottomSheetView.findViewById(R.id.entrepreneurshipCheck); setOnClick(cbEntrepreneurship);
+                cbArts = (CheckBox) bottomSheetView.findViewById(R.id.artsCheck); setOnClick(cbArts);
+                cbProtecting = (CheckBox) bottomSheetView.findViewById(R.id.protectingCheck); setOnClick(cbProtecting);
+                cbWomen = (CheckBox) bottomSheetView.findViewById(R.id.womenCheck); setOnClick(cbWomen);
+                cbYseali = (CheckBox) bottomSheetView.findViewById(R.id.ysealiCheck); setOnClick(cbYseali);
+
+                Button applyButton = (Button) bottomSheetView.findViewById(R.id.apply_button);
+                applyButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(UpcomingPageActivity.this, "Applied", Toast.LENGTH_SHORT).show();
+                        bottomSheetDialog.dismiss();
+                    }
+                });
+
+                bottomSheetDialog.setContentView(bottomSheetView);
+                bottomSheetDialog.show();
+            }
+        });
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.upcoming);
 
@@ -84,6 +145,31 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
                 return false;
             }
         });
+    }
+
+    public void setOnClick (CheckBox checkBox) {
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                CompoundButtonCompat.setButtonTintList(
+                        checkBox,
+                        ContextCompat.getColorStateList(UpcomingPageActivity.this, R.color.checkbox_color)
+                );
+            }
+        });
+    }
+
+    public void clearFilter () {
+        cbMusic.setChecked(false);
+        cbMovie.setChecked(false);
+        cbEducation.setChecked(false);
+        cbScience.setChecked(false);
+        cbDemocracy.setChecked(false);
+        cbEntrepreneurship.setChecked(false);
+        cbArts.setChecked(false);
+        cbProtecting.setChecked(false);
+        cbWomen.setChecked(false);
+        cbYseali.setChecked(false);
     }
 
     public void moveToProfile (View view) {

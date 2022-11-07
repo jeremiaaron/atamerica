@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.List;
 
 public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -42,17 +44,24 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         UpcomingViewHolder viewHolder = (UpcomingViewHolder) holder;
 
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) viewHolder.cardView.getLayoutParams();
+        ViewGroup.MarginLayoutParams cardLayoutParams = (ViewGroup.MarginLayoutParams) viewHolder.cardView.getLayoutParams();
 
         if (position % 2 == 0) {
-            layoutParams.setMarginStart(dpToPixel(12));
-            layoutParams.setMarginEnd(dpToPixel(0));
+            cardLayoutParams.setMarginStart(dpToPixel(12));
+            cardLayoutParams.setMarginEnd(dpToPixel(0));
         }
         else {
-            layoutParams.setMarginStart(dpToPixel(0));
-            layoutParams.setMarginEnd(dpToPixel(12));
+            cardLayoutParams.setMarginStart(dpToPixel(0));
+            cardLayoutParams.setMarginEnd(dpToPixel(12));
         }
         viewHolder.cardView.requestLayout();
+
+        ViewGroup.MarginLayoutParams btnLayoutParams = (ViewGroup.MarginLayoutParams) viewHolder.evt_button.getLayoutParams();
+
+        if (position == evt_titles.size()-1 || position == evt_titles.size()-2) {
+            btnLayoutParams.setMargins(0, dpToPixel(12), 0, dpToPixel(12));
+        }
+        viewHolder.evt_button.requestLayout();
 
         viewHolder.evt_title.setText(evt_titles.get(position));
         viewHolder.evt_image.setImageResource(evt_images.getResourceId(position, 0));
@@ -75,6 +84,7 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
 
     static class UpcomingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
+        MaterialButton evt_button;
         TextView evt_title;
         ImageView evt_image;
         View trans_gradient;
@@ -83,6 +93,7 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
         public UpcomingViewHolder(@NonNull View itemView, OnEventUpcomingClickListener onEventClickListener) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
+            evt_button = itemView.findViewById(R.id.evt_button);
             evt_title = itemView.findViewById((R.id.evt_title));
             evt_image = itemView.findViewById((R.id.evt_image));
             trans_gradient = itemView.findViewById((R.id.trans_gradient));

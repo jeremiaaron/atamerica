@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
 
     <style name="Theme.Atamerica" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:fontFamily">@font/sf_pro_text_regular</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue</item>
@@ -20,16 +20,28 @@
         <!-- Customize your theme here. -->
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
         <item name="android:windowActivityTransitions">true</item>
-        <item name="motionDurationLong1">3000</item>
-        <item name="motionDurationLong2">25</item>
     </style>
 
     <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+        <item name="itemTextAppearanceActive">@style/Widget.App.BottomNavigationView.TextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/Widget.App.BottomNavigationView.TextAppearance</item>
+    </style>
+
+    <style name="Widget.App.BottomNavigationView.TextAppearance" parent="@style/TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">11sp</item>
     </style>
 
     <style name="ThemeOverlay.App.BottomNavigationView" parent="">
         <item name="colorOnSurfaceVariant">@color/blue</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>

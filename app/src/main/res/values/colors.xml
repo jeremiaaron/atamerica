@@ -9,6 +9,7 @@
     <color name="light_gray">#EDEDED</color>
     <color name="blue_overlay">#610A3C78</color>
     <color name="red_overlay">#61EF0D1E</color>
+    <color name="button_color">#EF0D1E</color>
 </resources>
 
 <!-- #cf0039 red -->
