@@ -2,9 +2,7 @@ package com.example.atamerica;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ActivityOptions;
 import android.content.Intent;
 
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.Fade;
 import android.view.LayoutInflater;
@@ -24,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +35,9 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
     BottomNavigationView bottomNavigationView;
     RecyclerView recyclerView;
     AdapterRecyclerUpcoming adapter;
-    Button categoryButton;
+    Button categoryButton, sortButton;
     CheckBox cbMusic, cbMovie, cbEducation, cbScience, cbDemocracy, cbEntrepreneurship, cbArts, cbProtecting, cbWomen, cbYseali;
+    RadioButton rbNewest, rbLatest;
 
     List<String> evt_titles, evt_dates, evt_times, evt_guests, evt_descs;
     TypedArray evt_front_images_ids, evt_detail_images_ids;
@@ -51,6 +49,8 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
 
         //For page transition
         Fade fade = new Fade();
+        fade.excludeTarget(R.id.applicationLogo, true);
+        fade.excludeTarget(R.id.btnAccount, true);
         fade.excludeTarget(R.id.bottomNavigationView, true);
         fade.excludeTarget(android.R.id.statusBarBackground, true);
         fade.excludeTarget(android.R.id.navigationBarBackground, true);
@@ -87,27 +87,27 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(UpcomingPageActivity.this);
 
                 View bottomSheetView = LayoutInflater.from(UpcomingPageActivity.this).inflate(
-                        R.layout.bottom_sheet_layout, (LinearLayout) findViewById(R.id.bottomSheetContainer)
+                        R.layout.bottom_sheet_category_layout, (LinearLayout) findViewById(R.id.bottomSheetContainer)
                 );
 
                 TextView clearFilter = (TextView) bottomSheetView.findViewById(R.id.clear_filter);
                 clearFilter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        clearFilter();
+                        clearFilterCheck();
                     }
                 });
 
-                cbMusic = (CheckBox) bottomSheetView.findViewById(R.id.musicCheck); setOnClick(cbMusic);
-                cbMovie = (CheckBox) bottomSheetView.findViewById(R.id.movieCheck); setOnClick(cbMovie);
-                cbEducation = (CheckBox) bottomSheetView.findViewById(R.id.educationCheck); setOnClick(cbEducation);
-                cbScience = (CheckBox) bottomSheetView.findViewById(R.id.scienceCheck); setOnClick(cbScience);
-                cbDemocracy = (CheckBox) bottomSheetView.findViewById(R.id.democracyCheck); setOnClick(cbDemocracy);
-                cbEntrepreneurship = (CheckBox) bottomSheetView.findViewById(R.id.entrepreneurshipCheck); setOnClick(cbEntrepreneurship);
-                cbArts = (CheckBox) bottomSheetView.findViewById(R.id.artsCheck); setOnClick(cbArts);
-                cbProtecting = (CheckBox) bottomSheetView.findViewById(R.id.protectingCheck); setOnClick(cbProtecting);
-                cbWomen = (CheckBox) bottomSheetView.findViewById(R.id.womenCheck); setOnClick(cbWomen);
-                cbYseali = (CheckBox) bottomSheetView.findViewById(R.id.ysealiCheck); setOnClick(cbYseali);
+                cbMusic = bottomSheetView.findViewById(R.id.musicCheck); setOnClickCheck(cbMusic);
+                cbMovie = bottomSheetView.findViewById(R.id.movieCheck); setOnClickCheck(cbMovie);
+                cbEducation = bottomSheetView.findViewById(R.id.educationCheck); setOnClickCheck(cbEducation);
+                cbScience = bottomSheetView.findViewById(R.id.scienceCheck); setOnClickCheck(cbScience);
+                cbDemocracy = bottomSheetView.findViewById(R.id.democracyCheck); setOnClickCheck(cbDemocracy);
+                cbEntrepreneurship = bottomSheetView.findViewById(R.id.entrepreneurshipCheck); setOnClickCheck(cbEntrepreneurship);
+                cbArts = bottomSheetView.findViewById(R.id.artsCheck); setOnClickCheck(cbArts);
+                cbProtecting = bottomSheetView.findViewById(R.id.protectingCheck); setOnClickCheck(cbProtecting);
+                cbWomen = bottomSheetView.findViewById(R.id.womenCheck); setOnClickCheck(cbWomen);
+                cbYseali = bottomSheetView.findViewById(R.id.ysealiCheck); setOnClickCheck(cbYseali);
 
                 Button applyButton = (Button) bottomSheetView.findViewById(R.id.apply_button);
                 applyButton.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +117,25 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
                         bottomSheetDialog.dismiss();
                     }
                 });
+
+                bottomSheetDialog.setContentView(bottomSheetView);
+                bottomSheetDialog.show();
+            }
+        });
+
+        // Sort button on click
+        sortButton = findViewById(R.id.sortButton);
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(UpcomingPageActivity.this);
+
+                View bottomSheetView = LayoutInflater.from(UpcomingPageActivity.this).inflate(
+                        R.layout.bottom_sheet_sort_layout, (LinearLayout) findViewById(R.id.bottomSheetContainer)
+                );
+
+                rbNewest = bottomSheetView.findViewById(R.id.newestRadio); setOnClickRadio(rbNewest);
+                rbLatest = bottomSheetView.findViewById(R.id.latestRadio); setOnClickRadio(rbLatest);
 
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
@@ -147,7 +166,7 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
         });
     }
 
-    public void setOnClick (CheckBox checkBox) {
+    public void setOnClickCheck (CheckBox checkBox) {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -159,7 +178,19 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
         });
     }
 
-    public void clearFilter () {
+    public void setOnClickRadio (RadioButton radioButton) {
+        radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                CompoundButtonCompat.setButtonTintList(
+                        radioButton,
+                        ContextCompat.getColorStateList(UpcomingPageActivity.this, R.color.checkbox_color)
+                );
+            }
+        });
+    }
+
+    public void clearFilterCheck () {
         cbMusic.setChecked(false);
         cbMovie.setChecked(false);
         cbEducation.setChecked(false);
@@ -179,29 +210,6 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
 
     public void moveToRegister (View view){
         Intent intent = new Intent(UpcomingPageActivity.this, RegisterPageActivity.class);
-        startActivity(intent);
-    }
-
-    public void moveToEvtDetail (View view){
-        Intent intent = new Intent(UpcomingPageActivity.this, DetailPageActivity.class);
-        String titleStr = getResources().getString(R.string.evt6_title);
-        intent.putExtra("title", titleStr);
-
-        String descStr = getResources().getString(R.string.evt6_desc);
-        intent.putExtra("desc", descStr);
-
-        Integer imgId = R.drawable.evt6_detail_img;
-        intent.putExtra("imgId", Integer.toString(imgId));
-
-        String dateStr = getResources().getString(R.string.evt6_date);
-        intent.putExtra("date", dateStr);
-
-        String timeStr = getResources().getString(R.string.evt6_time);
-        intent.putExtra("time", timeStr);
-
-        String guestStr = getResources().getString(R.string.evt6_guest);
-        intent.putExtra("guest", guestStr);
-
         startActivity(intent);
     }
 

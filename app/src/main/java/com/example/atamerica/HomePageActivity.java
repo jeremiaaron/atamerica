@@ -43,6 +43,8 @@ public class HomePageActivity extends AppCompatActivity implements AdapterRecycl
 
         // For page transition
         Fade fade = new Fade();
+        fade.excludeTarget(R.id.applicationLogo, true);
+        fade.excludeTarget(R.id.btnAccount, true);
         fade.excludeTarget(R.id.bottomNavigationView, true);
         fade.excludeTarget(android.R.id.statusBarBackground, true);
         fade.excludeTarget(android.R.id.navigationBarBackground, true);

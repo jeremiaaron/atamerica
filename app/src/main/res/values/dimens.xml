@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="card_radius">10dp</dimen>
+    <dimen name="front_poster_w">152dp</dimen>
+    <dimen name="front_poster_h">225dp</dimen>
 </resources>
