@@ -26,7 +26,7 @@ public class ProfilePageActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), HomePageActivity.class));
+                        startActivity(new Intent(getApplicationContext(), HomePageFragment.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.upcoming:

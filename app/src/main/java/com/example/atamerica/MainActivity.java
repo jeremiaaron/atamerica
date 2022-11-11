@@ -5,10 +5,6 @@ import android.content.Intent;
 import android.os.Handler;
 
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
-import android.content.Intent;
-import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent home = new Intent(MainActivity.this, HomePageActivity.class);
+                Intent home = new Intent(MainActivity.this, ParentActivity.class);
                 startActivity(home);
                 finish();
             }

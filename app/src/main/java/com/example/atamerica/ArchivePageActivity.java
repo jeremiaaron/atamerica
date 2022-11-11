@@ -150,11 +150,11 @@ public class ArchivePageActivity extends AppCompatActivity implements AdapterRec
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), HomePageActivity.class), options.toBundle());
+                        startActivity(new Intent(getApplicationContext(), HomePageFragment.class), options.toBundle());
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.upcoming:
-                        startActivity(new Intent(getApplicationContext(), UpcomingPageActivity.class), options.toBundle());
+                        startActivity(new Intent(getApplicationContext(), UpcomingPageFragment.class), options.toBundle());
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.archived:
@@ -209,7 +209,7 @@ public class ArchivePageActivity extends AppCompatActivity implements AdapterRec
     }
 
     public void moveToRegister (View view){
-        Intent intent = new Intent(ArchivePageActivity.this, RegisterPageActivity.class);
+        Intent intent = new Intent(ArchivePageActivity.this, RegisterPageFragment.class);
         startActivity(intent);
     }
 

@@ -1,21 +1,22 @@
 package com.example.atamerica;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.transition.Fade;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -24,15 +25,16 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.atamerica.databinding.FragmentHomePageBinding;
+import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class UpcomingPageActivity extends AppCompatActivity implements AdapterRecyclerUpcoming.OnEventUpcomingClickListener {
+public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpcoming.OnEventUpcomingClickListener {
 
-    BottomNavigationView bottomNavigationView;
     RecyclerView recyclerView;
     AdapterRecyclerUpcoming adapter;
     Button categoryButton, sortButton;
@@ -42,25 +44,20 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
     List<String> evt_titles, evt_dates, evt_times, evt_guests, evt_descs;
     TypedArray evt_front_images_ids, evt_detail_images_ids;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upcoming_page);
+    FragmentUpcomingPageBinding binding;
 
-        //For page transition
-        Fade fade = new Fade();
-        fade.excludeTarget(R.id.applicationLogo, true);
-        fade.excludeTarget(R.id.btnAccount, true);
-        fade.excludeTarget(R.id.bottomNavigationView, true);
-        fade.excludeTarget(android.R.id.statusBarBackground, true);
-        fade.excludeTarget(android.R.id.navigationBarBackground, true);
-        fade.setDuration(250);
-        getWindow().setExitTransition(fade);
-        getWindow().setEnterTransition(fade);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(UpcomingPageActivity.this);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentUpcomingPageBinding.inflate(inflater, container, false);
+        View mView = binding.getRoot();
 
         // Define recycle view in the activity
-        recyclerView = findViewById(R.id.recyclerViewUpcoming);
+        recyclerView = mView.findViewById(R.id.recyclerViewUpcoming);
 
         // Retrieve event info from string arrays in strings xml and event images from drawables
         evt_titles = Arrays.asList(getResources().getStringArray(R.array.evt_titles));
@@ -72,22 +69,22 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
         evt_detail_images_ids = getResources().obtainTypedArray(R.array.evt_detail_images_ids);
 
         // Define recycler adapter for the recycler view
-        adapter = new AdapterRecyclerUpcoming(this, evt_titles, evt_front_images_ids, this);
+        adapter = new AdapterRecyclerUpcoming(getActivity(), evt_titles, evt_front_images_ids, this);
 
         // GridLayoutManager for grid layout of the recycler view
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
 
         // Category button on click
-        categoryButton = findViewById(R.id.categoryButton);
+        categoryButton = mView.findViewById(R.id.categoryButton);
         categoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(UpcomingPageActivity.this);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
 
-                View bottomSheetView = LayoutInflater.from(UpcomingPageActivity.this).inflate(
-                        R.layout.bottom_sheet_category_layout, (LinearLayout) findViewById(R.id.bottomSheetContainer)
+                View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
+                        R.layout.bottom_sheet_category_layout, (LinearLayout) mView.findViewById(R.id.bottomSheetContainer)
                 );
 
                 TextView clearFilter = (TextView) bottomSheetView.findViewById(R.id.clear_filter);
@@ -113,7 +110,7 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
                 applyButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(UpcomingPageActivity.this, "Applied", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Applied", Toast.LENGTH_SHORT).show();
                         bottomSheetDialog.dismiss();
                     }
                 });
@@ -124,14 +121,14 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
         });
 
         // Sort button on click
-        sortButton = findViewById(R.id.sortButton);
+        sortButton = mView.findViewById(R.id.sortButton);
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(UpcomingPageActivity.this);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
 
-                View bottomSheetView = LayoutInflater.from(UpcomingPageActivity.this).inflate(
-                        R.layout.bottom_sheet_sort_layout, (LinearLayout) findViewById(R.id.bottomSheetContainer)
+                View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
+                        R.layout.bottom_sheet_sort_layout, (LinearLayout) mView.findViewById(R.id.bottomSheetContainer)
                 );
 
                 rbNewest = bottomSheetView.findViewById(R.id.newestRadio); setOnClickRadio(rbNewest);
@@ -142,28 +139,7 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
             }
         });
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.upcoming);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), HomePageActivity.class), options.toBundle());
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.upcoming:
-                        return true;
-                    case R.id.archived:
-                        startActivity(new Intent(getApplicationContext(), ArchivePageActivity.class), options.toBundle());
-                        overridePendingTransition(0, 0);
-                        return true;
-                }
-
-                return false;
-            }
-        });
+        return mView;
     }
 
     public void setOnClickCheck (CheckBox checkBox) {
@@ -172,7 +148,7 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 CompoundButtonCompat.setButtonTintList(
                         checkBox,
-                        ContextCompat.getColorStateList(UpcomingPageActivity.this, R.color.checkbox_color)
+                        ContextCompat.getColorStateList(getActivity(), R.color.checkbox_color)
                 );
             }
         });
@@ -184,7 +160,7 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 CompoundButtonCompat.setButtonTintList(
                         radioButton,
-                        ContextCompat.getColorStateList(UpcomingPageActivity.this, R.color.checkbox_color)
+                        ContextCompat.getColorStateList(getActivity(), R.color.checkbox_color)
                 );
             }
         });
@@ -203,25 +179,29 @@ public class UpcomingPageActivity extends AppCompatActivity implements AdapterRe
         cbYseali.setChecked(false);
     }
 
-    public void moveToProfile (View view) {
-        Intent intent = new Intent(UpcomingPageActivity.this, ProfilePageActivity.class);
-        startActivity(intent);
-    }
-
-    public void moveToRegister (View view){
-        Intent intent = new Intent(UpcomingPageActivity.this, RegisterPageActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     public void onEventUpcomingClick(int position) {
-        Intent intent = new Intent(UpcomingPageActivity.this, DetailPageActivity.class);
-        intent.putExtra("title", evt_titles.get(position));
-        intent.putExtra("date", evt_dates.get(position));
-        intent.putExtra("time", evt_times.get(position));
-        intent.putExtra("guest", evt_guests.get(position));
-        intent.putExtra("desc", evt_descs.get(position));
-        intent.putExtra("imgId", Integer.toString(evt_detail_images_ids.getResourceId(position, 0)));
-        startActivity(intent);
+        DetailPageFragment detailPageFragment = new DetailPageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", evt_titles.get(position));
+        bundle.putString("desc", evt_descs.get(position));
+        bundle.putString("imgId", Integer.toString(evt_detail_images_ids.getResourceId(position, 0)));
+        bundle.putString("date", evt_dates.get(position));
+        bundle.putString("time", evt_times.get(position));
+        bundle.putString("guest", evt_guests.get(position));
+        detailPageFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
+                R.id.frame_layout, detailPageFragment, null);
+        if(fragmentManager.getBackStackEntryCount() != 1){
+            fragmentTransaction.addToBackStack(null);
+        }
+        fragmentTransaction.commit();
+    }
+
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

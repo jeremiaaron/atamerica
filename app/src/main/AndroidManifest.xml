@@ -18,37 +18,23 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ParentActivity"
+            android:exported="false" />
+        <activity
             android:name=".MySQLTester"
             android:exported="false" />
         <activity
             android:name=".ArchiveDetailPageActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterPageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DetailPageActivity"
-            android:exported="false"
-            android:parentActivityName=".ArchivePageActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".ProfilePageActivity"
-            android:exported="false">
+            android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ArchivePageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomePageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UpcomingPageActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
