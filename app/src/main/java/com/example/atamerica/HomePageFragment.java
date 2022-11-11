@@ -15,6 +15,7 @@ import com.example.atamerica.databinding.FragmentHomePageBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -45,6 +46,8 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         binding = FragmentHomePageBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
 

@@ -32,14 +32,15 @@ public class ParentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         binding = ActivityParentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomePageFragment()).commit();
+        }
+
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomePageFragment()).commit();
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -53,7 +54,7 @@ public class ParentActivity extends AppCompatActivity {
                         selectedFragment = new UpcomingPageFragment();
                         break;
                     case R.id.archived:
-                        selectedFragment = new UpcomingPageFragment();
+                        selectedFragment = new ArchivePageFragment();
                         break;
                 }
 
@@ -79,7 +80,7 @@ public class ParentActivity extends AppCompatActivity {
     public void backActivity(View view) {
         int count = getSupportFragmentManager().getBackStackEntryCount();
 
-        if (count == 0) {
+        if (count == 1) {
             super.onBackPressed();
             bottomNavigationView.setVisibility(View.VISIBLE);
         } else {

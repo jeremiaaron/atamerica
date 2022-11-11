@@ -4,18 +4,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
 
+import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -24,13 +29,15 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.atamerica.databinding.FragmentArchivePageBinding;
+import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class ArchivePageActivity extends AppCompatActivity implements AdapterRecyclerArchive.OnEventArchiveClickListener {
+public class ArchivePageFragment extends Fragment implements AdapterRecyclerArchive.OnEventArchiveClickListener {
 
     BottomNavigationView bottomNavigationView;
     RecyclerView recyclerView;
@@ -42,25 +49,22 @@ public class ArchivePageActivity extends AppCompatActivity implements AdapterRec
     List<String> evt_titles, evt_dates, evt_times, evt_guests, evt_descs;
     TypedArray evt_front_images_ids, evt_detail_images_ids;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_archive_page);
+    FragmentArchivePageBinding binding;
 
-        //For page transition
-        Fade fade = new Fade();
-        fade.excludeTarget(R.id.applicationLogo, true);
-        fade.excludeTarget(R.id.btnAccount, true);
-        fade.excludeTarget(R.id.bottomNavigationView, true);
-        fade.excludeTarget(android.R.id.statusBarBackground, true);
-        fade.excludeTarget(android.R.id.navigationBarBackground, true);
-        fade.setDuration(250);
-        getWindow().setExitTransition(fade);
-        getWindow().setEnterTransition(fade);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ArchivePageActivity.this);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        binding = FragmentArchivePageBinding.inflate(inflater, container, false);
+        View mView = binding.getRoot();
 
         // Define recycle view in the activity
-        recyclerView = findViewById(R.id.recyclerViewArchive);
+        recyclerView = mView.findViewById(R.id.recyclerViewArchive);
 
         // Retrieve event info from string arrays in strings xml and event images from drawables
         evt_titles = Arrays.asList(getResources().getStringArray(R.array.evt_titles));
@@ -72,22 +76,22 @@ public class ArchivePageActivity extends AppCompatActivity implements AdapterRec
         evt_detail_images_ids = getResources().obtainTypedArray(R.array.evt_detail_images_ids);
 
         // Define recycler adapter for the recycler view
-        adapter = new AdapterRecyclerArchive(this, evt_titles, evt_front_images_ids, this);
+        adapter = new AdapterRecyclerArchive(getActivity(), evt_titles, evt_front_images_ids, this);
 
         // GridLayoutManager for grid layout of the recycler view
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
 
         // Category button on click
-        categoryButton = findViewById(R.id.categoryButton);
+        categoryButton = mView.findViewById(R.id.categoryButton);
         categoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ArchivePageActivity.this);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
 
-                View bottomSheetView = LayoutInflater.from(ArchivePageActivity.this).inflate(
-                        R.layout.bottom_sheet_category_layout, (LinearLayout) findViewById(R.id.bottomSheetContainer)
+                View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
+                        R.layout.bottom_sheet_category_layout, (LinearLayout) mView.findViewById(R.id.bottomSheetContainer)
                 );
 
                 TextView clearFilter = (TextView) bottomSheetView.findViewById(R.id.clear_filter);
@@ -113,7 +117,7 @@ public class ArchivePageActivity extends AppCompatActivity implements AdapterRec
                 applyButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(ArchivePageActivity.this, "Applied", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Applied", Toast.LENGTH_SHORT).show();
                         bottomSheetDialog.dismiss();
                     }
                 });
@@ -124,14 +128,14 @@ public class ArchivePageActivity extends AppCompatActivity implements AdapterRec
         });
 
         // Sort button on click
-        sortButton = findViewById(R.id.sortButton);
+        sortButton = mView.findViewById(R.id.sortButton);
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ArchivePageActivity.this);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
 
-                View bottomSheetView = LayoutInflater.from(ArchivePageActivity.this).inflate(
-                        R.layout.bottom_sheet_sort_layout, (LinearLayout) findViewById(R.id.bottomSheetContainer)
+                View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
+                        R.layout.bottom_sheet_sort_layout, (LinearLayout) mView.findViewById(R.id.bottomSheetContainer)
                 );
 
                 rbNewest = bottomSheetView.findViewById(R.id.newestRadio); setOnClickRadio(rbNewest);
@@ -142,28 +146,7 @@ public class ArchivePageActivity extends AppCompatActivity implements AdapterRec
             }
         });
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.archived);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), HomePageFragment.class), options.toBundle());
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.upcoming:
-                        startActivity(new Intent(getApplicationContext(), UpcomingPageFragment.class), options.toBundle());
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.archived:
-                        return true;
-                }
-
-                return false;
-            }
-        });
+        return mView;
     }
 
     public void setOnClickCheck (CheckBox checkBox) {
@@ -172,7 +155,7 @@ public class ArchivePageActivity extends AppCompatActivity implements AdapterRec
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 CompoundButtonCompat.setButtonTintList(
                         checkBox,
-                        ContextCompat.getColorStateList(ArchivePageActivity.this, R.color.checkbox_color)
+                        ContextCompat.getColorStateList(getActivity(), R.color.checkbox_color)
                 );
             }
         });
@@ -184,7 +167,7 @@ public class ArchivePageActivity extends AppCompatActivity implements AdapterRec
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 CompoundButtonCompat.setButtonTintList(
                         radioButton,
-                        ContextCompat.getColorStateList(ArchivePageActivity.this, R.color.checkbox_color)
+                        ContextCompat.getColorStateList(getActivity(), R.color.checkbox_color)
                 );
             }
         });
@@ -203,25 +186,24 @@ public class ArchivePageActivity extends AppCompatActivity implements AdapterRec
         cbYseali.setChecked(false);
     }
 
-    public void moveToProfile (View view) {
-        Intent intent = new Intent(ArchivePageActivity.this, ProfilePageActivity.class);
-        startActivity(intent);
-    }
-
-    public void moveToRegister (View view){
-        Intent intent = new Intent(ArchivePageActivity.this, RegisterPageFragment.class);
-        startActivity(intent);
-    }
-
     @Override
     public void onEventArchiveClick(int position) {
-        Intent intent = new Intent(ArchivePageActivity.this, ArchiveDetailPageActivity.class);
-        intent.putExtra("title", evt_titles.get(position));
-        intent.putExtra("date", evt_dates.get(position));
-        intent.putExtra("time", evt_times.get(position));
-        intent.putExtra("guest", evt_guests.get(position));
-        intent.putExtra("desc", evt_descs.get(position));
-        intent.putExtra("imgId", Integer.toString(evt_detail_images_ids.getResourceId(position, 0)));
-        startActivity(intent);
+        DetailPageFragment detailPageFragment = new DetailPageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", evt_titles.get(position));
+        bundle.putString("desc", evt_descs.get(position));
+        bundle.putString("imgId", Integer.toString(evt_detail_images_ids.getResourceId(position, 0)));
+        bundle.putString("date", evt_dates.get(position));
+        bundle.putString("time", evt_times.get(position));
+        bundle.putString("guest", evt_guests.get(position));
+        detailPageFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
+                R.id.frame_layout, detailPageFragment, null);
+        if(fragmentManager.getBackStackEntryCount() != 1){
+            fragmentTransaction.addToBackStack(null);
+        }
+        fragmentTransaction.commit();
     }
 }

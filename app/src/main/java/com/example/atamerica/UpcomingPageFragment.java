@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 
+import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -53,6 +54,8 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         binding = FragmentUpcomingPageBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
 
