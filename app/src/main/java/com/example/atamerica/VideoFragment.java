@@ -25,7 +25,6 @@ public class VideoFragment extends Fragment {
     FragmentVideoBinding binding;
     BottomNavigationView navView;
     YouTubePlayerView youTubePlayerView;
-    private final String api_key = "AIzaSyCHlViht8y0cKmH1zrpwFey-dEjMLfp50M";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
