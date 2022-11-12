@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">\@america</string>
-    <string name="profile_image">profile_image</string>
-    <string name="profile_name">User Name</string>
-    <string name="profile_email">youremail@email.com</string>
     <string name="PN1">Riwayat Pencarian</string>
     <string name="PN2">Voucher Promo</string>
     <string name="PN3">Ubah Bahasa</string>
