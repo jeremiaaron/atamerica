@@ -41,33 +41,30 @@ public class MainActivity extends AppCompatActivity {
 
         hashFunction = new AESUtil();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("com.example.atamerica", Context.MODE_PRIVATE);
-        boolean isRemember = sharedPreferences.getBoolean(getResources().getString(R.string.user_remember_hash), false);
+        new Handler().postDelayed(() -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("com.example.atamerica", Context.MODE_PRIVATE);
+            boolean isRemember = sharedPreferences.getBoolean(getResources().getString(R.string.user_remember_hash), false);
 
-        if (isRemember) {
-            String encryptedEmail = sharedPreferences.getString(getResources().getString(R.string.user_email_hash), "");
-            String encryptedEncryptedPassword = sharedPreferences.getString(getResources().getString(R.string.user_password_hash), "");
+            if (isRemember) {
+                String encryptedEmail = sharedPreferences.getString(getResources().getString(R.string.user_email_hash), "");
+                String encryptedEncryptedPassword = sharedPreferences.getString(getResources().getString(R.string.user_password_hash), "");
 
-            String decryptedEmail = hashFunction.decrypt(encryptedEmail);
-            String decryptedPassword = hashFunction.decrypt(encryptedEncryptedPassword);
+                String decryptedEmail = hashFunction.decrypt(encryptedEmail);
+                String decryptedPassword = hashFunction.decrypt(encryptedEncryptedPassword);
 
-            AppUserModel model = DataHelper.Query.ReturnAsObject("SELECT * FROM AppUser WHERE Email = ?; ", AppUserModel.class, new Object[] { decryptedEmail });
-            if (model != null && Objects.equals(decryptedPassword, model.PasswordHash)) {
-                Intent intent = new Intent(MainActivity.this, ParentActivity.class);
-                startActivity(intent);
-                finish();
+                AppUserModel model = DataHelper.Query.ReturnAsObject("SELECT * FROM AppUser WHERE Email = ?; ", AppUserModel.class, new Object[] { decryptedEmail });
+                if (model != null && Objects.equals(decryptedPassword, model.PasswordHash)) {
+                    Intent intent = new Intent(MainActivity.this, ParentActivity.class);
+                    startActivity(intent);
+                    finish();
 
-                return;
+                    return;
+                }
             }
-        }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent home = new Intent(MainActivity.this, AuthenticateActivity.class);
-                startActivity(home);
-                finish();
-            }
+            Intent home = new Intent(MainActivity.this, AuthenticateActivity.class);
+            startActivity(home);
+            finish();
         }, splashScreenDuration);
     }
 }
