@@ -12,6 +12,7 @@
     <color name="blue_overlay">#610A3C78</color>
     <color name="red_overlay">#61EF0D1E</color>
     <color name="button_color">#EF0D1E</color>
+    <color name="warning_light">#ffb74d</color>
 </resources>
 
 <!-- #cf0039 red -->

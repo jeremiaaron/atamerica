@@ -1,24 +1,19 @@
 package com.example.atamerica.ui.login;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.atamerica.R;
-import com.example.atamerica.RegisterPageFragment;
 import com.example.atamerica.databinding.FragmentLoginBinding;
 import com.example.atamerica.ui.signup.SignUpFragment;
 

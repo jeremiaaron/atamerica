@@ -18,7 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.05" />
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/authenticateContainer"
         android:layout_width="match_parent"

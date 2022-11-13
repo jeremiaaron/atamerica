@@ -126,42 +126,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/labelConfirmPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/label_confirm_password"
-        app:layout_constraintTop_toBottomOf="@id/editTextTextPassword"
-        app:layout_constraintBottom_toTopOf="@id/editTextTextConfirmPassword"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextTextConfirmPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_marginTop="6dp"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp"
-        android:hint="@string/hint_confirm_password"
-        android:textColorHint="@color/secondary_gray"
-        android:inputType="textPassword"
-        android:drawableEnd="@drawable/ic_material_lock"
-        android:fontFamily="@font/montserrat_bold"
-        android:textSize="12sp"
-        android:textColor="@color/blue"
-        android:background="@drawable/custom_input_field"
-        app:layout_constraintTop_toBottomOf="@id/labelConfirmPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <Button
-        android:id="@+id/buttonSignIn"
+        android:id="@+id/buttonSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_signup"
-        android:layout_marginBottom="16dp"
+        android:layout_marginVertical="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/labelSignUp"/>
@@ -175,6 +145,6 @@
         android:textColor="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
