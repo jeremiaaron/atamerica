@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="user_email_hash">VWANOsokzAD8uJEs</string>
+    <string name="user_password_hash">17Q2qWn9uBejDkLo</string>
+    <string name="user_remember_hash">0RpqB6Cj6vbP8m9q</string>
+
     <string name="content_description">\@America Logo Image</string>
 
     <string name="label_fullname">Full Name</string>

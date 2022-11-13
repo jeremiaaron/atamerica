@@ -117,7 +117,7 @@ public class SignUpFragment extends Fragment {
             // Transaction success
             if (execute) {
                 // Create snack-bar
-                Snackbar.make(requireActivity().findViewById(R.id.authenticateContainer), "SUCCESS, Please Login Again.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(requireActivity().findViewById(R.id.authenticateContainer), "SUCCESS, Please Login Again.", Snackbar.LENGTH_LONG).show();
 
                 // Call login again
                 FragmentManager manager = requireActivity().getSupportFragmentManager();
@@ -129,7 +129,7 @@ public class SignUpFragment extends Fragment {
             }
             else {
                 // Create snack-bar
-                Snackbar.make(requireActivity().findViewById(R.id.authenticateContainer), "ERROR, Please Try Again Later.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(requireActivity().findViewById(R.id.authenticateContainer), "ERROR, Please Try Again Later.", Snackbar.LENGTH_LONG).show();
             }
         }
         else {
