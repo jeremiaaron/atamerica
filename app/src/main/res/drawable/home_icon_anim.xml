@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <item android:id="@+id/state_on"
+        android:drawable="@drawable/home_selected_icon"
+        android:state_checked="true"
+        />
+    <item android:id="@+id/state_off"
+        android:drawable="@drawable/home_unselected_icon"
+        android:state_checked="false"
+        />
+<!--    <transition
+        android:drawable="@drawable/home_selected_avd"
+        android:fromId="@id/state_off"
+        android:toId="@id/state_on" />-->
+</selector>

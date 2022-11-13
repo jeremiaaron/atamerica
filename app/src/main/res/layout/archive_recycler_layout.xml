@@ -78,6 +78,7 @@
         android:textColor="@color/blue"
         app:icon="@drawable/video_icon"
         app:iconSize="0dp"
+        app:iconTint="@color/red"
         app:iconGravity="textStart"
         app:iconPadding="10dp"
         app:cornerRadius="8dp"

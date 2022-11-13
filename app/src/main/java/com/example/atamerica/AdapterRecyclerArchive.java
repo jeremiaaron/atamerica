@@ -116,7 +116,7 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
             trans_gradient = itemView.findViewById((R.id.trans_gradient));
             this.onEventClickListener = onEventClickListener;
 
-            itemView.setOnClickListener(this);
+            cardView.setOnClickListener(this);
         }
 
         @Override

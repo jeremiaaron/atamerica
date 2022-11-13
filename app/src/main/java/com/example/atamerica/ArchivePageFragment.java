@@ -188,7 +188,7 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
 
     @Override
     public void onEventArchiveClick(int position) {
-        DetailPageFragment detailPageFragment = new DetailPageFragment();
+        ArchiveDetailPageFragment archiveDetailPageFragment = new ArchiveDetailPageFragment();
         Bundle bundle = new Bundle();
         bundle.putString("title", evt_titles.get(position));
         bundle.putString("desc", evt_descs.get(position));
@@ -196,11 +196,11 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
         bundle.putString("date", evt_dates.get(position));
         bundle.putString("time", evt_times.get(position));
         bundle.putString("guest", evt_guests.get(position));
-        detailPageFragment.setArguments(bundle);
+        archiveDetailPageFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
-                R.id.frame_layout, detailPageFragment, null);
+                R.id.frame_layout, archiveDetailPageFragment, null);
         if(fragmentManager.getBackStackEntryCount() != 1){
             fragmentTransaction.addToBackStack(null);
         }

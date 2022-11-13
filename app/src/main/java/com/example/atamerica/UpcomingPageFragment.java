@@ -3,6 +3,7 @@ package com.example.atamerica;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -21,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -41,6 +43,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
     Button categoryButton, sortButton;
     CheckBox cbMusic, cbMovie, cbEducation, cbScience, cbDemocracy, cbEntrepreneurship, cbArts, cbProtecting, cbWomen, cbYseali;
     RadioButton rbNewest, rbLatest;
+    ImageView profileButton;
 
     List<String> evt_titles, evt_dates, evt_times, evt_guests, evt_descs;
     TypedArray evt_front_images_ids, evt_detail_images_ids;
@@ -58,6 +61,21 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
         binding = FragmentUpcomingPageBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
+
+        profileButton = mView.findViewById(R.id.profileButton);
+
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProfileFragment profileFragment = new ProfileFragment();
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
+                        R.id.frame_layout, profileFragment, null);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         // Define recycle view in the activity
         recyclerView = mView.findViewById(R.id.recyclerViewUpcoming);
