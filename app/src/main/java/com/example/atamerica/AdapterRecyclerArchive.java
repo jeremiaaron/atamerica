@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atamerica.R;
@@ -64,6 +67,19 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
         }
         viewHolder.evt_button.requestLayout();
 
+        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VideoFragment videoFragment = new VideoFragment();
+
+                FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
+                        R.id.frame_layout, videoFragment, null);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
         viewHolder.evt_title.setText(evt_titles.get(position));
         viewHolder.evt_image.setImageResource(evt_images.getResourceId(position, 0));
 
@@ -100,7 +116,7 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
             trans_gradient = itemView.findViewById((R.id.trans_gradient));
             this.onEventClickListener = onEventClickListener;
 
-            itemView.setOnClickListener(this);
+            cardView.setOnClickListener(this);
         }
 
         @Override

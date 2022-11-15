@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_email_hash">VWANOsokzAD8uJEs</string>
+    <string name="user_password_hash">17Q2qWn9uBejDkLo</string>
+    <string name="user_remember_hash">0RpqB6Cj6vbP8m9q</string>
+
+    <string name="content_description">\@America Logo Image</string>
+
+    <string name="label_fullname">Full Name</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_phone">Phone Number</string>
+    <string name="label_forget">Forgot Password?</string>
+    <string name="label_signin">Already have an account? <font color="#D21243">Sign In</font></string>
+    <string name="label_signup">Don\'t have an account? <font color="#D21243">Sign Up</font></string>
+
+    <string name="hint_fullname">Write your full name</string>
+    <string name="hint_email">Write your email</string>
+    <string name="hint_phone">Write your phone number</string>
+    <string name="hint_password">Write your password</string>
+
+    <string name="checkbox_remember">Remember me</string>
+
+    <string name="button_signin">Sign In</string>
+    <string name="button_signup">Sign Up</string>
+</resources>

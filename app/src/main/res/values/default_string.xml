@@ -27,7 +27,7 @@
     <string name="evt7_time">16:30 \- 18:00</string>
     <string name="evt8_time">10:00 \- 18:00</string>
 
-    <string name="evt1_guest">Margarita Blush</string>
+    <string name="evt1_guest"><b>Pembicara:</b>\nHabib Husein Ja\'far, Youth Influencer\nRobinson Sinurat, Pendiri dan CEO Yayasan Mimpi Besar\nHarkintan Kaur, Perwakilan Pemuda Sikh\n<b>Moderator:</b>\nGustika Jusuf Hatta, Aktivis HAM dan Pemberdayaan Perempuan</string>
     <string name="evt2_guest">Margarita Blush</string>
     <string name="evt3_guest">Yanuar Nugroho, Geraldine Christina</string>
     <string name="evt4_guest">Dr. Michael Lazzara</string>
@@ -36,7 +36,7 @@
     <string name="evt7_guest">Felicia Stefani</string>
     <string name="evt8_guest">Naura Nabila Haryanto</string>
 
-    <string name="evt1_desc">Kita semua menyukai wayang! Dongeng kontemporer ini akan membawamu melintasi ruang dan waktu saat kamu mengikuti perjalanan penemuan diri seorang wanita. Ayo nikmati seni wayang modern versi Amerika yang menggabungkan pertunjukan manusia, boneka, bayangan, dan musik secara langsung!</string>
+    <string name="evt1_desc">Kita semua menyukai wayang! Dongeng kontemporer ini akan membawamu melintasi ruang dan waktu saat kamu mengikuti perjalanan penemuan diri seorang wanita. Ayo nikmati seni wayang modern versi Amerika yang menggabungkan pertunjukan manusia, boneka, bayangan, dan musik secara langsung!\n\n</string>
     <string name="evt2_desc">Jelajahi dan ekspresikan dirimu melalui lokakarya teater bayangan! Pelajari seni pertunjukan bayangan dan siluet dengan salah satu penampil bayangan paling berbakat di Amerika Serikat, Margarita Blush!</string>
     <string name="evt3_desc">Memberantas kemiskinan bukanlah tindakan amal. Ini adalah tindakan keadilan dan kunci untuk membuka potensi manusia yang sangat besar! Pelajari lebih lanjut dari para pahlawan akar rumput ini tentang apa yang dapat kita lakukan untuk mendukung tujuan ini!</string>
     <string name="evt4_desc">Berencana untuk mengejar gelar master atau PhD di Amerika Serikat tapi tidak yakin mulai dari mana? Bergabunglah dengan sesi interaktif dan networking bersama EducationUSA dengan perwakilan resmi dari universitas AS. Dapatkan juga tips dari penasihat EducationUSA @america tentang cara membuat profil pendaftaran ke universitas AS.</string>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#00052142"
+        android:centerColor="#80EF0D1E"
+        android:endColor="#DE052142"
+        android:angle="180"
+        android:dither="true" />
+</shape>
+
+<!--
+    100%: FF, 87%: DE, 70%: B3, 54%: 8A, 50%: 80, 38%: 61, 12%: 1F-->

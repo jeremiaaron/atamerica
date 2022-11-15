@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
@@ -25,7 +28,8 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
     LayoutInflater inflater;
     private final OnEventUpcomingClickListener onEventClickListener;
 
-    public AdapterRecyclerUpcoming(Context ctx, List<String> evt_titles, TypedArray evt_images, OnEventUpcomingClickListener onEventClickListener) {
+    public AdapterRecyclerUpcoming(Context ctx, List<String> evt_titles, TypedArray evt_images,
+                                   OnEventUpcomingClickListener onEventClickListener) {
         this.evt_titles = evt_titles;
         this.evt_images = evt_images;
         this.inflater = LayoutInflater.from(ctx);
@@ -36,7 +40,7 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.upcoming_recycler_layout, parent, false);
-        context = parent.getContext();
+        this.context = parent.getContext();
         return new UpcomingViewHolder(view, onEventClickListener);
     }
 
@@ -62,6 +66,19 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
             btnLayoutParams.setMargins(0, dpToPixel(12), 0, dpToPixel(12));
         }
         viewHolder.evt_button.requestLayout();
+
+        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RegisterPageFragment registerPageFragment = new RegisterPageFragment();
+
+                FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
+                        R.id.frame_layout, registerPageFragment, null);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         viewHolder.evt_title.setText(evt_titles.get(position));
         viewHolder.evt_image.setImageResource(evt_images.getResourceId(position, 0));
@@ -99,7 +116,20 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
             trans_gradient = itemView.findViewById((R.id.trans_gradient));
             this.onEventClickListener = onEventClickListener;
 
-            itemView.setOnClickListener(this);
+/*            evt_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    RegisterPageFragment registerPageFragment = new RegisterPageFragment();
+
+                    FragmentManager fragmentManager = this.context.getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
+                            R.id.frame_layout, registerPageFragment, null);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });*/
+
+            cardView.setOnClickListener(this);
         }
 
         @Override

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <color name="blue">#0A3C78</color>
-    <color name="red">#EF0D1E</color>
+    <color name="blue">#003D80</color>
+    <color name="red">#D21243</color>
     <color name="black">#000000</color>
     <color name="gray">#D9D9D9</color>
+    <color name="secondary_gray">#A2A2A2</color>
     <color name="white">#FFFFFF</color>
+    <color name="dark_gray">#8A8A8A</color>
     <color name="light_gray">#EDEDED</color>
     <color name="blue_overlay">#610A3C78</color>
     <color name="red_overlay">#61EF0D1E</color>
     <color name="button_color">#EF0D1E</color>
+    <color name="warning_light">#ffb74d</color>
 </resources>
 
 <!-- #cf0039 red -->

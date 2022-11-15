@@ -44,4 +44,19 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="Widget.App.CheckBox.Secondary" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.CheckBox</item>
+    </style>
+
+    <style name="ThemeOverlay.App.CheckBox" parent="">
+        <!-- Container colors -->
+        <item name="colorOnSurface">@color/secondary_gray</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorError">@color/red</item>
+        <!-- Icon colors -->
+        <item name="colorSurface">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
 </resources>
