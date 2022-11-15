@@ -57,14 +57,19 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, ParentActivity.class);
                     startActivity(intent);
                     finish();
-
-                    return;
+                }
+                else {
+                    Intent intent = new Intent(MainActivity.this, AuthenticateActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
+            else {
+                Intent intent = new Intent(MainActivity.this, AuthenticateActivity.class);
+                startActivity(intent);
+                finish();
+            }
 
-            Intent home = new Intent(MainActivity.this, AuthenticateActivity.class);
-            startActivity(home);
-            finish();
         }, splashScreenDuration);
     }
 }
