@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="364dp" >
+
+    <ImageView
+        android:id="@+id/evtImage"
+        android:layout_width="match_parent"
+        android:layout_height="364dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/evt1_detail_img" />
+
+    <View
+        android:id="@+id/imageGradient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient_blue_red" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/evtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:text="@string/evt1_title"
+            android:letterSpacing="0"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/evtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/evt1_date"
+            android:textSize="13sp"
+            android:textColor="@color/white"
+            android:includeFontPadding="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/evtTitle"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/calendar_icon"
+            app:drawableTint="@color/white" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@android:color/white"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@+id/evtDate"
+            app:layout_constraintTop_toTopOf="@+id/evtDate"
+            app:layout_constraintBottom_toBottomOf="@+id/evtDate" />
+
+        <TextView
+            android:id="@+id/evtTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/evt1_time"
+            android:textSize="13sp"
+            android:textColor="@color/white"
+            android:includeFontPadding="false"
+            app:layout_constraintStart_toEndOf="@+id/line"
+            app:layout_constraintTop_toBottomOf="@+id/evtTitle"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/time_icon"
+            app:drawableTint="@color/white" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/evtButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginBottom="84dp"
+            android:letterSpacing="0"
+            android:fontFamily="@font/montserrat_medium"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:text="View Event"
+            android:textAllCaps="false"
+            app:cornerRadius="24dp"
+            app:strokeColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/evtDate"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

@@ -77,7 +77,6 @@
                             android:layout_marginStart="18dp"
                             android:layout_marginBottom="84dp"
                             android:letterSpacing="0"
-                            android:onClick="moveToRegister"
                             android:fontFamily="@font/montserrat_medium"
                             android:textColor="@color/white"
                             android:textSize="10sp"

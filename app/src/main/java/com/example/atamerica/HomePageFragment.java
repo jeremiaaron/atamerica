@@ -11,6 +11,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.atamerica.databinding.FragmentHomePageBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderView;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -37,6 +39,9 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
     List<String> evt_titles_top, evt_dates_top, evt_times_top, evt_guests_top, evt_descs_top;
     TypedArray evt_front_images_top_ids, evt_detail_images_top_ids;
+
+    List<String> home_titles, home_dates, home_times, home_descs, home_guests;
+    TypedArray home_banners;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,14 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
         evt_front_images_top_ids = getResources().obtainTypedArray(R.array.evt_front_images_ids);
         evt_detail_images_top_ids = getResources().obtainTypedArray(R.array.evt_detail_images_ids);
 
+        // Retrieve banner info for image slider
+        home_titles = Arrays.asList(getResources().getStringArray(R.array.home_titles));
+        home_dates = Arrays.asList(getResources().getStringArray(R.array.home_dates));
+        home_times = Arrays.asList(getResources().getStringArray(R.array.home_times));
+        home_guests = Arrays.asList(getResources().getStringArray(R.array.home_guests));
+        home_descs = Arrays.asList(getResources().getStringArray(R.array.home_descs));
+        home_banners = getResources().obtainTypedArray(R.array.home_banners);
+
         // Define recycler adapter for each EYML and Top Events recycle views
         adapterLike = new AdapterRecyclerHomeLike(getActivity(), evt_titles_like, evt_front_images_like_ids, this);
         adapterTop = new AdapterRecyclerHomeTop(getActivity(), evt_titles_top, evt_front_images_top_ids, this);
@@ -96,9 +109,12 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
         recyclerViewHomeTop.setLayoutManager(linearLayoutManagerTop);
         recyclerViewHomeTop.setAdapter(adapterTop);
 
-        ViewPager viewPager = mView.findViewById(R.id.viewPager);
-        Adapter adapter = new Adapter(getActivity());
-        viewPager.setAdapter(adapter);
+        SliderView sliderView = mView.findViewById(R.id.slider_view);
+        AdapterSlider adapterSlider = new AdapterSlider(getActivity(), home_titles, home_dates, home_times,
+                                                        home_descs, home_guests, home_banners);
+        sliderView.setSliderAdapter(adapterSlider);
+        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+        sliderView.startAutoCycle();
 
         return mView;
     }

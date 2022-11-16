@@ -3,4 +3,41 @@
     <string name="eyml">Events You Might Like</string>
     <string name="top_events">Top Events</string>
     <string name="view_more">View more</string>
+
+    <string-array name="home_titles">
+        <item>Unfolding by Margarita Blush</item>
+        <item>Workshop\@america: Margarita Blush Shadow Theater</item>
+        <item>Sustainable Development Goals Heroes: Let\'s Go All Out to End Poverty!</item>
+    </string-array>
+
+    <string-array name="home_dates">
+        <item>14/10/2022</item>
+        <item>15/10/2022</item>
+        <item>18/10/2022</item>
+    </string-array>
+
+    <string-array name="home_times">
+        <item>19:00 \- 21:00</item>
+        <item>14:00 \- 16:00</item>
+        <item>16:30 \- 18:00</item>
+    </string-array>
+
+    <string-array name="home_guests">
+        <item>Margarita Blush</item>
+        <item>Margarita Blush</item>
+        <item>Yanuar Nugroho, Geraldine Christin</item>
+    </string-array>
+
+    <string-array name="home_descs">
+        <item>Kita semua menyukai wayang! Dongeng kontemporer ini akan membawamu melintasi ruang dan waktu saat kamu mengikuti perjalanan penemuan diri seorang wanita. Ayo nikmati seni wayang modern versi Amerika yang menggabungkan pertunjukan manusia, boneka, bayangan, dan musik secara langsung!</item>
+        <item>Jelajahi dan ekspresikan dirimu melalui lokakarya teater bayangan! Pelajari seni pertunjukan bayangan dan siluet dengan salah satu penampil bayangan paling berbakat di Amerika Serikat, Margarita Blush!</item>
+        <item>Memberantas kemiskinan bukanlah tindakan amal. Ini adalah tindakan keadilan dan kunci untuk membuka potensi manusia yang sangat besar! Pelajari lebih lanjut dari para pahlawan akar rumput ini tentang apa yang dapat kita lakukan untuk mendukung tujuan ini!</item>
+    </string-array>
+
+    <integer-array name="home_banners">
+        <item>@drawable/evt1_detail_img</item>
+        <item>@drawable/evt2_detail_img</item>
+        <item>@drawable/evt3_detail_img</item>
+    </integer-array>
+
 </resources>

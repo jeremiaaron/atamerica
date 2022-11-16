@@ -20,7 +20,8 @@
         <activity
             android:name=".ChildActivity"
             android:exported="false"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".AuthenticateActivity"
             android:exported="false">
@@ -30,7 +31,8 @@
         </activity>
         <activity
             android:name=".ParentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".MySQLTester"
             android:exported="false" />
@@ -39,7 +41,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
