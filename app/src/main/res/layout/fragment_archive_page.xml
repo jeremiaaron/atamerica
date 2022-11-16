@@ -26,7 +26,7 @@
                 app:srcCompat="@drawable/application_logo" />
 
             <ImageView
-                android:id="@+id/btnAccount"
+                android:id="@+id/profileButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:scaleType="fitXY"

@@ -28,11 +28,14 @@
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/upcoming_icon.xml" value="0.2115" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/user_icon.xml" value="0.174" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout-land/fragment_guest.xml" value="0.2099099099099099" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout-sw600dp/fragment_booked_page.xml" value="0.1" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout-sw600dp/home_top_recycler_layout.xml" value="0.4" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_archive_detail_page.xml" value="0.22342342342342342" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_archive_page.xml" value="0.264" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_booked_page.xml" value="0.2" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_child.xml" value="0.2112420670897552" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_detail_page.xml" value="0.264" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_event.xml" value="0.17074275362318841" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_home_page.xml" value="0.2" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_main.xml" value="0.14504504504504503" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_my_sqltester.xml" value="0.2115036231884058" />
@@ -47,9 +50,10 @@
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.2" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/bottom_sheet_sort_layout.xml" value="0.21126126126126127" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/custom_grid_layout.xml" value="0.264" />
-        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_archive_detail_page.xml" value="0.22342342342342342" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_archive_detail_page.xml" value="0.264" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_archive_page.xml" value="0.19157608695652173" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_blank.xml" value="0.22342342342342342" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_booked_page.xml" value="0.17089755213055305" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_description.xml" value="0.264" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_detail_page.xml" value="0.3255172413793103" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_guest.xml" value="0.21105072463768115" />
@@ -57,6 +61,7 @@
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_layout.xml" value="0.22342342342342342" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_profile.xml" value="0.22342342342342342" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_register_page.xml" value="0.2" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_sign_up.xml" value="0.21105072463768115" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_upcoming_page.xml" value="0.22342342342342342" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_video.xml" value="0.19157608695652173" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/home_like_recycler_layout.xml" value="0.22342342342342342" />

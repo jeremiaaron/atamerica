@@ -1,6 +1,7 @@
 package com.example.atamerica;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -67,18 +68,14 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
         }
         viewHolder.evt_button.requestLayout();
 
-        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
+/*        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RegisterPageFragment registerPageFragment = new RegisterPageFragment();
-
-                FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
-                        R.id.frame_layout, registerPageFragment, null);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                Intent intent = new Intent(context, EventActivity.class);
+                intent.putExtra("destination", "registerPageFragment");
+                context.startActivity(intent);
             }
-        });
+        });*/
 
         viewHolder.evt_title.setText(evt_titles.get(position));
         viewHolder.evt_image.setImageResource(evt_images.getResourceId(position, 0));
@@ -116,20 +113,8 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
             trans_gradient = itemView.findViewById((R.id.trans_gradient));
             this.onEventClickListener = onEventClickListener;
 
-/*            evt_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    RegisterPageFragment registerPageFragment = new RegisterPageFragment();
-
-                    FragmentManager fragmentManager = this.context.getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
-                            R.id.frame_layout, registerPageFragment, null);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }
-            });*/
-
             cardView.setOnClickListener(this);
+            evt_button.setOnClickListener(this);
         }
 
         @Override

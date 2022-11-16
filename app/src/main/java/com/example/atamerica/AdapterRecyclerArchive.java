@@ -67,7 +67,7 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
         }
         viewHolder.evt_button.requestLayout();
 
-        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
+/*        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 VideoFragment videoFragment = new VideoFragment();
@@ -78,7 +78,7 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
-        });
+        });*/
 
         viewHolder.evt_title.setText(evt_titles.get(position));
         viewHolder.evt_image.setImageResource(evt_images.getResourceId(position, 0));
@@ -116,6 +116,7 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
             trans_gradient = itemView.findViewById((R.id.trans_gradient));
             this.onEventClickListener = onEventClickListener;
 
+            evt_button.setOnClickListener(this);
             cardView.setOnClickListener(this);
         }
 

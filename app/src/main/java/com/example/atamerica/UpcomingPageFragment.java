@@ -3,22 +3,16 @@ package com.example.atamerica;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-
 import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -28,7 +22,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.atamerica.databinding.FragmentHomePageBinding;
 import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -44,6 +37,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
     CheckBox cbMusic, cbMovie, cbEducation, cbScience, cbDemocracy, cbEntrepreneurship, cbArts, cbProtecting, cbWomen, cbYseali;
     RadioButton rbNewest, rbLatest;
     ImageView profileButton;
+    BottomNavigationView navView;
 
     List<String> evt_titles, evt_dates, evt_times, evt_guests, evt_descs;
     TypedArray evt_front_images_ids, evt_detail_images_ids;
@@ -63,17 +57,12 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         View mView = binding.getRoot();
 
         profileButton = mView.findViewById(R.id.profileButton);
-
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProfileFragment profileFragment = new ProfileFragment();
-
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
-                        R.id.frame_layout, profileFragment, null);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                Intent intent = new Intent(getActivity(), ChildActivity.class);
+                intent.putExtra("destination", "profileFragment");
+                startActivity(intent);
             }
         });
 
@@ -202,23 +191,15 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
     @Override
     public void onEventUpcomingClick(int position) {
-        DetailPageFragment detailPageFragment = new DetailPageFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("title", evt_titles.get(position));
-        bundle.putString("desc", evt_descs.get(position));
-        bundle.putString("imgId", Integer.toString(evt_detail_images_ids.getResourceId(position, 0)));
-        bundle.putString("date", evt_dates.get(position));
-        bundle.putString("time", evt_times.get(position));
-        bundle.putString("guest", evt_guests.get(position));
-        detailPageFragment.setArguments(bundle);
-
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
-                R.id.frame_layout, detailPageFragment, null);
-        if(fragmentManager.getBackStackEntryCount() != 1){
-            fragmentTransaction.addToBackStack(null);
-        }
-        fragmentTransaction.commit();
+        Intent intent = new Intent(getActivity(), ChildActivity.class);
+        intent.putExtra("destination", "detailPageFragment");
+        intent.putExtra("title", evt_titles.get(position));
+        intent.putExtra("desc", evt_descs.get(position));
+        intent.putExtra("imgId", Integer.toString(evt_detail_images_ids.getResourceId(position, 0)));
+        intent.putExtra("date", evt_dates.get(position));
+        intent.putExtra("time", evt_times.get(position));
+        intent.putExtra("guest", evt_guests.get(position));
+        startActivity(intent);
     }
 
     public void onDestroyView() {

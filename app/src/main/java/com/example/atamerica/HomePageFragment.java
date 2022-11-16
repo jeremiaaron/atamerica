@@ -5,8 +5,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -21,6 +19,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
 public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLike.OnEventHomeClickListener, AdapterRecyclerHomeTop.OnEventTopClickListener {
 
@@ -30,14 +30,13 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
     RecyclerView recyclerViewHomeTop;
     AdapterRecyclerHomeLike adapterLike;
     AdapterRecyclerHomeTop adapterTop;
+    ImageView profileButton;
 
     List<String> evt_titles_like, evt_dates_like, evt_times_like, evt_guests_like, evt_descs_like;
     TypedArray evt_front_images_like_ids, evt_detail_images_like_ids;
 
     List<String> evt_titles_top, evt_dates_top, evt_times_top, evt_guests_top, evt_descs_top;
     TypedArray evt_front_images_top_ids, evt_detail_images_top_ids;
-
-    BottomNavigationView bottomNavigationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,16 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
         binding = FragmentHomePageBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
+
+        profileButton = mView.findViewById(R.id.profileButton);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ChildActivity.class);
+                intent.putExtra("destination", "profileFragment");
+                startActivity(intent);
+            }
+        });
 
         // Define recycle views in the activity (EYML and Top Events)
         recyclerViewHomeLike = mView.findViewById(R.id.recyclerViewHomeLike);
@@ -96,44 +105,28 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
     @Override
     public void onEventLikeClick(int position) {
-        DetailPageFragment detailPageFragment = new DetailPageFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("title", evt_titles_like.get(position));
-        bundle.putString("desc", evt_descs_like.get(position));
-        bundle.putString("imgId", Integer.toString(evt_detail_images_like_ids.getResourceId(position, 0)));
-        bundle.putString("date", evt_dates_like.get(position));
-        bundle.putString("time", evt_times_like.get(position));
-        bundle.putString("guest", evt_guests_like.get(position));
-        detailPageFragment.setArguments(bundle);
-
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
-                R.id.frame_layout, detailPageFragment, null);
-        if(fragmentManager.getBackStackEntryCount() != 1){
-            fragmentTransaction.addToBackStack(null);
-        }
-        fragmentTransaction.commit();
+        Intent intent = new Intent(getActivity(), ChildActivity.class);
+        intent.putExtra("destination", "detailPageFragment");
+        intent.putExtra("title", evt_titles_like.get(position));
+        intent.putExtra("desc", evt_descs_like.get(position));
+        intent.putExtra("imgId", Integer.toString(evt_detail_images_like_ids.getResourceId(position, 0)));
+        intent.putExtra("date", evt_dates_like.get(position));
+        intent.putExtra("time", evt_times_like.get(position));
+        intent.putExtra("guest", evt_guests_like.get(position));
+        startActivity(intent);
     }
 
     @Override
     public void onEventTopClick(int position) {
-        DetailPageFragment detailPageFragment = new DetailPageFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("title", evt_titles_top.get(position));
-        bundle.putString("desc", evt_descs_top.get(position));
-        bundle.putString("imgId", Integer.toString(evt_detail_images_top_ids.getResourceId(position, 0)));
-        bundle.putString("date", evt_dates_top.get(position));
-        bundle.putString("time", evt_times_top.get(position));
-        bundle.putString("guest", evt_guests_top.get(position));
-        detailPageFragment.setArguments(bundle);
-
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
-                R.id.frame_layout, detailPageFragment, null);
-        if(fragmentManager.getBackStackEntryCount() != 1){
-            fragmentTransaction.addToBackStack(null);
-        }
-        fragmentTransaction.commit();
+        Intent intent = new Intent(getActivity(), ChildActivity.class);
+        intent.putExtra("destination", "detailPageFragment");
+        intent.putExtra("title", evt_titles_top.get(position));
+        intent.putExtra("desc", evt_descs_top.get(position));
+        intent.putExtra("imgId", Integer.toString(evt_detail_images_top_ids.getResourceId(position, 0)));
+        intent.putExtra("date", evt_dates_top.get(position));
+        intent.putExtra("time", evt_times_top.get(position));
+        intent.putExtra("guest", evt_guests_top.get(position));
+        startActivity(intent);
     }
 
     @Override

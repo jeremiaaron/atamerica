@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,9 +59,6 @@ public class DetailPageFragment extends Fragment {
         binding = FragmentDetailPageBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
 
-        navView = getActivity().findViewById(R.id.bottom_navigation_view);
-        navView.setVisibility(View.GONE);
-
         registerBtn = mView.findViewById(R.id.register_button);
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,8 +66,14 @@ public class DetailPageFragment extends Fragment {
                 RegisterPageFragment registerPageFragment = new RegisterPageFragment();
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
-                        R.id.frame_layout, registerPageFragment, null);
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(
+                        R.anim.slide_in,  // enter
+                        R.anim.fade_out,  // exit
+                        R.anim.fade_in,   // popEnter
+                        R.anim.slide_out  // popExit);
+                );
+                fragmentTransaction.replace(R.id.event_container, registerPageFragment, null);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

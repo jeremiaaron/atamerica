@@ -13,13 +13,11 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 
 import com.example.atamerica.databinding.FragmentProfileBinding;
-import com.example.atamerica.databinding.FragmentRegisterPageBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
-    BottomNavigationView navView;
 
     private Button buttonLogout;
 
@@ -41,9 +39,6 @@ public class ProfileFragment extends Fragment {
         buttonLogout.setOnClickListener(view -> {
             LogOut();
         });
-
-        navView = getActivity().findViewById(R.id.bottom_navigation_view);
-        navView.setVisibility(View.GONE);
 
         return mView;
     }

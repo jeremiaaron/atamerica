@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,9 +41,6 @@ public class RegisterPageFragment extends Fragment {
 
         binding = FragmentRegisterPageBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
-
-        navView = getActivity().findViewById(R.id.bottom_navigation_view);
-        navView.setVisibility(View.GONE);
 
         return mView;
     }

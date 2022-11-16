@@ -23,7 +23,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.DefaultPlayerUiCo
 public class VideoFragment extends Fragment {
 
     FragmentVideoBinding binding;
-    BottomNavigationView navView;
     YouTubePlayerView youTubePlayerView;
 
     @Override
@@ -48,16 +47,13 @@ public class VideoFragment extends Fragment {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
 
-        navView = getActivity().findViewById(R.id.bottom_navigation_view);
-        navView.setVisibility(View.GONE);
-
         youTubePlayerView = mView.findViewById(R.id.youtube_player_view);
         getLifecycle().addObserver(youTubePlayerView);
 
         YouTubePlayerListener listener = new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                String videoId = "3cFX2C7Osik";
+                String videoId = "gEvlCbcrIPE";
                 youTubePlayer.cueVideo(videoId, 0);
             }
         };

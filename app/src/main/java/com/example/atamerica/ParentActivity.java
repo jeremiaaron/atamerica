@@ -5,25 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.example.atamerica.databinding.ActivityParentBinding;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.util.zip.Inflater;
 
 public class ParentActivity extends AppCompatActivity {
 
@@ -32,7 +21,6 @@ public class ParentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         binding = ActivityParentBinding.inflate(getLayoutInflater());
@@ -60,33 +48,14 @@ public class ParentActivity extends AppCompatActivity {
                         break;
                 }
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                fragmentTransaction.replace(R.id.frame_layout, selectedFragment, null);
+                fragmentTransaction.commit();
 
                 return true;
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        int count = getSupportFragmentManager().getBackStackEntryCount();
-
-        if (count == 1) {
-            super.onBackPressed();
-            bottomNavigationView.setVisibility(View.VISIBLE);
-        } else {
-            getSupportFragmentManager().popBackStack();
-        }
-    }
-
-    public void backActivity(View view) {
-        int count = getSupportFragmentManager().getBackStackEntryCount();
-
-        if (count == 1) {
-            super.onBackPressed();
-            bottomNavigationView.setVisibility(View.VISIBLE);
-        } else {
-            getSupportFragmentManager().popBackStack();
-        }
     }
 }

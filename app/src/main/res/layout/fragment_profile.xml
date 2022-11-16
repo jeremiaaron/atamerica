@@ -16,6 +16,7 @@
             android:onClick="backActivity"
             android:layout_marginVertical="18dp"
             android:layout_marginHorizontal="18dp"
+            app:tint="@color/blue"
             app:srcCompat="@drawable/arrow_back_vector"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
