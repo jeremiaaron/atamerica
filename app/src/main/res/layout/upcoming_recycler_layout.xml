@@ -26,11 +26,12 @@
                 android:id="@+id/evt_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/evt5_live_from_usa_mas" />
+                android:adjustViewBounds="true" />
+<!--                app:srcCompat="@drawable/evt5_live_from_usa_mas" />-->
 
             <View
                 android:id="@+id/trans_gradient"

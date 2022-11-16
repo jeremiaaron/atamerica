@@ -1,7 +1,6 @@
 package com.example.atamerica;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -12,27 +11,30 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.atamerica.java_class.DownloadImageTask;
+import com.example.atamerica.models.AppEventModel;
+import com.example.atamerica.models.EventDocumentModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
 public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    List<String> evt_titles;
-    TypedArray evt_images;
-    Context context;
-    LayoutInflater inflater;
-    private final OnEventUpcomingClickListener onEventClickListener;
+    private List<AppEventModel>                 models;
+    private List<EventDocumentModel>            modelDocuments;
+    private Context                             context;
+    private final LayoutInflater                inflater;
+    private final OnEventUpcomingClickListener  onEventClickListener;
 
-    public AdapterRecyclerUpcoming(Context ctx, List<String> evt_titles, TypedArray evt_images,
-                                   OnEventUpcomingClickListener onEventClickListener) {
-        this.evt_titles = evt_titles;
-        this.evt_images = evt_images;
+    public AdapterRecyclerUpcoming(Context ctx, List<AppEventModel> models, List<EventDocumentModel> modelDocuments, OnEventUpcomingClickListener onEventClickListener) {
+        this.models = models;
+        this.modelDocuments = modelDocuments;
         this.inflater = LayoutInflater.from(ctx);
         this.onEventClickListener = onEventClickListener;
     }
@@ -63,32 +65,34 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
 
         ViewGroup.MarginLayoutParams btnLayoutParams = (ViewGroup.MarginLayoutParams) viewHolder.evt_button.getLayoutParams();
 
-        if (position == evt_titles.size()-1 || position == evt_titles.size()-2) {
+        if (position == models.size() - 1 || position == models.size() - 2) {
             btnLayoutParams.setMargins(0, dpToPixel(12), 0, dpToPixel(12));
         }
         viewHolder.evt_button.requestLayout();
 
-/*        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
+        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, EventActivity.class);
-                intent.putExtra("destination", "registerPageFragment");
-                context.startActivity(intent);
+                RegisterPageFragment registerPageFragment = new RegisterPageFragment();
+
+                FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
+                        R.id.frame_layout, registerPageFragment, null);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
-        });*/
+        });
 
-        viewHolder.evt_title.setText(evt_titles.get(position));
-        viewHolder.evt_image.setImageResource(evt_images.getResourceId(position, 0));
+        viewHolder.evt_title.setText(models.get(position).EventName);
+        new DownloadImageTask(viewHolder.evt_image).execute(modelDocuments.get(position).Path);
 
-        if((position-1) % 4 == 0 || (position-2) % 4 == 0) {
-            viewHolder.trans_gradient.setBackground(context.getResources().getDrawable(R.drawable.transparent_gradient_red));
-        }
-        else viewHolder.trans_gradient.setBackground(context.getResources().getDrawable(R.drawable.transparent_gradient_blue));
+        if((position-1) % 4 == 0 || (position-2) % 4 == 0) viewHolder.trans_gradient.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_gradient_red));
+        else viewHolder.trans_gradient.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_gradient_blue));
     }
 
     @Override
     public int getItemCount() {
-        return evt_titles.size();
+        return models.size();
     }
 
     private int dpToPixel (int dp) {
@@ -114,7 +118,6 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
             this.onEventClickListener = onEventClickListener;
 
             cardView.setOnClickListener(this);
-            evt_button.setOnClickListener(this);
         }
 
         @Override

@@ -3,8 +3,10 @@ package com.example.atamerica.subfragments;
 import android.os.Bundle;
 
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +35,7 @@ public class DescriptionFragment extends Fragment {
         View mView = binding.getRoot();
 
         evtDesc = mView.findViewById(R.id.evt_desc);
-        evtDesc.setText(desc);
+        evtDesc.setText(HtmlCompat.fromHtml(desc, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         return mView;
     }

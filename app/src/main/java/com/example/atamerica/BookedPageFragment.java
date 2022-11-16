@@ -23,6 +23,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
+import com.example.atamerica.java_class.DataHelper;
+import com.example.atamerica.models.AppEventModel;
+import com.example.atamerica.models.EventDocumentModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -30,6 +33,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BookedPageFragment extends Fragment implements AdapterRecyclerUpcoming.OnEventUpcomingClickListener {
+
+
 
     RecyclerView recyclerView;
     AdapterRecyclerUpcoming adapter;
@@ -43,6 +48,9 @@ public class BookedPageFragment extends Fragment implements AdapterRecyclerUpcom
     TypedArray evt_front_images_ids, evt_detail_images_ids;
 
     FragmentUpcomingPageBinding binding;
+
+    private List<AppEventModel>             models;
+    private List<EventDocumentModel>        modelDocuments;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +74,9 @@ public class BookedPageFragment extends Fragment implements AdapterRecyclerUpcom
             }
         });
 
+        models = DataHelper.Query.ReturnAsObjectList("SELECT * FROM AppEvent ORDER BY EventId ASC; ", AppEventModel.class, null);
+        modelDocuments = DataHelper.Query.ReturnAsObjectList("SELECT * FROM EventDocument WHERE Title = 'thumbnail' ORDER BY EventId; ", EventDocumentModel.class, null);
+
         // Define recycle view in the activity
         recyclerView = mView.findViewById(R.id.recyclerViewUpcoming);
 
@@ -79,7 +90,7 @@ public class BookedPageFragment extends Fragment implements AdapterRecyclerUpcom
         evt_detail_images_ids = getResources().obtainTypedArray(R.array.evt_detail_images_ids);
 
         // Define recycler adapter for the recycler view
-        adapter = new AdapterRecyclerUpcoming(getActivity(), evt_titles, evt_front_images_ids, this);
+        adapter = new AdapterRecyclerUpcoming(getActivity(), models, modelDocuments, this);
 
         // GridLayoutManager for grid layout of the recycler view
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);

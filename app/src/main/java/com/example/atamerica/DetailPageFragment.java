@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.atamerica.databinding.FragmentDetailPageBinding;
 import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
+import com.example.atamerica.java_class.DownloadImageTask;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
@@ -128,7 +129,7 @@ public class DetailPageFragment extends Fragment {
         TextView evtDate = mView.findViewById(R.id.dateContent);
         TextView evtTime = mView.findViewById(R.id.timeContent);
         evtTitle.setText(title);
-        evtImg.setImageDrawable(ResourcesCompat.getDrawable(getResources(), Integer.parseInt(imgId), null));
+        new DownloadImageTask(evtImg).execute(imgId);
         evtDate.setText(date);
         evtTime.setText(time);
 
