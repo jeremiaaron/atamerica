@@ -1,19 +1,5 @@
 package com.example.atamerica;
 
-import java.util.Arrays;
-import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
-import com.example.atamerica.databinding.FragmentHomePageBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
-import com.smarteist.autoimageslider.SliderView;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
@@ -21,18 +7,38 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.atamerica.databinding.FragmentHomePageBinding;
+import com.example.atamerica.java_class.DataHelper;
+import com.example.atamerica.models.AppEventModel;
+import com.example.atamerica.models.EventAttributeModel;
+import com.example.atamerica.models.EventDocumentModel;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderView;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLike.OnEventHomeClickListener, AdapterRecyclerHomeTop.OnEventTopClickListener {
 
-    private FragmentHomePageBinding binding;
+    private FragmentHomePageBinding     binding;
 
-    RecyclerView recyclerViewHomeLike;
-    RecyclerView recyclerViewHomeTop;
-    AdapterRecyclerHomeLike adapterLike;
-    AdapterRecyclerHomeTop adapterTop;
-    ImageView profileButton;
+    private RecyclerView                recyclerViewHomeLike;
+    private RecyclerView                recyclerViewHomeTop;
+    private AdapterRecyclerHomeLike     adapterLike;
+    private AdapterRecyclerHomeTop      adapterTop;
+
+    private ImageView                   buttonProfile;
+
+    private List<AppEventModel>         eventModels;
+    private List<EventDocumentModel>    eventDocumentModels;
+    private List<EventAttributeModel>   eventAttributeModels;
 
     List<String> evt_titles_like, evt_dates_like, evt_times_like, evt_guests_like, evt_descs_like;
     TypedArray evt_front_images_like_ids, evt_detail_images_like_ids;
@@ -54,16 +60,6 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
         binding = FragmentHomePageBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
-
-        profileButton = mView.findViewById(R.id.profileButton);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ChildActivity.class);
-                intent.putExtra("destination", "profileFragment");
-                startActivity(intent);
-            }
-        });
 
         // Define recycle views in the activity (EYML and Top Events)
         recyclerViewHomeLike = mView.findViewById(R.id.recyclerViewHomeLike);

@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.atamerica.asynctasks.SetTextViewTask;
 import com.example.atamerica.java_class.DownloadImageTask;
 import com.example.atamerica.models.AppEventModel;
 import com.example.atamerica.models.EventDocumentModel;
@@ -83,7 +84,7 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
             }
         });*/
 
-        viewHolder.evt_title.setText(models.get(position).EventName);
+        new SetTextViewTask(viewHolder.evt_title).execute(models.get(position).EventName);
         new DownloadImageTask(viewHolder.evt_image).execute(modelDocuments.get(position).Path);
 
         if((position-1) % 4 == 0 || (position-2) % 4 == 0) viewHolder.trans_gradient.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_gradient_red));

@@ -1,52 +1,79 @@
 package com.example.atamerica;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.CompoundButtonCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.atamerica.databinding.FragmentHomePageBinding;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.CompoundButtonCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
 import com.example.atamerica.java_class.DataHelper;
 import com.example.atamerica.models.AppEventModel;
 import com.example.atamerica.models.EventDocumentModel;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpcoming.OnEventUpcomingClickListener {
+
+    @SuppressLint("StaticFieldLeak")
+    public class BindRecyclerTask extends AsyncTask<Void, Void, Void> {
+
+        AdapterRecyclerUpcoming.OnEventUpcomingClickListener onEventClickListener;
+
+        public BindRecyclerTask(AdapterRecyclerUpcoming.OnEventUpcomingClickListener onEventClickListener) {
+            this.onEventClickListener = onEventClickListener;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            models = DataHelper.Query.ReturnAsObjectList("SELECT * FROM AppEvent ORDER BY EventId ASC; ", AppEventModel.class, null);
+            modelDocuments = DataHelper.Query.ReturnAsObjectList("SELECT * FROM EventDocument WHERE Title = 'thumbnail' ORDER BY EventId; ", EventDocumentModel.class, null);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            progressIndicator.setVisibility(View.GONE);
+
+            adapter = new AdapterRecyclerUpcoming(getActivity(), models, modelDocuments, onEventClickListener);
+
+            // GridLayoutManager for grid layout of the recycler view
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+            recyclerView.setLayoutManager(gridLayoutManager);
+            recyclerView.setAdapter(adapter);
+        }
+
+    }
 
     private RecyclerView                    recyclerView;
     private Button                          categoryButton, sortButton;
@@ -67,8 +94,8 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         super.onCreate(savedInstanceState);
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // request for current activity to allow internet connection
         // this must be in every activity/fragments
@@ -86,42 +113,19 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         profileButton       = rootView.findViewById(R.id.profileButton);
         progressIndicator   = rootView.findViewById(R.id.progressIndicator);
 
-        // Load variables async
-        Thread load = new Thread(() -> {
-            models = DataHelper.Query.ReturnAsObjectList("SELECT * FROM AppEvent ORDER BY EventId ASC; ", AppEventModel.class, null);
-            modelDocuments = DataHelper.Query.ReturnAsObjectList("SELECT * FROM EventDocument WHERE Title = 'thumbnail' ORDER BY EventId; ", EventDocumentModel.class, null);
-        });
-        load.start();
-
-        try {
-            load.join();
-            progressIndicator.setVisibility(View.GONE);
-
-            // Define recycler adapter for the recycler view
-            adapter = new AdapterRecyclerUpcoming(getActivity(), models, modelDocuments, this);
-
-            // GridLayoutManager for grid layout of the recycler view
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
-            recyclerView.setLayoutManager(gridLayoutManager);
-            recyclerView.setAdapter(adapter);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // Asynchronously bind recycler view
+        new BindRecyclerTask(this).execute();
 
         // Profile button on click
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ChildActivity.class);
-                intent.putExtra("destination", "profileFragment");
-                startActivity(intent);
-            }
+        profileButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), ChildActivity.class);
+            intent.putExtra("destination", "profileFragment");
+            startActivity(intent);
         });
 
         // Category button on click
         categoryButton.setOnClickListener(view -> {
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity());
 
             View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
                     R.layout.bottom_sheet_category_layout, rootView.findViewById(R.id.bottomSheetContainer)
@@ -153,7 +157,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
         // Sort button on click
         sortButton.setOnClickListener(view -> {
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity());
             View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.bottom_sheet_sort_layout, rootView.findViewById(R.id.bottomSheetContainer));
             rbNewest = bottomSheetView.findViewById(R.id.newestRadio); setOnClickRadio(rbNewest);
             rbLatest = bottomSheetView.findViewById(R.id.latestRadio); setOnClickRadio(rbLatest);
@@ -167,14 +171,14 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
     public void setOnClickCheck (CheckBox checkBox) {
         checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> CompoundButtonCompat.setButtonTintList(
                 checkBox,
-                ContextCompat.getColorStateList(getActivity(), R.color.checkbox_color)
+                ContextCompat.getColorStateList(requireActivity(), R.color.checkbox_color)
         ));
     }
 
     public void setOnClickRadio (RadioButton radioButton) {
         radioButton.setOnCheckedChangeListener((compoundButton, isChecked) -> CompoundButtonCompat.setButtonTintList(
                 radioButton,
-                ContextCompat.getColorStateList(getActivity(), R.color.checkbox_color)
+                ContextCompat.getColorStateList(requireActivity(), R.color.checkbox_color)
         ));
     }
 
@@ -201,8 +205,8 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         intent.putExtra("title", models.get(position).EventName);
         intent.putExtra("desc", models.get(position).EventDescription);
         intent.putExtra("imgId", modelDocuments.get(position).Path);
-        intent.putExtra("date", new SimpleDateFormat("yyyy-MM-dd").format(date));
-        intent.putExtra("time", new SimpleDateFormat("HH:mm").format(date));
+        intent.putExtra("date", new SimpleDateFormat("EEEEE, dd MMMMM yyyy", Locale.ENGLISH).format(date));
+        intent.putExtra("time", new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(date));
         intent.putExtra("guest", "");
         startActivity(intent);
     }

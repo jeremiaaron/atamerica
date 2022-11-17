@@ -25,15 +25,6 @@
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <!-- Banner Carousel -->
-                <!-- viewpager to show images -->
-<!--                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="364dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />-->
-
                 <com.smarteist.autoimageslider.SliderView
                     android:id="@+id/slider_view"
                     android:layout_width="match_parent"
@@ -49,9 +40,10 @@
                     app:sliderIndicatorRadius="1.6dp"
                     app:sliderIndicatorSelectedColor="@color/red"
                     app:sliderIndicatorUnselectedColor="@color/gray"
-                    app:sliderScrollTimeInSec="3"
+                    app:sliderScrollTimeInSec="5"
                     app:sliderStartAutoCycle="true"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <!-- Top Bar -->
