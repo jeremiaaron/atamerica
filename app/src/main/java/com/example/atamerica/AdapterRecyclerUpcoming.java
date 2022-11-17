@@ -70,7 +70,7 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
         }
         viewHolder.evt_button.requestLayout();
 
-        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
+/*        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 RegisterPageFragment registerPageFragment = new RegisterPageFragment();
@@ -81,7 +81,7 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
-        });
+        });*/
 
         viewHolder.evt_title.setText(models.get(position).EventName);
         new DownloadImageTask(viewHolder.evt_image).execute(modelDocuments.get(position).Path);
@@ -117,6 +117,7 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
             trans_gradient = itemView.findViewById((R.id.trans_gradient));
             this.onEventClickListener = onEventClickListener;
 
+            evt_button.setOnClickListener(this);
             cardView.setOnClickListener(this);
         }
 

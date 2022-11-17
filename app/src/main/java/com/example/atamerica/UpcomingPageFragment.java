@@ -159,6 +159,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
             BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
             View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.bottom_sheet_sort_layout, rootView.findViewById(R.id.bottomSheetContainer));
             rbNewest = bottomSheetView.findViewById(R.id.newestRadio); setOnClickRadio(rbNewest);
+            rbLatest = bottomSheetView.findViewById(R.id.latestRadio); setOnClickRadio(rbLatest);
             bottomSheetDialog.setContentView(bottomSheetView);
             bottomSheetDialog.show();
         });
