@@ -55,9 +55,6 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
     private RadioButton                     rbNewest, rbLatest;
     private ImageView                       profileButton;
 
-    private List<String>                    evt_titles, evt_dates, evt_times, evt_guests, evt_descs;
-    private TypedArray                      evt_front_images_ids, evt_detail_images_ids;
-
     private AdapterRecyclerUpcoming         adapter;
     private FragmentUpcomingPageBinding     binding;
     private List<AppEventModel>             models;
@@ -196,9 +193,6 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
     @Override
     public void onEventUpcomingClick(int position) {
-//        DetailPageFragment detailPageFragment = new DetailPageFragment();
-//        Bundle bundle = new Bundle();
-
         Date date = new Date();
         date.setTime(models.get(position).EventStartTime.getTime());
 
@@ -211,22 +205,6 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         intent.putExtra("time", new SimpleDateFormat("HH:mm").format(date));
         intent.putExtra("guest", "");
         startActivity(intent);
-
-//        bundle.putString("title", models.get(position).EventName);
-//        bundle.putString("desc", models.get(position).EventDescription);
-////        bundle.putString("imgId", Integer.toString(evt_detail_images_ids.getResourceId(position, 0)));
-//        bundle.putString("imgUrl", modelDocuments.get(position).Path);
-//        bundle.putString("date", new SimpleDateFormat("yyyy-MM-dd").format(date));
-//        bundle.putString("time", new SimpleDateFormat("HH:mm").format(date));
-//        bundle.putString("guest", "");
-//        detailPageFragment.setArguments(bundle);
-//
-//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(R.id.frame_layout, detailPageFragment, null);
-//        if(fragmentManager.getBackStackEntryCount() != 1){
-//            fragmentTransaction.addToBackStack(null);
-//        }
-//        fragmentTransaction.commit();
     }
 
     public void onDestroyView() {
