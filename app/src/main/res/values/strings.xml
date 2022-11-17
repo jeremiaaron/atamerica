@@ -11,4 +11,6 @@
     <string name="phone">Phone Number</string>
     <string name="button_book">Book Now</string>
     <string name="register_success">Congratulations, you are successfully registered!</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
