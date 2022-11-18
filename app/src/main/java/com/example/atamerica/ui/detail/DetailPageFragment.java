@@ -122,7 +122,7 @@ public class DetailPageFragment extends Fragment {
         TextView evtDate = mView.findViewById(R.id.dateContent);
         TextView evtTime = mView.findViewById(R.id.timeContent);
         evtTitle.setText(title);
-        new DownloadImageTask(evtImg).execute(imgId);
+        // new DownloadImageTask(evtImg).execute(imgId);
         evtDate.setText(date);
         evtTime.setText(time);
 

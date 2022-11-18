@@ -31,7 +31,7 @@ import java.util.List;
 
 public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLike.OnEventHomeClickListener, AdapterRecyclerHomeTop.OnEventTopClickListener {
     
-    private FragmentHomePageBinding binding;
+    private FragmentHomePageBinding     binding;
 
     private RecyclerView                recyclerViewHomeLike;
     private RecyclerView                recyclerViewHomeTop;
@@ -39,10 +39,6 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
     private AdapterRecyclerHomeTop      adapterTop;
 
     private ImageView                   buttonProfile;
-
-    private List<AppEventModel>         eventModels;
-    private List<EventDocumentModel>    eventDocumentModels;
-    private List<EventAttributeModel>   eventAttributeModels;
 
     List<String> evt_titles_like, evt_dates_like, evt_times_like, evt_guests_like, evt_descs_like;
     TypedArray evt_front_images_like_ids, evt_detail_images_like_ids;
@@ -52,24 +48,6 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
     List<String> home_titles, home_dates, home_times, home_descs, home_guests;
     TypedArray home_banners;
-
-    private class BindHomePageTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... vOids) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void unused) {
-            super.onPostExecute(unused);
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

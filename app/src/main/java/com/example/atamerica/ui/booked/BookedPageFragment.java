@@ -28,6 +28,8 @@ import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
 import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.models.AppEventModel;
 import com.example.atamerica.models.EventDocumentModel;
+import com.example.atamerica.taskhandler.QueryVwEventThumbnailTask;
+import com.example.atamerica.taskhandler.TaskRunner;
 import com.example.atamerica.ui.upcoming.AdapterRecyclerUpcoming;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -93,12 +95,18 @@ public class BookedPageFragment extends Fragment implements AdapterRecyclerUpcom
         evt_detail_images_ids = getResources().obtainTypedArray(R.array.evt_detail_images_ids);
 
         // Define recycler adapter for the recycler view
-        adapter = new AdapterRecyclerUpcoming(getActivity(), models, modelDocuments, this);
+        new TaskRunner().executeAsyncPool(new QueryVwEventThumbnailTask("SELECT * FROM VwEventThumbnail ORDER BY EventId ASC; ", null), (data) -> {
+            adapter = new AdapterRecyclerUpcoming(getActivity(), data, this);
+
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+            recyclerView.setLayoutManager(gridLayoutManager);
+            recyclerView.setAdapter(adapter);
+        });
 
         // GridLayoutManager for grid layout of the recycler view
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(adapter);
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+//        recyclerView.setLayoutManager(gridLayoutManager);
+//        recyclerView.setAdapter(adapter);
 
         // Category button on click
         categoryButton = mView.findViewById(R.id.categoryButton);

@@ -14,25 +14,22 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atamerica.R;
-import com.example.atamerica.taskhandler.SetTextViewTask;
-import com.example.atamerica.taskhandler.DownloadImageTask;
-import com.example.atamerica.models.AppEventModel;
-import com.example.atamerica.models.EventDocumentModel;
+import com.example.atamerica.models.views.VwEventThumbnailModel;
+import com.example.atamerica.taskhandler.DownloadBitmapTask;
+import com.example.atamerica.taskhandler.TaskRunner;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
 public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<AppEventModel>                 models;
-    private List<EventDocumentModel>            modelDocuments;
+    private final List<VwEventThumbnailModel>   models;
     private Context                             context;
     private final LayoutInflater                inflater;
     private final OnEventUpcomingClickListener  onEventClickListener;
 
-    public AdapterRecyclerUpcoming(Context ctx, List<AppEventModel> models, List<EventDocumentModel> modelDocuments, OnEventUpcomingClickListener onEventClickListener) {
+    public AdapterRecyclerUpcoming(Context ctx, List<VwEventThumbnailModel> models, OnEventUpcomingClickListener onEventClickListener) {
         this.models = models;
-        this.modelDocuments = modelDocuments;
         this.inflater = LayoutInflater.from(ctx);
         this.onEventClickListener = onEventClickListener;
     }
@@ -68,21 +65,8 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
         }
         viewHolder.evt_button.requestLayout();
 
-/*        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RegisterPageFragment registerPageFragment = new RegisterPageFragment();
-
-                FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
-                        R.id.frame_layout, registerPageFragment, null);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
-        });*/
-
-        new SetTextViewTask(viewHolder.evt_title).execute(models.get(position).EventName);
-        new DownloadImageTask(viewHolder.evt_image).execute(modelDocuments.get(position).Path);
+        viewHolder.evt_title.setText(models.get(position).EventName);
+        new TaskRunner().executeAsyncPool(new DownloadBitmapTask(models.get(position).Path), (data) -> viewHolder.evt_image.setImageBitmap(data));
 
         if((position-1) % 4 == 0 || (position-2) % 4 == 0) viewHolder.trans_gradient.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_gradient_red));
         else viewHolder.trans_gradient.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_gradient_blue));
@@ -94,8 +78,7 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private int dpToPixel (int dp) {
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
-        return px;
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 
     static class UpcomingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -121,7 +104,7 @@ public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.V
 
         @Override
         public void onClick(View view) {
-            onEventClickListener.onEventUpcomingClick(getAdapterPosition());
+            onEventClickListener.onEventUpcomingClick(getBindingAdapterPosition());
         }
     }
 

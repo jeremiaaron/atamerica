@@ -1,11 +1,9 @@
 package com.example.atamerica.ui.upcoming;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
@@ -29,53 +27,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.atamerica.ChildActivity;
 import com.example.atamerica.R;
 import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
-import com.example.atamerica.dbhandler.DataHelper;
-import com.example.atamerica.models.AppEventModel;
-import com.example.atamerica.models.EventDocumentModel;
+import com.example.atamerica.models.views.VwEventThumbnailModel;
+import com.example.atamerica.taskhandler.QueryVwEventThumbnailTask;
+import com.example.atamerica.taskhandler.TaskRunner;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpcoming.OnEventUpcomingClickListener {
-
-    @SuppressLint("StaticFieldLeak")
-    public class BindRecyclerTask extends AsyncTask<Void, Void, Void> {
-
-        AdapterRecyclerUpcoming.OnEventUpcomingClickListener onEventClickListener;
-
-        public BindRecyclerTask(AdapterRecyclerUpcoming.OnEventUpcomingClickListener onEventClickListener) {
-            this.onEventClickListener = onEventClickListener;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            progressIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            models = DataHelper.Query.ReturnAsObjectList("SELECT * FROM AppEvent ORDER BY EventId ASC; ", AppEventModel.class, null);
-            modelDocuments = DataHelper.Query.ReturnAsObjectList("SELECT * FROM EventDocument WHERE Title = 'thumbnail' ORDER BY EventId; ", EventDocumentModel.class, null);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            progressIndicator.setVisibility(View.GONE);
-
-            adapter = new AdapterRecyclerUpcoming(getActivity(), models, modelDocuments, onEventClickListener);
-
-            // GridLayoutManager for grid layout of the recycler view
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
-            recyclerView.setLayoutManager(gridLayoutManager);
-            recyclerView.setAdapter(adapter);
-        }
-
-    }
 
     private RecyclerView                    recyclerView;
     private Button                          categoryButton, sortButton;
@@ -86,8 +46,8 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
     private AdapterRecyclerUpcoming         adapter;
     private FragmentUpcomingPageBinding     binding;
-    private List<AppEventModel>             models;
-    private List<EventDocumentModel>        modelDocuments;
+
+    private List<VwEventThumbnailModel>     models;
 
     private CircularProgressIndicator progressIndicator;
 
@@ -116,7 +76,16 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         progressIndicator   = rootView.findViewById(R.id.progressIndicator);
 
         // Asynchronously bind recycler view
-        new BindRecyclerTask(this).execute();
+        new TaskRunner().executeAsyncPool(new QueryVwEventThumbnailTask("SELECT * FROM VwEventThumbnail ORDER BY EventId ASC; ", null), (data) -> {
+            progressIndicator.setVisibility(View.GONE);
+            models = data;
+            adapter = new AdapterRecyclerUpcoming(getActivity(), data, this);
+
+            // GridLayoutManager for grid layout of the recycler view
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+            recyclerView.setLayoutManager(gridLayoutManager);
+            recyclerView.setAdapter(adapter);
+        });
 
         // Profile button on click
         profileButton.setOnClickListener(view -> {
@@ -199,17 +168,9 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
     @Override
     public void onEventUpcomingClick(int position) {
-        Date date = new Date();
-        date.setTime(models.get(position).EventStartTime.getTime());
-
         Intent intent = new Intent(getActivity(), ChildActivity.class);
         intent.putExtra("destination", "detailPageFragment");
-        intent.putExtra("title", models.get(position).EventName);
-        intent.putExtra("desc", models.get(position).EventDescription);
-        intent.putExtra("imgId", modelDocuments.get(position).Path);
-        intent.putExtra("date", new SimpleDateFormat("EEEEE, dd MMMMM yyyy", Locale.ENGLISH).format(date));
-        intent.putExtra("time", new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(date));
-        intent.putExtra("guest", "");
+        intent.putExtra("", models.get(position).EventId);
         startActivity(intent);
     }
 
