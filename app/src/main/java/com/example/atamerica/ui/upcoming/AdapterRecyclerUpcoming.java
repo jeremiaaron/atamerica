@@ -1,7 +1,6 @@
-package com.example.atamerica;
+package com.example.atamerica.ui.upcoming;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,27 +10,29 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atamerica.R;
+import com.example.atamerica.taskhandler.SetTextViewTask;
+import com.example.atamerica.taskhandler.DownloadImageTask;
+import com.example.atamerica.models.AppEventModel;
+import com.example.atamerica.models.EventDocumentModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
-public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterRecyclerUpcoming extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    List<String> evt_titles;
-    TypedArray evt_images;
-    Context context;
-    LayoutInflater inflater;
-    private final OnEventArchiveClickListener onEventClickListener;
+    private List<AppEventModel>                 models;
+    private List<EventDocumentModel>            modelDocuments;
+    private Context                             context;
+    private final LayoutInflater                inflater;
+    private final OnEventUpcomingClickListener  onEventClickListener;
 
-    public AdapterRecyclerArchive(Context ctx, List<String> evt_titles, TypedArray evt_images, OnEventArchiveClickListener onEventClickListener) {
-        this.evt_titles = evt_titles;
-        this.evt_images = evt_images;
+    public AdapterRecyclerUpcoming(Context ctx, List<AppEventModel> models, List<EventDocumentModel> modelDocuments, OnEventUpcomingClickListener onEventClickListener) {
+        this.models = models;
+        this.modelDocuments = modelDocuments;
         this.inflater = LayoutInflater.from(ctx);
         this.onEventClickListener = onEventClickListener;
     }
@@ -39,14 +40,14 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.archive_recycler_layout, parent, false);
-        context = parent.getContext();
-        return new ArchiveViewHolder(view, onEventClickListener);
+        View view = inflater.inflate(R.layout.upcoming_recycler_layout, parent, false);
+        this.context = parent.getContext();
+        return new UpcomingViewHolder(view, onEventClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ArchiveViewHolder viewHolder = (ArchiveViewHolder) holder;
+        UpcomingViewHolder viewHolder = (UpcomingViewHolder) holder;
 
         ViewGroup.MarginLayoutParams cardLayoutParams = (ViewGroup.MarginLayoutParams) viewHolder.cardView.getLayoutParams();
 
@@ -62,7 +63,7 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
 
         ViewGroup.MarginLayoutParams btnLayoutParams = (ViewGroup.MarginLayoutParams) viewHolder.evt_button.getLayoutParams();
 
-        if (position == evt_titles.size()-1 || position == evt_titles.size()-2) {
+        if (position == models.size() - 1 || position == models.size() - 2) {
             btnLayoutParams.setMargins(0, dpToPixel(12), 0, dpToPixel(12));
         }
         viewHolder.evt_button.requestLayout();
@@ -70,28 +71,26 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
 /*        viewHolder.evt_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                VideoFragment videoFragment = new VideoFragment();
+                RegisterPageFragment registerPageFragment = new RegisterPageFragment();
 
                 FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().replace(
-                        R.id.frame_layout, videoFragment, null);
+                        R.id.frame_layout, registerPageFragment, null);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });*/
 
-        viewHolder.evt_title.setText(evt_titles.get(position));
-        viewHolder.evt_image.setImageResource(evt_images.getResourceId(position, 0));
+        new SetTextViewTask(viewHolder.evt_title).execute(models.get(position).EventName);
+        new DownloadImageTask(viewHolder.evt_image).execute(modelDocuments.get(position).Path);
 
-        if((position-1) % 4 == 0 || (position-2) % 4 == 0) {
-            viewHolder.trans_gradient.setBackground(context.getResources().getDrawable(R.drawable.transparent_gradient_red));
-        }
-        else viewHolder.trans_gradient.setBackground(context.getResources().getDrawable(R.drawable.transparent_gradient_blue));
+        if((position-1) % 4 == 0 || (position-2) % 4 == 0) viewHolder.trans_gradient.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_gradient_red));
+        else viewHolder.trans_gradient.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_gradient_blue));
     }
 
     @Override
     public int getItemCount() {
-        return evt_titles.size();
+        return models.size();
     }
 
     private int dpToPixel (int dp) {
@@ -99,15 +98,15 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
         return px;
     }
 
-    static class ArchiveViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class UpcomingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
         MaterialButton evt_button;
         TextView evt_title;
         ImageView evt_image;
         View trans_gradient;
-        OnEventArchiveClickListener onEventClickListener;
+        OnEventUpcomingClickListener onEventClickListener;
 
-        public ArchiveViewHolder(@NonNull View itemView, OnEventArchiveClickListener onEventClickListener) {
+        public UpcomingViewHolder(@NonNull View itemView, OnEventUpcomingClickListener onEventClickListener) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
             evt_button = itemView.findViewById(R.id.evt_button);
@@ -122,11 +121,11 @@ public class AdapterRecyclerArchive extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onClick(View view) {
-            onEventClickListener.onEventArchiveClick(getAdapterPosition());
+            onEventClickListener.onEventUpcomingClick(getAdapterPosition());
         }
     }
 
-    public interface OnEventArchiveClickListener {
-        void onEventArchiveClick(int position);
+    public interface OnEventUpcomingClickListener {
+        void onEventUpcomingClick(int position);
     }
 }

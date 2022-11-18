@@ -1,30 +1,23 @@
-package com.example.atamerica;
+package com.example.atamerica.ui.detail;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.atamerica.R;
+import com.example.atamerica.ui.register.RegisterPageFragment;
 import com.example.atamerica.databinding.FragmentDetailPageBinding;
-import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
-import com.example.atamerica.java_class.DownloadImageTask;
+import com.example.atamerica.taskhandler.DownloadImageTask;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;

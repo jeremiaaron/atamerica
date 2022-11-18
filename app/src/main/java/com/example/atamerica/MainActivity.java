@@ -1,18 +1,14 @@
 package com.example.atamerica;
 
-import static android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
 
 import android.os.Bundle;
@@ -21,7 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.atamerica.java_class.DataHelper;
+import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.models.AppUserModel;
 
 import java.util.Objects;

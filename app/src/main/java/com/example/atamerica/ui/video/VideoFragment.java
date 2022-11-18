@@ -1,4 +1,4 @@
-package com.example.atamerica;
+package com.example.atamerica.ui.video;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.atamerica.R;
 import com.example.atamerica.databinding.FragmentVideoBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;

@@ -1,4 +1,4 @@
-package com.example.atamerica;
+package com.example.atamerica.ui.profile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.atamerica.AuthenticateActivity;
+import com.example.atamerica.R;
 import com.example.atamerica.databinding.FragmentProfileBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

@@ -1,8 +1,8 @@
-package com.example.atamerica;
+package com.example.atamerica.ui.home;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +14,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.atamerica.ChildActivity;
+import com.example.atamerica.R;
 import com.example.atamerica.databinding.FragmentHomePageBinding;
-import com.example.atamerica.java_class.DataHelper;
 import com.example.atamerica.models.AppEventModel;
 import com.example.atamerica.models.EventAttributeModel;
 import com.example.atamerica.models.EventDocumentModel;
+import com.example.atamerica.ui.home.AdapterRecyclerHomeLike;
+import com.example.atamerica.ui.home.AdapterRecyclerHomeTop;
+import com.example.atamerica.ui.home.AdapterSlider;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderView;
 
@@ -26,8 +30,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLike.OnEventHomeClickListener, AdapterRecyclerHomeTop.OnEventTopClickListener {
-
-    private FragmentHomePageBinding     binding;
+    
+    private FragmentHomePageBinding binding;
 
     private RecyclerView                recyclerViewHomeLike;
     private RecyclerView                recyclerViewHomeTop;
@@ -49,6 +53,24 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
     List<String> home_titles, home_dates, home_times, home_descs, home_guests;
     TypedArray home_banners;
 
+    private class BindHomePageTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... vOids) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,14 +78,14 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         binding = FragmentHomePageBinding.inflate(inflater, container, false);
-        View mView = binding.getRoot();
+        View rootView = binding.getRoot();
 
         // Define recycle views in the activity (EYML and Top Events)
-        recyclerViewHomeLike = mView.findViewById(R.id.recyclerViewHomeLike);
-        recyclerViewHomeTop = mView.findViewById(R.id.recyclerViewHomeTop);
+        recyclerViewHomeLike = rootView.findViewById(R.id.recyclerViewHomeLike);
+        recyclerViewHomeTop = rootView.findViewById(R.id.recyclerViewHomeTop);
 
         // Retrieve eyml event info from string arrays in strings xml (event image ids from integer arrays)
         evt_titles_like = Arrays.asList(getResources().getStringArray(R.array.evt_titles));
@@ -105,14 +127,14 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
         recyclerViewHomeTop.setLayoutManager(linearLayoutManagerTop);
         recyclerViewHomeTop.setAdapter(adapterTop);
 
-        SliderView sliderView = mView.findViewById(R.id.slider_view);
+        SliderView sliderView = rootView.findViewById(R.id.slider_view);
         AdapterSlider adapterSlider = new AdapterSlider(getActivity(), home_titles, home_dates, home_times,
                                                         home_descs, home_guests, home_banners);
         sliderView.setSliderAdapter(adapterSlider);
         sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
         sliderView.startAutoCycle();
 
-        return mView;
+        return rootView;
     }
 
     @Override

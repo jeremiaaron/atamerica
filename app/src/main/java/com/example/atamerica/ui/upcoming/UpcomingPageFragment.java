@@ -1,4 +1,4 @@
-package com.example.atamerica;
+package com.example.atamerica.ui.upcoming;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -26,8 +26,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.atamerica.ChildActivity;
+import com.example.atamerica.R;
 import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
-import com.example.atamerica.java_class.DataHelper;
+import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.models.AppEventModel;
 import com.example.atamerica.models.EventDocumentModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;

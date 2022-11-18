@@ -1,4 +1,4 @@
-package com.example.atamerica.subfragments;
+package com.example.atamerica.ui.detail;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

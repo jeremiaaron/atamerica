@@ -1,4 +1,4 @@
-package com.example.atamerica.java_class;
+package com.example.atamerica.dbhandler;
 
 import JavaLibrary.MySQL.DataAccess;
 

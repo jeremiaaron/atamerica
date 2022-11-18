@@ -1,14 +1,6 @@
-package com.example.atamerica;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.CompoundButtonCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.atamerica.ui.booked;
 
 import android.content.Intent;
-
 import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -24,38 +16,55 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.atamerica.databinding.FragmentArchivePageBinding;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.CompoundButtonCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.atamerica.ChildActivity;
+import com.example.atamerica.R;
+import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
+import com.example.atamerica.dbhandler.DataHelper;
+import com.example.atamerica.models.AppEventModel;
+import com.example.atamerica.models.EventDocumentModel;
+import com.example.atamerica.ui.upcoming.AdapterRecyclerUpcoming;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class ArchivePageFragment extends Fragment implements AdapterRecyclerArchive.OnEventArchiveClickListener {
+public class BookedPageFragment extends Fragment implements AdapterRecyclerUpcoming.OnEventUpcomingClickListener {
+
+
 
     RecyclerView recyclerView;
-    AdapterRecyclerArchive adapter;
+    AdapterRecyclerUpcoming adapter;
     Button categoryButton, sortButton;
-    ImageView profileButton;
-
     CheckBox cbMusic, cbMovie, cbEducation, cbScience, cbDemocracy, cbEntrepreneurship, cbArts, cbProtecting, cbWomen, cbYseali;
     RadioButton rbNewest, rbLatest;
+    ImageView profileButton;
+    BottomNavigationView navView;
 
     List<String> evt_titles, evt_dates, evt_times, evt_guests, evt_descs;
     TypedArray evt_front_images_ids, evt_detail_images_ids;
 
-    FragmentArchivePageBinding binding;
+    FragmentUpcomingPageBinding binding;
+
+    private List<AppEventModel>             models;
+    private List<EventDocumentModel>        modelDocuments;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        binding = FragmentArchivePageBinding.inflate(inflater, container, false);
+        binding = FragmentUpcomingPageBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
 
         profileButton = mView.findViewById(R.id.profileButton);
@@ -68,8 +77,11 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
             }
         });
 
+        models = DataHelper.Query.ReturnAsObjectList("SELECT * FROM AppEvent ORDER BY EventId ASC; ", AppEventModel.class, null);
+        modelDocuments = DataHelper.Query.ReturnAsObjectList("SELECT * FROM EventDocument WHERE Title = 'thumbnail' ORDER BY EventId; ", EventDocumentModel.class, null);
+
         // Define recycle view in the activity
-        recyclerView = mView.findViewById(R.id.recyclerViewArchive);
+        recyclerView = mView.findViewById(R.id.recyclerViewUpcoming);
 
         // Retrieve event info from string arrays in strings xml and event images from drawables
         evt_titles = Arrays.asList(getResources().getStringArray(R.array.evt_titles));
@@ -81,7 +93,7 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
         evt_detail_images_ids = getResources().obtainTypedArray(R.array.evt_detail_images_ids);
 
         // Define recycler adapter for the recycler view
-        adapter = new AdapterRecyclerArchive(getActivity(), evt_titles, evt_front_images_ids, this);
+        adapter = new AdapterRecyclerUpcoming(getActivity(), models, modelDocuments, this);
 
         // GridLayoutManager for grid layout of the recycler view
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
@@ -192,9 +204,9 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
     }
 
     @Override
-    public void onEventArchiveClick(int position) {
+    public void onEventUpcomingClick(int position) {
         Intent intent = new Intent(getActivity(), ChildActivity.class);
-        intent.putExtra("destination", "archiveDetailPageFragment");
+        intent.putExtra("destination", "detailPageFragment");
         intent.putExtra("title", evt_titles.get(position));
         intent.putExtra("desc", evt_descs.get(position));
         intent.putExtra("imgId", Integer.toString(evt_detail_images_ids.getResourceId(position, 0)));
@@ -202,5 +214,35 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
         intent.putExtra("time", evt_times.get(position));
         intent.putExtra("guest", evt_guests.get(position));
         startActivity(intent);
+    }
+
+/*    @Override
+    public void onEventUpcomingClick(int position) {
+        DetailPageFragment detailPageFragment = new DetailPageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", evt_titles.get(position));
+        bundle.putString("desc", evt_descs.get(position));
+        bundle.putString("imgId", Integer.toString(evt_detail_images_ids.getResourceId(position, 0)));
+        bundle.putString("date", evt_dates.get(position));
+        bundle.putString("time", evt_times.get(position));
+        bundle.putString("guest", evt_guests.get(position));
+        detailPageFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.slide_up,  // enter
+                R.anim.fade_out,  // exit
+                R.anim.fade_in,   // popEnter
+                R.anim.slide_out  // popExit);
+        );
+        fragmentTransaction.replace(R.id.frame_layout, detailPageFragment, null);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }*/
+
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

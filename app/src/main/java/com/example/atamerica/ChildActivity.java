@@ -6,6 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.atamerica.ui.archive.ArchiveDetailPageFragment;
+import com.example.atamerica.ui.detail.DetailPageFragment;
+import com.example.atamerica.ui.profile.ProfileFragment;
+import com.example.atamerica.ui.register.RegisterPageFragment;
+
 public class ChildActivity extends AppCompatActivity {
 
     String evtTitle, evtDesc, evtDate, evtTime, evtGuest, evtImgId;

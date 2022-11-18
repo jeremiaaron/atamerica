@@ -1,4 +1,4 @@
-package com.example.atamerica.java_class;
+package com.example.atamerica.taskhandler;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

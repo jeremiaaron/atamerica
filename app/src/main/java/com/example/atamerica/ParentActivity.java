@@ -8,6 +8,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.atamerica.databinding.ActivityParentBinding;
+import com.example.atamerica.ui.archive.ArchivePageFragment;
+import com.example.atamerica.ui.home.HomePageFragment;
+import com.example.atamerica.ui.upcoming.UpcomingPageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ParentActivity extends AppCompatActivity {

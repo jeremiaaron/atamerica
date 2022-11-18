@@ -1,4 +1,4 @@
-package com.example.atamerica;
+package com.example.atamerica.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.atamerica.ChildActivity;
+import com.example.atamerica.R;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.List;

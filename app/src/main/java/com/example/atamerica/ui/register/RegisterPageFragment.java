@@ -1,4 +1,4 @@
-package com.example.atamerica;
+package com.example.atamerica.ui.register;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;

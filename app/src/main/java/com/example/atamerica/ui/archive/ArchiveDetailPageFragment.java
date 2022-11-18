@@ -1,28 +1,24 @@
-package com.example.atamerica;
+package com.example.atamerica.ui.archive;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.atamerica.ui.detail.AdapterTabViewPager;
+import com.example.atamerica.R;
+import com.example.atamerica.ui.video.VideoFragment;
 import com.example.atamerica.databinding.FragmentArchiveDetailPageBinding;
-import com.example.atamerica.databinding.FragmentDetailPageBinding;
-import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;

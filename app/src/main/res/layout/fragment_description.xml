@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".subfragments.DescriptionFragment">
+    tools:context=".ui.detail.DescriptionFragment">
 
     <TextView
         android:id="@+id/evt_desc"

@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".UpcomingPageFragment">
+        tools:context=".ui.upcoming.UpcomingPageFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/topBarLayout"

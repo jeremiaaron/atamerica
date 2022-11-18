@@ -1,4 +1,4 @@
-package com.example.atamerica;
+package com.example.atamerica.ui.home;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.atamerica.R;
 
 import java.util.List;
 
