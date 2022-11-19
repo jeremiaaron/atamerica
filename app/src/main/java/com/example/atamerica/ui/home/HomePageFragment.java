@@ -1,53 +1,106 @@
 package com.example.atamerica.ui.home;
 
+import android.Manifest;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.os.AsyncTask;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atamerica.ChildActivity;
 import com.example.atamerica.R;
+import com.example.atamerica.cache.HomeItemCache;
 import com.example.atamerica.databinding.FragmentHomePageBinding;
-import com.example.atamerica.models.AppEventModel;
-import com.example.atamerica.models.EventAttributeModel;
-import com.example.atamerica.models.EventDocumentModel;
-import com.example.atamerica.ui.home.AdapterRecyclerHomeLike;
-import com.example.atamerica.ui.home.AdapterRecyclerHomeTop;
-import com.example.atamerica.ui.home.AdapterSlider;
+import com.example.atamerica.dbhandler.DataHelper;
+import com.example.atamerica.models.views.VwEventThumbnailModel;
+import com.example.atamerica.models.views.VwHomeBannerModel;
+import com.example.atamerica.taskhandler.TaskRunner;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderView;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLike.OnEventHomeClickListener, AdapterRecyclerHomeTop.OnEventTopClickListener {
-    
+
+    public class QueryHomeItemTask implements Callable<Boolean> {
+
+        @Override
+        public Boolean call() {
+            try {
+                // Check if cache exists for Home Banners
+                if (!HomeItemCache.HomeBannerList.isEmpty()) {
+                    eventsBanner = HomeItemCache.HomeBannerList;
+                }
+                else {
+                    Log.i("INFO", "call: Queried Banner List.");
+                    eventsBanner = DataHelper.Query.ReturnAsObjectList("SELECT * FROM VwHomeBanner; ", VwHomeBannerModel.class, null);
+                    HomeItemCache.HomeBannerList = eventsBanner;
+                }
+
+                // Check if cache exists for Liked Events
+                if (!HomeItemCache.HomeEventLikeList.isEmpty()) {
+                    eventsLike = HomeItemCache.HomeEventLikeList;
+                }
+                else {
+                    Log.i("INFO", "call: Queried Liked Event List.");
+                    eventsLike = DataHelper.Query.ReturnAsObjectList("SELECT * FROM VwEventThumbnail LIMIT 10; ", VwEventThumbnailModel.class, null);
+                    HomeItemCache.HomeEventLikeList = eventsLike;
+                }
+
+                // Check if cache exists for Top Events
+                if (!HomeItemCache.HomeEventTopList.isEmpty()) {
+                    eventsTop = HomeItemCache.HomeEventTopList;
+                }
+                else {
+                    Log.i("INFO", "call: Queried Top Event List.");
+                    eventsTop = DataHelper.Query.ReturnAsObjectList("SELECT ET.EventId, ET.EventName, ET.Path FROM VwEventThumbnail ET, MemberRegister MR WHERE ET.EventId = MR.EventId GROUP BY ET.EventId, ET.EventName, ET.Path ORDER BY COUNT(MR.EventId) DESC, ET.EventId ASC LIMIT 10; ", VwEventThumbnailModel.class, null);
+                    HomeItemCache.HomeEventTopList = eventsTop;
+                }
+
+                return true;
+            }
+            catch (Exception e) {
+                Log.e("ERROR", "Error query-ing home items.");
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+    }
+
     private FragmentHomePageBinding     binding;
 
+    private ConstraintLayout            contentContainer;
     private RecyclerView                recyclerViewHomeLike;
     private RecyclerView                recyclerViewHomeTop;
     private AdapterRecyclerHomeLike     adapterLike;
     private AdapterRecyclerHomeTop      adapterTop;
+    private AdapterSlider               adapterSlider;
 
+    private SliderView                  sliderView;
     private ImageView                   buttonProfile;
 
-    List<String> evt_titles_like, evt_dates_like, evt_times_like, evt_guests_like, evt_descs_like;
-    TypedArray evt_front_images_like_ids, evt_detail_images_like_ids;
+    private List<VwHomeBannerModel>     eventsBanner;
+    private List<VwEventThumbnailModel> eventsLike;
+    private List<VwEventThumbnailModel> eventsTop;
 
-    List<String> evt_titles_top, evt_dates_top, evt_times_top, evt_guests_top, evt_descs_top;
-    TypedArray evt_front_images_top_ids, evt_detail_images_top_ids;
 
-    List<String> home_titles, home_dates, home_times, home_descs, home_guests;
-    TypedArray home_banners;
+    private CircularProgressIndicator   progressIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,61 +109,55 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        // request for current activity to allow internet connection
+        // this must be in every activity/fragments
+        ActivityCompat.requestPermissions(requireActivity(), new String[] {Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         binding = FragmentHomePageBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
 
         // Define recycle views in the activity (EYML and Top Events)
+        contentContainer = rootView.findViewById(R.id.contentContainer);
         recyclerViewHomeLike = rootView.findViewById(R.id.recyclerViewHomeLike);
         recyclerViewHomeTop = rootView.findViewById(R.id.recyclerViewHomeTop);
+        sliderView = rootView.findViewById(R.id.slider_view);
+        progressIndicator = rootView.findViewById(R.id.progressIndicator);
 
-        // Retrieve eyml event info from string arrays in strings xml (event image ids from integer arrays)
-        evt_titles_like = Arrays.asList(getResources().getStringArray(R.array.evt_titles));
-        evt_dates_like = Arrays.asList(getResources().getStringArray(R.array.evt_dates));
-        evt_times_like = Arrays.asList(getResources().getStringArray(R.array.evt_times));
-        evt_guests_like = Arrays.asList(getResources().getStringArray(R.array.evt_guests));
-        evt_descs_like = Arrays.asList(getResources().getStringArray(R.array.evt_descs));
-        evt_front_images_like_ids = getResources().obtainTypedArray(R.array.evt_front_images_ids);
-        evt_detail_images_like_ids = getResources().obtainTypedArray(R.array.evt_detail_images_ids);
+        // Asynchronously bind events you might like adapter
+        new TaskRunner().executeAsyncPool(new QueryHomeItemTask(), (data) -> {
+            if(data != null && data) {
+                contentContainer.setVisibility(View.VISIBLE);
 
-        // Retrieve top event info from string arrays in strings xml (event image ids from integer arrays)
-        evt_titles_top = Arrays.asList(getResources().getStringArray(R.array.evt_titles));
-        evt_dates_top = Arrays.asList(getResources().getStringArray(R.array.evt_dates));
-        evt_times_top = Arrays.asList(getResources().getStringArray(R.array.evt_times));
-        evt_guests_top = Arrays.asList(getResources().getStringArray(R.array.evt_guests));
-        evt_descs_top = Arrays.asList(getResources().getStringArray(R.array.evt_descs));
-        evt_front_images_top_ids = getResources().obtainTypedArray(R.array.evt_front_images_ids);
-        evt_detail_images_top_ids = getResources().obtainTypedArray(R.array.evt_detail_images_ids);
+                // Home banner slider
+                adapterSlider = new AdapterSlider(getActivity(), eventsBanner);
+                adapterLike = new AdapterRecyclerHomeLike(getActivity(), eventsLike, HomePageFragment.this);
+                adapterTop = new AdapterRecyclerHomeTop(getActivity(), eventsTop, HomePageFragment.this);
 
-        // Retrieve banner info for image slider
-        home_titles = Arrays.asList(getResources().getStringArray(R.array.home_titles));
-        home_dates = Arrays.asList(getResources().getStringArray(R.array.home_dates));
-        home_times = Arrays.asList(getResources().getStringArray(R.array.home_times));
-        home_guests = Arrays.asList(getResources().getStringArray(R.array.home_guests));
-        home_descs = Arrays.asList(getResources().getStringArray(R.array.home_descs));
-        home_banners = getResources().obtainTypedArray(R.array.home_banners);
+                // SliderView for home banner
+                sliderView.setSliderAdapter(adapterSlider);
+                sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+                sliderView.startAutoCycle();
 
-        // Define recycler adapter for each EYML and Top Events recycle views
-        adapterLike = new AdapterRecyclerHomeLike(getActivity(), evt_titles_like, evt_front_images_like_ids, this);
-        adapterTop = new AdapterRecyclerHomeTop(getActivity(), evt_titles_top, evt_front_images_top_ids, this);
+                // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
+                LinearLayoutManager linearLayoutManagerLike = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewHomeLike.setLayoutManager(linearLayoutManagerLike);
+                recyclerViewHomeLike.setAdapter(adapterLike);
 
-        // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
-        LinearLayoutManager linearLayoutManagerLike = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewHomeLike.setLayoutManager(linearLayoutManagerLike);
-        recyclerViewHomeLike.setAdapter(adapterLike);
+                // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
+                LinearLayoutManager linearLayoutManagerTop = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewHomeTop.setLayoutManager(linearLayoutManagerTop);
+                recyclerViewHomeTop.setAdapter(adapterTop);
 
-        // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
-        LinearLayoutManager linearLayoutManagerTop = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewHomeTop.setLayoutManager(linearLayoutManagerTop);
-        recyclerViewHomeTop.setAdapter(adapterTop);
-
-        SliderView sliderView = rootView.findViewById(R.id.slider_view);
-        AdapterSlider adapterSlider = new AdapterSlider(getActivity(), home_titles, home_dates, home_times,
-                                                        home_descs, home_guests, home_banners);
-        sliderView.setSliderAdapter(adapterSlider);
-        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
-        sliderView.startAutoCycle();
+                progressIndicator.setVisibility(View.GONE);
+            }
+            else {
+                Toast.makeText(getContext(), "Connection Error", Toast.LENGTH_LONG).show();
+            }
+        });
 
         return rootView;
     }
@@ -119,12 +166,7 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
     public void onEventLikeClick(int position) {
         Intent intent = new Intent(getActivity(), ChildActivity.class);
         intent.putExtra("destination", "detailPageFragment");
-        intent.putExtra("title", evt_titles_like.get(position));
-        intent.putExtra("desc", evt_descs_like.get(position));
-        intent.putExtra("imgId", Integer.toString(evt_detail_images_like_ids.getResourceId(position, 0)));
-        intent.putExtra("date", evt_dates_like.get(position));
-        intent.putExtra("time", evt_times_like.get(position));
-        intent.putExtra("guest", evt_guests_like.get(position));
+        intent.putExtra("event_id", eventsLike.get(position).EventId);
         startActivity(intent);
     }
 
@@ -132,12 +174,7 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
     public void onEventTopClick(int position) {
         Intent intent = new Intent(getActivity(), ChildActivity.class);
         intent.putExtra("destination", "detailPageFragment");
-        intent.putExtra("title", evt_titles_top.get(position));
-        intent.putExtra("desc", evt_descs_top.get(position));
-        intent.putExtra("imgId", Integer.toString(evt_detail_images_top_ids.getResourceId(position, 0)));
-        intent.putExtra("date", evt_dates_top.get(position));
-        intent.putExtra("time", evt_times_top.get(position));
-        intent.putExtra("guest", evt_guests_top.get(position));
+        intent.putExtra("event_id", eventsTop.get(position).EventId);
         startActivity(intent);
     }
 

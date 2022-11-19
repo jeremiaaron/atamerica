@@ -49,7 +49,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
     private List<VwEventThumbnailModel>     models;
 
-    private CircularProgressIndicator progressIndicator;
+    private CircularProgressIndicator       progressIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
