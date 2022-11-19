@@ -2,7 +2,6 @@ package com.example.atamerica.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,25 +11,26 @@ import android.widget.TextView;
 
 import com.example.atamerica.ChildActivity;
 import com.example.atamerica.R;
+import com.example.atamerica.models.views.VwHomeBannerModel;
+import com.example.atamerica.taskhandler.DownloadBitmapTask;
+import com.example.atamerica.taskhandler.TaskRunner;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AdapterSlider extends SliderViewAdapter<AdapterSlider.Holder> {
 
     private final Context context;
-    List<String> home_titles, home_dates, home_times, home_descs, home_guests;
-    TypedArray home_images;
+    private final List<VwHomeBannerModel> models;
 
-    public AdapterSlider(Context ctx, List<String> titles, List<String> dates, List<String> times,
-                         List<String> descs, List<String> guests, TypedArray images) {
+    public AdapterSlider(Context ctx, List<VwHomeBannerModel> models) {
         this.context = ctx;
-        this.home_titles = titles;
-        this.home_dates = dates;
-        this.home_times = times;
-        this.home_descs = descs;
-        this.home_guests = guests;
-        this.home_images = images;
+        this.models = models;
     }
 
     @Override
@@ -43,32 +43,33 @@ public class AdapterSlider extends SliderViewAdapter<AdapterSlider.Holder> {
 
     @Override
     public void onBindViewHolder(AdapterSlider.Holder viewHolder, int position) {
-        viewHolder.homeTitle.setText(home_titles.get(position));
-        viewHolder.homeDate.setText(home_dates.get(position));
-        viewHolder.homeTime.setText(home_times.get(position));
-        viewHolder.homeImage.setImageResource(home_images.getResourceId(position, 0));
-        viewHolder.homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ChildActivity.class);
-                intent.putExtra("destination", "detailPageFragment");
-                intent.putExtra("title", home_titles.get(position));
-                intent.putExtra("desc", home_descs.get(position));
-                intent.putExtra("imgId", Integer.toString(home_images.getResourceId(position, 0)));
-                intent.putExtra("date", home_dates.get(position));
-                intent.putExtra("time", home_times.get(position));
-                intent.putExtra("guest", home_guests.get(position));
-                context.startActivity(intent);
-            }
+        Date startDate = new Date(models.get(position).EventStartTime.getTime());
+        Date endDate = new Date(models.get(position).EventEndTime.getTime());
+
+        String eventDuration = new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(startDate) + " - " + new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(endDate);
+
+        viewHolder.homeTitle.setText(models.get(position).EventName);
+        viewHolder.homeDate.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(startDate));
+        viewHolder.homeTime.setText(eventDuration);
+
+        new TaskRunner().executeAsyncPool(new DownloadBitmapTask(models.get(position).Path), (data) -> {
+            viewHolder.homeImage.setImageBitmap(data);
+        });
+
+        viewHolder.homeButton.setOnClickListener(view -> {
+            Intent intent = new Intent(context, ChildActivity.class);
+            intent.putExtra("destination", "detailPageFragment");
+            intent.putExtra("event_id", models.get(position).EventId);
+            context.startActivity(intent);
         });
     }
 
     @Override
     public int getCount() {
-        return home_images.length();
+        return models.size();
     }
 
-    public class Holder extends SliderViewAdapter.ViewHolder {
+    public static class Holder extends SliderViewAdapter.ViewHolder {
 
         TextView homeTitle, homeDate, homeTime;
         ImageView homeImage;

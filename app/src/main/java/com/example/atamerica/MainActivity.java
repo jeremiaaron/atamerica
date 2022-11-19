@@ -1,33 +1,64 @@
 package com.example.atamerica;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Handler;
-
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.example.atamerica.dbhandler.DataHelper;
-import com.example.atamerica.models.AppUserModel;
+import com.example.atamerica.taskhandler.TaskRunner;
+import com.mysql.jdbc.StringUtils;
 
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 import JavaLibrary.AESUtil;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AESUtil hashFunction;
-    private int splashScreenDuration = 1000;
+    private class AuthenticateTask implements Callable<Boolean> {
+
+        @Override
+        public Boolean call() {
+            AESUtil hash = new AESUtil();
+
+            try {
+                SharedPreferences settings = getSharedPreferences("com.example.atamerica", Context.MODE_PRIVATE);
+                boolean remember = settings.getBoolean(getResources().getString(R.string.user_remember_hash), false);
+
+                if (remember) {
+                    String encryptedEmail = settings.getString(getResources().getString(R.string.user_email_hash), "");
+                    String encryptedEncryptedPassword = settings.getString(getResources().getString(R.string.user_password_hash), "");
+
+                    if (!StringUtils.isNullOrEmpty(encryptedEmail) && !StringUtils.isNullOrEmpty(encryptedEncryptedPassword)) {
+                        String email = hash.decrypt(encryptedEmail);
+                        String passwordHash = hash.decrypt(encryptedEncryptedPassword);
+
+                        String userPasswordHash = DataHelper.Query.ReturnAsString("SELECT PasswordHash FROM AppUser WHERE Email = ?; ", new Object[] { email });
+                        return (!StringUtils.isNullOrEmpty(userPasswordHash) && Objects.equals(passwordHash, userPasswordHash));
+                    }
+                }
+            }
+            catch (Exception e) {
+                Log.e("ERROR", "Error initializing Account Manager.");
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,37 +82,16 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        hashFunction = new AESUtil();
-
-        new Handler().postDelayed(() -> {
-            SharedPreferences sharedPreferences = getSharedPreferences("com.example.atamerica", Context.MODE_PRIVATE);
-            boolean isRemember = sharedPreferences.getBoolean(getResources().getString(R.string.user_remember_hash), false);
-
-            if (isRemember) {
-                String encryptedEmail = sharedPreferences.getString(getResources().getString(R.string.user_email_hash), "");
-                String encryptedEncryptedPassword = sharedPreferences.getString(getResources().getString(R.string.user_password_hash), "");
-
-                String decryptedEmail = hashFunction.decrypt(encryptedEmail);
-                String decryptedPassword = hashFunction.decrypt(encryptedEncryptedPassword);
-
-                AppUserModel model = DataHelper.Query.ReturnAsObject("SELECT * FROM AppUser WHERE Email = ?; ", AppUserModel.class, new Object[] { decryptedEmail });
-                if (model != null && Objects.equals(decryptedPassword, model.PasswordHash)) {
-                    Intent intent = new Intent(MainActivity.this, ParentActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else {
-                    Intent intent = new Intent(MainActivity.this, AuthenticateActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+        new Handler().postDelayed(() -> new TaskRunner().executeAsyncPool(new AuthenticateTask(), (data) -> {
+            Intent intent;
+            if (data) {
+                intent = new Intent(MainActivity.this, ParentActivity.class);
             }
             else {
-                Intent intent = new Intent(MainActivity.this, AuthenticateActivity.class);
-                startActivity(intent);
-                finish();
+                intent = new Intent(MainActivity.this, AuthenticateActivity.class);
             }
-
-        }, splashScreenDuration);
+            startActivity(intent);
+            finish();
+        }), 500);
     }
 }
