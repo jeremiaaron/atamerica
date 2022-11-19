@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
   <androidx.constraintlayout.widget.ConstraintLayout
+      xmlns:tools="http://schemas.android.com/tools"
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       tools:ignore="contentDescription"
-      tools:context=".DetailPageFragment">
+      tools:context=".ui.detail.DetailPageFragment">
 
     <ImageView
         android:id="@+id/btnBack"
@@ -14,16 +15,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="18dp"
+        app:tint="@color/blue"
         android:onClick="backActivity"
         app:srcCompat="@drawable/arrow_back_vector"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="64dp"
         android:layout_marginBottom="84dp"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" >
@@ -63,7 +67,7 @@
         </FrameLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/evt_button"
+            android:id="@+id/evtCategory"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="18dp"
@@ -143,6 +147,7 @@
               app:tabIndicatorColor="@color/red"
               app:tabSelectedTextColor="@color/blue"
               app:tabTextColor="@color/dark_gray"
+              android:background="@color/white"
               app:layout_constraintTop_toBottomOf="@+id/dateContent"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintEnd_toEndOf="parent" >
@@ -174,28 +179,33 @@
 
     </ScrollView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/register_button"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="18dp"
-        android:layout_marginVertical="18dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:letterSpacing="0"
-        app:cornerRadius="8dp"
-        android:backgroundTint="@color/blue"
-        app:icon="@drawable/ticket_icon"
-        app:iconSize="0dp"
-        app:iconGravity="textStart"
-        app:iconPadding="10dp"
-        android:text="@string/bookNowButton"
-        android:textAllCaps="false"
-        android:textSize="14dp"
-        android:paddingVertical="9dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_view"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/register_button"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="18dp"
+          android:layout_marginVertical="18dp"
+          android:backgroundTint="@color/blue"
+          android:insetTop="0dp"
+          android:insetBottom="0dp"
+          android:letterSpacing="0"
+          android:paddingVertical="9dp"
+          android:text="@string/bookNowButton"
+          android:textAllCaps="false"
+          android:textSize="14dp"
+          app:cornerRadius="8dp"
+          app:icon="@drawable/ticket_icon"
+          app:iconGravity="textStart"
+          app:iconPadding="10dp"
+          app:iconSize="0dp" />
+    </FrameLayout>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

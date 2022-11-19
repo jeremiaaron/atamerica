@@ -45,6 +45,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:2.5.3"
     implementation "androidx.navigation:navigation-ui:2.5.3"
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
 
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     // implementation 'mysql:mysql-connector-java:5.1.49'

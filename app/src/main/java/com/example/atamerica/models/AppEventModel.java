@@ -13,5 +13,6 @@ public class AppEventModel {
     public String EventStatus;
     public String EventDescription;
     public String EventLink;
+    public int CategoryId;
 
 }

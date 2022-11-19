@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:layout_marginBottom="25dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:layout_gravity="center"
+            android:text="@string/oops"
+            android:textSize="32dp" />
+
+        <TextView
+            android:id="@+id/failMessage"
+            android:layout_width="274dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:gravity="center"
+            android:text="@string/failedMessage"
+            android:layout_gravity="center"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/image_fail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            app:srcCompat="@drawable/pop_fail" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back_fail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginVertical="18dp"
+            android:backgroundTint="@color/blue"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:letterSpacing="0"
+            android:paddingVertical="9dp"
+            android:text="@string/backButton"
+            android:textAllCaps="false"
+            android:textSize="14dp"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,21 +2,22 @@ package com.example.atamerica;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
 
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
-import com.example.atamerica.java_class.DataHelper;
+import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.models.AppUserModel;
 
 import java.util.Objects;
@@ -32,6 +33,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Styling splash screen
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        window.setNavigationBarColor(ContextCompat.getColor(this, R.color.white));
+        window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
 
         // request for current activity to allow internet connection
         // this must be in every activity/fragments

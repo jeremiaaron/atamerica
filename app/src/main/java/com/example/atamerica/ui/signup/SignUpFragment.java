@@ -20,7 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.atamerica.R;
 import com.example.atamerica.databinding.FragmentSignUpBinding;
-import com.example.atamerica.java_class.DataHelper;
+import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.models.AppUserModel;
 import com.example.atamerica.ui.login.LoginFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

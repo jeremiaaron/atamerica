@@ -11,4 +11,11 @@
     <string name="placeHolderPhone">0000 0000 0000</string>
 
     <string name="bookNowButton">Book Now</string>
+
+    <string name="hooray">Hooray!</string>
+    <string name="oops">Oops!</string>
+    <string name="successMessage">Congratulations, you are successfully registered. You can check your email now!</string>
+    <string name="failedMessage">Oh no! Something went wrong with your registration. It’s okay, you can try to regist again.</string>
+
+    <string name="backButton">Back</string>
 </resources>

@@ -10,7 +10,7 @@
         <item>Live from the USA: How to Have Fun in Massachusetts</item>
         <item>EnviroPitch\@america: Meet the Finalists!</item>
         <item>\@america Academy: Digital Marketing: Choosing the Right Channel for Your Needs! (Part 2 out of 3)</item>
-        <!--<item>Live from the USA: How to Have Fun in Washington DC</item>-->
+        <item>Live from the USA: How to Have Fun in Washington DC</item>
     </string-array>
 
     <string-array name="evt_dates">
@@ -21,7 +21,7 @@
         <item>19/10/2022</item>
         <item>19/10/2022</item>
         <item>20/10/2022</item>
-        <!--<item>26/10/2022</item>-->
+        <item>26/10/2022</item>
     </string-array>
 
     <string-array name="evt_times">
@@ -32,7 +32,7 @@
         <item>10:00 \- 18:00</item>
         <item>18:30 \- 20:30</item>
         <item>16:30 \- 18:00</item>
-        <!--<item>10:00 \- 18:00</item>-->
+        <item>10:00 \- 18:00</item>
     </string-array>
 
     <string-array name="evt_guests">
@@ -43,7 +43,7 @@
         <item>Listia Khairunnisa</item>
         <item>Wahyuwidi Cinthya</item>
         <item>Felicia Stefani</item>
-        <!--<item>Naura Nabila Haryanto</item>-->
+        <item>Naura Nabila Haryanto</item>
     </string-array>
 
     <string-array name="evt_descs">
@@ -54,7 +54,7 @@
         <item>New England terkenal dengan dedaunan musim gugur yang menarik, sejarah revolusioner, dan tim olahraga yang luar biasa. Bergabunglah dengan kami untuk menjelajahi pemandangan dan situs Boston, Massachusetts, secara langsung bersama Listi!</item>
         <item>3 finalis teratas telah dipilih untuk ide-ide luar biasa mereka untuk memperpanjang hidup kita di bumi! Bergabunglah dengan @america untuk melihat mereka mengajukan ide mereka ke para juri dan menangkan hadiah nya!</item>
         <item>Memilih channel yang tepat adalah bagian penting dari pemasaran digital. Kabar baiknya, kita akan membahas semuanya dalam beberapa cara. Sesi ini akan memberikan panduan langkah demi langkah untuk menguasai keterampilan pemasaran digital!</item>
-        <!--<item>Kunjungi pusat beberapa taman nasional dan museum terbaik di dunia, serta restoran terkenal! Tonton Instagram kami untuk merasakan keseruan Washington DC bersama Naura, langsung dari AS!</item>-->
+        <item>Kunjungi pusat beberapa taman nasional dan museum terbaik di dunia, serta restoran terkenal! Tonton Instagram kami untuk merasakan keseruan Washington DC bersama Naura, langsung dari AS!</item>
     </string-array>
 
     <integer-array name="evt_front_images_ids">
@@ -82,8 +82,4 @@
     <string name="description">Description</string>
     <string name="button_register">Register Now</string>
 
-    <string name="date_dummy"><b>Date</b>:\n12/01/2021</string>
-    <string name="time_dummy"><b>Time:</b>\n07:00 PM</string>
-    <string name="guest_dummy"><b>Guest:</b>\nChairul Anwar</string>
-    <string name="dummy">milique accusantium nemo autem. Veritatis obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit, tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit, quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos  sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam recusandae alias error harum maxime adipisci amet laborum. Perspiciatis minima nesciunt dolorem! Officiis iure rerum voluptates a cumque velit  quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur fugiat, temporibus enim commodi iusto libero magni deleniti quod quam consequuntur! Commodi minima excepturi repudiandae velit hic maxime do oremque. Quaerat provident commodi consectetur veniam similique ad earum omnis ipsum saepe, voluptas, hic voluptates pariatur est explicabo  fugiat, dolorum eligendi quam cupiditate excepturi mollitia maiores labore  suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam  totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam quasi aliquam eligendi, placeat qui corporis!</string>
 </resources>
