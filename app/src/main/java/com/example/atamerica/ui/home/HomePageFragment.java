@@ -22,9 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atamerica.ChildActivity;
 import com.example.atamerica.R;
-import com.example.atamerica.cache.HomeItemCache;
+import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.databinding.FragmentHomePageBinding;
 import com.example.atamerica.dbhandler.DataHelper;
+import com.example.atamerica.javaclass.HelperClass;
 import com.example.atamerica.models.views.VwEventThumbnailModel;
 import com.example.atamerica.models.views.VwHomeBannerModel;
 import com.example.atamerica.taskhandler.TaskRunner;
@@ -43,36 +44,33 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
         public Boolean call() {
             try {
                 // Check if cache exists for Home Banners
-                if (!HomeItemCache.HomeBannerList.isEmpty()) {
-                    eventsBanner = HomeItemCache.HomeBannerList;
+                if (!HelperClass.isEmpty(EventItemCache.HomeBannerList)) {
+                    eventsBanner = EventItemCache.HomeBannerList;
                 }
                 else {
-                    Log.i("INFO", "call: Queried Banner List.");
                     eventsBanner = DataHelper.Query.ReturnAsObjectList("SELECT * FROM VwHomeBanner; ", VwHomeBannerModel.class, null);
-                    HomeItemCache.HomeBannerList = eventsBanner;
+                    EventItemCache.HomeBannerList = eventsBanner;
                 }
 
                 // Check if cache exists for Liked Events
-                if (!HomeItemCache.HomeEventLikeList.isEmpty()) {
-                    eventsLike = HomeItemCache.HomeEventLikeList;
+                if (!HelperClass.isEmpty(EventItemCache.HomeEventLikeList)) {
+                    eventsLike = EventItemCache.HomeEventLikeList;
                 }
                 else {
-                    Log.i("INFO", "call: Queried Liked Event List.");
                     eventsLike = DataHelper.Query.ReturnAsObjectList("SELECT * FROM VwEventThumbnail LIMIT 10; ", VwEventThumbnailModel.class, null);
-                    HomeItemCache.HomeEventLikeList = eventsLike;
+                    EventItemCache.HomeEventLikeList = eventsLike;
                 }
 
                 // Check if cache exists for Top Events
-                if (!HomeItemCache.HomeEventTopList.isEmpty()) {
-                    eventsTop = HomeItemCache.HomeEventTopList;
+                if (!HelperClass.isEmpty(EventItemCache.HomeEventTopList)) {
+                    eventsTop = EventItemCache.HomeEventTopList;
                 }
                 else {
-                    Log.i("INFO", "call: Queried Top Event List.");
                     eventsTop = DataHelper.Query.ReturnAsObjectList("SELECT ET.EventId, ET.EventName, ET.Path FROM VwEventThumbnail ET, MemberRegister MR WHERE ET.EventId = MR.EventId GROUP BY ET.EventId, ET.EventName, ET.Path ORDER BY COUNT(MR.EventId) DESC, ET.EventId ASC LIMIT 10; ", VwEventThumbnailModel.class, null);
-                    HomeItemCache.HomeEventTopList = eventsTop;
+                    EventItemCache.HomeEventTopList = eventsTop;
                 }
 
-                return true;
+                return (!HelperClass.isEmpty(eventsBanner) || !HelperClass.isEmpty(eventsLike) || !HelperClass.isEmpty(eventsTop));
             }
             catch (Exception e) {
                 Log.e("ERROR", "Error query-ing home items.");
@@ -133,24 +131,29 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
                 contentContainer.setVisibility(View.VISIBLE);
 
                 // Home banner slider
-                adapterSlider = new AdapterSlider(getActivity(), eventsBanner);
-                adapterLike = new AdapterRecyclerHomeLike(getActivity(), eventsLike, HomePageFragment.this);
-                adapterTop = new AdapterRecyclerHomeTop(getActivity(), eventsTop, HomePageFragment.this);
+                if (!HelperClass.isEmpty(eventsBanner)) {
+                    adapterSlider = new AdapterSlider(getActivity(), eventsBanner);
+                    // SliderView for home banner
+                    sliderView.setSliderAdapter(adapterSlider);
+                    sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+                    sliderView.startAutoCycle();
+                }
 
-                // SliderView for home banner
-                sliderView.setSliderAdapter(adapterSlider);
-                sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
-                sliderView.startAutoCycle();
+                if (!HelperClass.isEmpty(eventsLike)) {
+                    adapterLike = new AdapterRecyclerHomeLike(getActivity(), eventsLike, HomePageFragment.this);
+                    // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
+                    LinearLayoutManager linearLayoutManagerLike = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                    recyclerViewHomeLike.setLayoutManager(linearLayoutManagerLike);
+                    recyclerViewHomeLike.setAdapter(adapterLike);
+                }
 
-                // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
-                LinearLayoutManager linearLayoutManagerLike = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewHomeLike.setLayoutManager(linearLayoutManagerLike);
-                recyclerViewHomeLike.setAdapter(adapterLike);
-
-                // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
-                LinearLayoutManager linearLayoutManagerTop = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewHomeTop.setLayoutManager(linearLayoutManagerTop);
-                recyclerViewHomeTop.setAdapter(adapterTop);
+                if (!HelperClass.isEmpty(eventsTop)) {
+                    adapterTop = new AdapterRecyclerHomeTop(getActivity(), eventsTop, HomePageFragment.this);
+                    // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
+                    LinearLayoutManager linearLayoutManagerTop = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                    recyclerViewHomeTop.setLayoutManager(linearLayoutManagerTop);
+                    recyclerViewHomeTop.setAdapter(adapterTop);
+                }
 
                 progressIndicator.setVisibility(View.GONE);
             }

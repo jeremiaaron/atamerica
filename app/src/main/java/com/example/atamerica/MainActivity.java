@@ -17,7 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.dbhandler.DataHelper;
+import com.example.atamerica.models.AppUserModel;
 import com.example.atamerica.taskhandler.TaskRunner;
 import com.mysql.jdbc.StringUtils;
 
@@ -46,8 +48,11 @@ public class MainActivity extends AppCompatActivity {
                         String email = hash.decrypt(encryptedEmail);
                         String passwordHash = hash.decrypt(encryptedEncryptedPassword);
 
-                        String userPasswordHash = DataHelper.Query.ReturnAsString("SELECT PasswordHash FROM AppUser WHERE Email = ?; ", new Object[] { email });
-                        return (!StringUtils.isNullOrEmpty(userPasswordHash) && Objects.equals(passwordHash, userPasswordHash));
+                        AppUserModel user = DataHelper.Query.ReturnAsObject("SELECT * FROM AppUser WHERE Email = ?; ", AppUserModel.class, new Object[] { email });
+                        if (user != null) {
+                            AccountManager.User = user;
+                            return (!StringUtils.isNullOrEmpty(user.PasswordHash) && Objects.equals(passwordHash, user.PasswordHash));
+                        }
                     }
                 }
             }
