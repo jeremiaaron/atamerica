@@ -18,7 +18,19 @@ import androidx.fragment.app.Fragment;
 
 import com.example.atamerica.AuthenticateActivity;
 import com.example.atamerica.R;
+import com.example.atamerica.cache.AccountManager;
+import com.example.atamerica.cache.BitmapCache;
+import com.example.atamerica.cache.EventAttributeCache;
+import com.example.atamerica.cache.EventDocumentCache;
+import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.databinding.FragmentProfileBinding;
+import com.example.atamerica.models.views.VwAllEventModel;
+import com.example.atamerica.models.views.VwEventThumbnailModel;
+import com.example.atamerica.models.views.VwHomeBannerModel;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
@@ -26,7 +38,7 @@ public class ProfileFragment extends Fragment {
 
     private Button buttonLogout;
     private ImageView ProfilePhoto;
-    private int SELECT_PICTURE=200;
+    private int SELECT_PICTURE = 200;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,38 +46,48 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
 
-        buttonLogout = (Button) mView.findViewById(R.id.buttonLogout);
+        buttonLogout = mView.findViewById(R.id.buttonLogout);
 
         buttonLogout.setOnClickListener(view -> {
             LogOut();
         });
 
-        ProfilePhoto = (ImageView) mView.findViewById(R.id.profile_picture);
+        ProfilePhoto = mView.findViewById(R.id.profile_picture);
 
-        ProfilePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageChooser();
-            }
-        });
+        ProfilePhoto.setOnClickListener(view -> imageChooser());
 
         return mView;
     }
 
     private void LogOut() {
+        // Clear shared preference
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("com.example.atamerica", Context.MODE_PRIVATE);
-        sharedPreferences.edit().clear().commit();
+        sharedPreferences.edit().clear().apply();
+
+        // Clear caches
+        AccountManager.User = null;
+        BitmapCache.DownloadedBitmapCache.clear();
+        EventAttributeCache.EventAttributeMap.clear();
+        EventDocumentCache.EventDocumentMap.clear();
+        EventItemCache.EventMoreThanNowList.clear();
+        EventItemCache.EventLessThanNowList.clear();
+        EventItemCache.HomeBannerList.clear();
+        EventItemCache.HomeEventLikeList.clear();
+        EventItemCache.HomeEventTopList.clear();
+        EventItemCache.UpcomingEventList.clear();
+        EventItemCache.ArchivedEventList.clear();
+        EventItemCache.EventCacheMap.clear();
+        EventItemCache.UserRegisteredEventList.clear();
 
         Intent intent = new Intent(getActivity(), AuthenticateActivity.class);
         startActivity(intent);
-        getActivity().finish();
+        requireActivity().finish();
     }
 
     void imageChooser(){

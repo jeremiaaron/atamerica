@@ -11,6 +11,8 @@
     <string name="placeHolderPhone">0000 0000 0000</string>
 
     <string name="bookNowButton">Book Now</string>
+    <string name="fullyBookedButton">Fully Booked</string>
+    <string name="unregisterButton">Unregister</string>
 
     <string name="hooray">Hooray!</string>
     <string name="oops">Oops!</string>

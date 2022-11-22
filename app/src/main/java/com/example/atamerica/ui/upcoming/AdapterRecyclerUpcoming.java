@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atamerica.R;
-import com.example.atamerica.models.views.VwAllEventModel;
 import com.example.atamerica.models.views.VwEventThumbnailModel;
 import com.example.atamerica.taskhandler.DownloadBitmapTask;
 import com.example.atamerica.taskhandler.TaskRunner;

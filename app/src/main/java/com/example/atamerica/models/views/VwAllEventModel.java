@@ -16,7 +16,11 @@ public class VwAllEventModel {
     public Timestamp EventStartTime;
     public Timestamp EventEndTime;
     public String EventLocation;
+
+    public int RegisteredCount;
     public int MaxCapacity;
+    public boolean Registered;
+
     public String EventDescription;
     public String EventLink;
     public String CategoryName;

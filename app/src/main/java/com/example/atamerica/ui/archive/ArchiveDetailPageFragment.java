@@ -143,6 +143,10 @@ public class ArchiveDetailPageFragment extends Fragment {
         watchBtn.setOnClickListener(view -> {
             VideoFragment videoFragment = new VideoFragment();
 
+            Bundle bundle_register = new Bundle();
+            bundle_register.putString("event_link", model.EventLink);
+            videoFragment.setArguments(bundle_register);
+
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.event_container, videoFragment, null);

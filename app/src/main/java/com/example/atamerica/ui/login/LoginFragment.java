@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.atamerica.ParentActivity;
 import com.example.atamerica.R;
+import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.databinding.FragmentLoginBinding;
 import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.models.AppUserModel;
@@ -123,6 +124,8 @@ public class LoginFragment extends Fragment {
                     editor.putBoolean(getResources().getString(R.string.user_remember_hash), true);
                     editor.apply();
                 }
+
+                AccountManager.User = model;
 
                 Intent intent = new Intent(getActivity(), ParentActivity.class);
                 startActivity(intent);

@@ -1,5 +1,6 @@
 package com.example.atamerica.ui.register;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -27,7 +28,7 @@ import java.util.Arrays;
 public class RegisterPageFragment extends Fragment {
 
     private FragmentRegisterPageBinding binding;
-    BottomNavigationView navView;
+    private BottomNavigationView        navView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,8 +36,7 @@ public class RegisterPageFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         binding = FragmentRegisterPageBinding.inflate(inflater, container, false);

@@ -19,6 +19,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.atamerica.R;
+import com.example.atamerica.cache.AccountManager;
+import com.example.atamerica.controllers.RegisterController;
 import com.example.atamerica.models.views.VwAllEventModel;
 import com.example.atamerica.taskhandler.DownloadBitmapTask;
 import com.example.atamerica.taskhandler.QueryVwAllEventTask;
@@ -42,7 +44,7 @@ public class DetailPageFragment extends Fragment {
     private FrameLayout                 frameLayout;
     private ScrollView                  scrollView;
 
-    private MaterialButton              registerBtn;
+    private MaterialButton              fullBtn, unregisterBtn, registerBtn;
     private BottomNavigationView        navView;
     private FragmentDetailPageBinding   binding;
 
@@ -73,6 +75,8 @@ public class DetailPageFragment extends Fragment {
         viewPager2          = binding.viewPager;
         frameLayout         = mView.findViewById(R.id.frameLayout);
         scrollView          = mView.findViewById(R.id.scroll_view);
+        fullBtn             = mView.findViewById(R.id.fully_booked_button);
+        unregisterBtn       = mView.findViewById(R.id.unregister_button);
         registerBtn         = mView.findViewById(R.id.register_button);
         TextView evtTitle   = mView.findViewById(R.id.evtTitle);
         ImageView evtImg    = mView.findViewById(R.id.evtImg);
@@ -84,6 +88,17 @@ public class DetailPageFragment extends Fragment {
         new TaskRunner().executeAsyncPool(new QueryVwAllEventTask(this.eventId), (data) -> {
             if (data != null) {
                 this.model = data;
+
+                // Button detail
+                if (model.Registered) {
+                    unregisterBtn.setVisibility(View.VISIBLE);
+                }
+                else if (model.MaxCapacity == model.RegisteredCount) {
+                    fullBtn.setVisibility(View.VISIBLE);
+                }
+                else {
+                    registerBtn.setVisibility(View.VISIBLE);
+                }
 
                 // Bind tab layout detail
                 viewPagerAdapter = new AdapterTabViewPager(requireActivity(), model.EventId, model.EventDescription);

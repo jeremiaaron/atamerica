@@ -2,12 +2,14 @@ package com.example.atamerica.controllers;
 
 import android.util.Log;
 
+import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.javaclass.HelperClass;
 import com.example.atamerica.models.views.VwAllEventModel;
 import com.example.atamerica.models.views.VwEventThumbnailModel;
 import com.example.atamerica.models.views.VwHomeBannerModel;
+import com.example.atamerica.taskhandler.TaskRunner;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,6 +36,9 @@ public class HomeController {
                     for (VwAllEventModel event : events) {
                         event.MapAttribute();
                         event.MapDocument();
+
+                        // Check for registration status
+                        new TaskRunner().executeAsyncPool(new RegisterController.CheckRegister(AccountManager.User.Email, event.EventId), (data2) -> event.Registered = (data2 != null && data2));
 
                         // Store information to cache
                         EventItemCache.EventMoreThanNowList = events;
@@ -69,7 +74,8 @@ public class HomeController {
             else {
                 try {
                     // Select only three banner
-                    for (int i = 0; i < 3; i++) {
+                    int minimum = Math.min(events.size(), 3);
+                    for (int i = 0; i < minimum; i++) {
                         VwAllEventModel event = events.get(i);
 
                         // Add into list, using parser

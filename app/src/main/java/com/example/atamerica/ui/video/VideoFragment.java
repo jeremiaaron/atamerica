@@ -23,17 +23,18 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.DefaultPlayerUiCo
 
 public class VideoFragment extends Fragment {
 
+    String videoId;
     FragmentVideoBinding binding;
     YouTubePlayerView youTubePlayerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.videoId = getArguments() != null ? getArguments().getString("event_link") : "";
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         binding = FragmentVideoBinding.inflate(inflater, container, false);
@@ -54,7 +55,6 @@ public class VideoFragment extends Fragment {
         YouTubePlayerListener listener = new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                String videoId = "GhNhWsv3NlY";
                 youTubePlayer.cueVideo(videoId, 0);
             }
         };

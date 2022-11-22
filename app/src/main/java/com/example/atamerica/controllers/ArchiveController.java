@@ -2,11 +2,13 @@ package com.example.atamerica.controllers;
 
 import android.util.Log;
 
+import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.javaclass.HelperClass;
 import com.example.atamerica.models.views.VwAllEventModel;
 import com.example.atamerica.models.views.VwEventThumbnailModel;
+import com.example.atamerica.taskhandler.TaskRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,9 @@ public class ArchiveController {
                     for (VwAllEventModel event : events) {
                         event.MapAttribute();
                         event.MapDocument();
+
+                        // Check for registration status
+                        new TaskRunner().executeAsyncPool(new RegisterController.CheckRegister(AccountManager.User.Email, event.EventId), (data2) -> event.Registered = (data2 != null && data2));
 
                         // Store information to cache
                         EventItemCache.EventLessThanNowList = events;
