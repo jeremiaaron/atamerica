@@ -5,6 +5,7 @@
     <string name="user_remember_hash">0RpqB6Cj6vbP8m9q</string>
 
     <string name="content_description">\@America Logo Image</string>
+    <string name="content_description_profile">Profile Logo</string>
 
     <string name="label_fullname">Full Name</string>
     <string name="label_email">Email</string>

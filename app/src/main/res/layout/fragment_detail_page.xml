@@ -30,13 +30,14 @@
         android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" >
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone">
 
       <LinearLayout
           android:id="@+id/linearLayout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="vertical" >
+          android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -47,7 +48,6 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-
               android:contentDescription=""
               android:scaleType="fitXY"
               android:adjustViewBounds="true"
@@ -180,11 +180,13 @@
     </ScrollView>
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/scroll_view"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone">
 
       <com.google.android.material.button.MaterialButton
           android:id="@+id/register_button"
@@ -199,13 +201,24 @@
           android:paddingVertical="9dp"
           android:text="@string/bookNowButton"
           android:textAllCaps="false"
-          android:textSize="14dp"
+          android:textSize="14sp"
           app:cornerRadius="8dp"
           app:icon="@drawable/ticket_icon"
           app:iconGravity="textStart"
           app:iconPadding="10dp"
           app:iconSize="0dp" />
     </FrameLayout>
+
+    <!-- Circular progress indicator -->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

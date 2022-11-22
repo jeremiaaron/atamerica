@@ -1,28 +1,35 @@
 package com.example.atamerica.ui.detail;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.atamerica.models.EventAttributeModel;
+import com.example.atamerica.models.views.VwEventAttributeJsonModel;
+
+import java.util.List;
+
 public class AdapterTabViewPager extends FragmentStateAdapter {
 
-    private String desc, guest;
+    private final String eventId;
+    private final String description;
 
-    public AdapterTabViewPager(@NonNull FragmentActivity fragmentActivity, String desc, String guest) {
+    public AdapterTabViewPager(@NonNull FragmentActivity fragmentActivity, String eventId, String desc) {
         super(fragmentActivity);
-        this.desc = desc;
-        this.guest = guest;
+        this.eventId = eventId;
+        this.description = desc;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         Bundle bundle = new Bundle();
-        bundle.putString("desc", this.desc);
-        bundle.putString("guest", this.guest);
+        bundle.putString("event_id", this.eventId);
+        bundle.putString("desc", this.description);
 
         switch (position) {
             case 0:

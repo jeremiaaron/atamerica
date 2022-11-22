@@ -27,6 +27,9 @@
     <string name="evt7_time">16:30 \- 18:00</string>
     <string name="evt8_time">10:00 \- 18:00</string>
 
+    <string name="attribute_id_placeholder">Guest 1 &#160; Guest Value</string>
+    <string name="attribute_value_placeholder">Guest 1 &#160; Guest Value</string>
+
     <string name="evt1_guest"><b>Pembicara:</b>\nHabib Husein Ja\'far, Youth Influencer\nRobinson Sinurat, Pendiri dan CEO Yayasan Mimpi Besar\nHarkintan Kaur, Perwakilan Pemuda Sikh\n<b>Moderator:</b>\nGustika Jusuf Hatta, Aktivis HAM dan Pemberdayaan Perempuan</string>
     <string name="evt2_guest">Margarita Blush</string>
     <string name="evt3_guest">Yanuar Nugroho, Geraldine Christina</string>

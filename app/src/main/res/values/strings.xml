@@ -14,4 +14,8 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile_picture">Profile Picture</string>
+    <string name="view_event">View Event</string>
+    <string name="event_banner_image">Event Banner Image</string>
+    <string name="categories">Categories</string>
+    <string name="sort">Sort</string>
 </resources>

@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,46 +26,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atamerica.ChildActivity;
 import com.example.atamerica.R;
-import com.example.atamerica.cache.EventItemCache;
+import com.example.atamerica.controllers.UpcomingController;
 import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
-import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.javaclass.HelperClass;
 import com.example.atamerica.models.views.VwEventThumbnailModel;
 import com.example.atamerica.taskhandler.TaskRunner;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpcoming.OnEventUpcomingClickListener {
-
-    private class QueryUpcomingEvent implements Callable<Boolean> {
-
-        @Override
-        public Boolean call() {
-            try {
-                // Check for cache
-                if (!HelperClass.isEmpty(EventItemCache.UpcomingEventList)) {
-                    models = EventItemCache.UpcomingEventList;
-                }
-                else {
-                    models = DataHelper.Query.ReturnAsObjectList("SELECT * FROM VwEventThumbnail; ", VwEventThumbnailModel.class, null);
-                    if (!HelperClass.isEmpty(models)) {
-                        EventItemCache.UpcomingEventList = models;
-                    }
-                }
-
-                return (!HelperClass.isEmpty(models));
-            }
-            catch (Exception e) {
-                Log.e("ERROR", "Error querying event items!");
-                e.printStackTrace();
-            }
-
-            return false;
-        }
-    }
 
     private RecyclerView                    recyclerView;
     private Button                          categoryButton, sortButton;
@@ -107,15 +78,19 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         progressIndicator   = rootView.findViewById(R.id.progressIndicator);
 
         // Asynchronously bind recycler view
-        new TaskRunner().executeAsyncPool(new QueryUpcomingEvent(), (data) -> {
-            if (data != null && data) {
-                progressIndicator.setVisibility(View.GONE);
-                adapter = new AdapterRecyclerUpcoming(getActivity(), models, this);
+        new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(), (data) -> {
+            if (!HelperClass.isEmpty(data)) {
+                new TaskRunner().executeAsyncPool(new UpcomingController.ConvertToThumbnailEvent(data), (filteredEvents) -> {
+                    this.models = new ArrayList<>(filteredEvents);
 
-                // GridLayoutManager for grid layout of the recycler view
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
-                recyclerView.setLayoutManager(gridLayoutManager);
-                recyclerView.setAdapter(adapter);
+                    progressIndicator.setVisibility(View.GONE);
+                    adapter = new AdapterRecyclerUpcoming(getActivity(), models, this);
+
+                    // GridLayoutManager for grid layout of the recycler view
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+                    recyclerView.setLayoutManager(gridLayoutManager);
+                    recyclerView.setAdapter(adapter);
+                });
             }
             else {
                 Toast.makeText(getContext(), "Connection Error", Toast.LENGTH_LONG).show();
@@ -205,7 +180,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
     public void onEventUpcomingClick(int position) {
         Intent intent = new Intent(getActivity(), ChildActivity.class);
         intent.putExtra("destination", "detailPageFragment");
-        intent.putExtra("", models.get(position).EventId);
+        intent.putExtra("event_id", models.get(position).EventId);
         startActivity(intent);
     }
 

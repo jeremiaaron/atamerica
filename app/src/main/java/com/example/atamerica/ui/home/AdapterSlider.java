@@ -16,8 +16,6 @@ import com.example.atamerica.taskhandler.DownloadBitmapTask;
 import com.example.atamerica.taskhandler.TaskRunner;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -35,9 +33,7 @@ public class AdapterSlider extends SliderViewAdapter<AdapterSlider.Holder> {
 
     @Override
     public AdapterSlider.Holder onCreateViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.slider_item, parent, false);
-
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.slider_item, parent, false);
         return new Holder(view);
     }
 
