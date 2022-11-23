@@ -2,6 +2,7 @@ package com.example.atamerica.ui.profile;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,54 +14,51 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.atamerica.AuthenticateActivity;
 import com.example.atamerica.R;
 import com.example.atamerica.cache.AccountManager;
-import com.example.atamerica.cache.BitmapCache;
-import com.example.atamerica.cache.EventAttributeCache;
-import com.example.atamerica.cache.EventDocumentCache;
 import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.databinding.FragmentProfileBinding;
-import com.example.atamerica.models.views.VwAllEventModel;
-import com.example.atamerica.models.views.VwEventThumbnailModel;
-import com.example.atamerica.models.views.VwHomeBannerModel;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
 
-    private Button buttonLogout;
-    private ImageView ProfilePhoto;
-    private int SELECT_PICTURE = 200;
+    private ImageView       ProfilePhoto;
+    private TextView        username, email;
+    private Button          buttonLogout;
+
+    private int             SELECT_PICTURE = 200;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
 
-        buttonLogout = mView.findViewById(R.id.buttonLogout);
+        buttonLogout        = mView.findViewById(R.id.buttonLogout);
+        username            = mView.findViewById(R.id.profile_name);
+        email               = mView.findViewById(R.id.profile_email);
 
-        buttonLogout.setOnClickListener(view -> {
-            LogOut();
-        });
+        buttonLogout.setOnClickListener(view -> LogOut());
 
         ProfilePhoto = mView.findViewById(R.id.profile_picture);
-
         ProfilePhoto.setOnClickListener(view -> imageChooser());
+
+        username.setText(AccountManager.User.FullName);
+        email.setText(AccountManager.User.Email);
 
         return mView;
     }
