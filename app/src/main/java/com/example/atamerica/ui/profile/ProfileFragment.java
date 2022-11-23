@@ -72,9 +72,6 @@ public class ProfileFragment extends Fragment {
 
         // Clear caches
         AccountManager.User = null;
-        BitmapCache.DownloadedBitmapCache.clear();
-        EventAttributeCache.EventAttributeMap.clear();
-        EventDocumentCache.EventDocumentMap.clear();
         EventItemCache.EventMoreThanNowList.clear();
         EventItemCache.EventLessThanNowList.clear();
         EventItemCache.HomeBannerList.clear();

@@ -1,10 +1,7 @@
 package com.example.atamerica.controllers;
 
-import android.util.Log;
-
 import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.dbhandler.DataHelper;
-import com.example.atamerica.taskhandler.TaskRunner;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -53,30 +50,29 @@ public class RegisterController {
         public String call() {
             try {
                 // Check if already registered
-                new TaskRunner().executeAsyncPool(new CheckRegister(email, eventId), (data) -> {
-                    if (data != null && data) {
-                        returnStatus = "B";
+                if (EventItemCache.UserRegisteredEventList.contains(email + eventId)) {
+                    returnStatus = "B";
+                }
+                else {
+                    boolean execute = DataHelper.Query.ExecuteNonQuery("INSERT INTO MemberRegister (EventId, Email, RegisterDate, RegistrationStatus) VALUES (?, ?, NOW(), 'A'); ", new Object[] { eventId, email });
+
+                    if (execute) {
+                        // Rsync event cache
+                        if (EventItemCache.EventCacheMap.containsKey(eventId)) {
+                            Objects.requireNonNull(EventItemCache.EventCacheMap.get(eventId)).Registered = true;
+
+                            EventItemCache.UserRegisteredEventList.remove(email + eventId);
+                            EventItemCache.UserRegisteredEventList.add(email + eventId);
+                        }
                     }
                     else {
-                        boolean execute = DataHelper.Query.ExecuteNonQuery("INSERT INTO MemberRegister (EventId, Email, RegisterDate, RegistrationStatus) VALUES (?, ?, NOW(), 'A'); ", new Object[] { eventId, email });
-
-                        if (execute) {
-                            // Rsync event cache
-                            if (EventItemCache.EventCacheMap.containsKey(eventId)) {
-                                Objects.requireNonNull(EventItemCache.EventCacheMap.get(eventId)).Registered = true;
-                            }
-                        }
-                        else {
-                            returnStatus = "B";
-                        }
+                        returnStatus = "B";
                     }
-                });
+                }
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
-
-            Log.e("ERROR", returnStatus);
 
             return returnStatus;
         }
@@ -97,30 +93,26 @@ public class RegisterController {
         public String call() {
             try {
                 // Check if already registered
-                new TaskRunner().executeAsyncPool(new CheckRegister(email, eventId), (data) -> {
-                    if (data != null && data) {
-                        returnStatus = "B";
+                if (EventItemCache.UserRegisteredEventList.contains(email + eventId)) {
+                    boolean execute = DataHelper.Query.ExecuteNonQuery("DELETE FROM MemberRegister WHERE EventId = ? AND Email = ?;  ", new Object[] { eventId, email });
+                    if (execute) {
+                        // Rsync event cache
+                        if (EventItemCache.EventCacheMap.containsKey(eventId)) {
+                            Objects.requireNonNull(EventItemCache.EventCacheMap.get(eventId)).Registered = false;
+                            EventItemCache.UserRegisteredEventList.remove(email + eventId);
+                        }
                     }
                     else {
-                        boolean execute = DataHelper.Query.ExecuteNonQuery("INSERT INTO MemberRegister (EventId, Email, RegisterDate, RegistrationStatus) VALUES (?, ?, NOW(), 'A'); ", new Object[] { eventId, email });
-
-                        if (execute) {
-                            // Rsync event cache
-                            if (EventItemCache.EventCacheMap.containsKey(eventId)) {
-                                Objects.requireNonNull(EventItemCache.EventCacheMap.get(eventId)).Registered = true;
-                            }
-                        }
-                        else {
-                            returnStatus = "B";
-                        }
+                        returnStatus = "B";
                     }
-                });
+                }
+                else {
+                    returnStatus = "B";
+                }
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
-
-            Log.e("ERROR", returnStatus);
 
             return returnStatus;
         }
