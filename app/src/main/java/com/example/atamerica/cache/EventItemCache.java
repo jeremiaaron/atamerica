@@ -1,6 +1,5 @@
 package com.example.atamerica.cache;
 
-import com.example.atamerica.models.DetailItemModel;
 import com.example.atamerica.models.views.VwAllEventModel;
 import com.example.atamerica.models.views.VwEventThumbnailModel;
 import com.example.atamerica.models.views.VwHomeBannerModel;

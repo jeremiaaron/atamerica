@@ -7,12 +7,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -155,20 +160,44 @@ public class DetailPageFragment extends Fragment {
 
         // Register button
         registerBtn.setOnClickListener(view -> {
-            RegisterPageFragment registerPageFragment = new RegisterPageFragment();
+            progressIndicator.setVisibility(View.VISIBLE);
 
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(
-                    R.anim.slide_in,  // enter
-                    R.anim.fade_out,  // exit
-                    R.anim.fade_in,   // popEnter
-                    R.anim.slide_out  // popExit);
-            );
+            new TaskRunner().executeAsyncPool(new RegisterController.RegisterUser(AccountManager.User.Email, model.EventId), (data) -> {
+                if (Objects.equals(data, "A")) {
+                    Dialog successDialog = new Dialog(getContext());
+                    successDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    successDialog.setContentView(R.layout.fragment_popup_success);
 
-            fragmentTransaction.replace(R.id.event_container, registerPageFragment, null);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+                    successDialog.setOnDismissListener(dialog -> {
+                        unregisterBtn.setVisibility(View.VISIBLE);
+                        registerBtn.setVisibility(View.GONE);
+                    });
+
+                    successDialog.findViewById(R.id.btnDismiss).setOnClickListener(view2 -> {
+                        successDialog.dismiss();
+                    });
+
+                    successDialog.show();
+                }
+                else {
+                    Dialog failDialog = new Dialog(getContext());
+                    failDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    failDialog.setContentView(R.layout.fragment_popup_fails);
+
+                    failDialog.findViewById(R.id.btnDismiss).setOnClickListener(view2 -> {
+                        failDialog.dismiss();
+                    });
+
+                    failDialog.show();
+                }
+
+                progressIndicator.setVisibility(View.GONE);
+            });
+        });
+
+        // Unregister button
+        unregisterBtn.setOnClickListener(view -> {
+
         });
 
         return mView;

@@ -28,7 +28,6 @@ import java.util.Arrays;
 public class RegisterPageFragment extends Fragment {
 
     private FragmentRegisterPageBinding binding;
-    private BottomNavigationView        navView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,10 +36,12 @@ public class RegisterPageFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         binding = FragmentRegisterPageBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
+
+        
 
         return mView;
     }
