@@ -8,7 +8,6 @@ import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.javaclass.HelperClass;
 import com.example.atamerica.models.views.VwAllEventModel;
 import com.example.atamerica.models.views.VwEventThumbnailModel;
-import com.example.atamerica.models.views.VwHomeBannerModel;
 import com.example.atamerica.taskhandler.TaskRunner;
 
 import java.util.ArrayList;
