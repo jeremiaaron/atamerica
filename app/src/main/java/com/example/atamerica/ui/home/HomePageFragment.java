@@ -1,6 +1,8 @@
 package com.example.atamerica.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLike.OnEventHomeClickListener, AdapterRecyclerHomeTop.OnEventTopClickListener {
@@ -41,9 +44,9 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
     private SliderView                  sliderView;
 
-    private List<VwHomeBannerModel>     eventsBanner;
-    private List<VwEventThumbnailModel> eventsLike;
-    private List<VwEventThumbnailModel> eventsTop;
+    private List<VwHomeBannerModel>     eventsBanner = new ArrayList<>();
+    private List<VwEventThumbnailModel> eventsLike = new ArrayList<>();
+    private List<VwEventThumbnailModel> eventsTop = new ArrayList<>();
 
     private CircularProgressIndicator   progressIndicator;
 
@@ -52,9 +55,10 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         binding = FragmentHomePageBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
@@ -67,13 +71,16 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
         progressIndicator = rootView.findViewById(R.id.progressIndicator);
         ImageView profileButton = rootView.findViewById(R.id.profileButton);
 
+        // Query data into fragment all event model list
         new TaskRunner().executeAsyncPool(new HomeController.GetEvents(), (data) -> {
             if (!HelperClass.isEmpty(data)) {
+                // Filter home banner event
                 new TaskRunner().executeAsyncPool(new HomeController.FilterHomeBannerEvent(data), (eventFilter) -> {
                     if (!HelperClass.isEmpty(eventFilter)) {
-                        this.eventsBanner = eventFilter;
-                        adapterSlider = new AdapterSlider(getActivity(), eventsBanner);
+                        this.eventsBanner = new ArrayList<>(eventFilter); // Copy local to fragment
+
                         // SliderView for home banner
+                        adapterSlider = new AdapterSlider(getActivity(), eventsBanner);
                         sliderView.setSliderAdapter(adapterSlider);
                         sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
                         sliderView.startAutoCycle();
@@ -85,8 +92,9 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
                 new TaskRunner().executeAsyncPool(new HomeController.FilterHomeLikeEvent(data), (eventFilter) -> {
                     if (!HelperClass.isEmpty(eventFilter)) {
-                        this.eventsLike = eventFilter;
+                        this.eventsLike = new ArrayList<>(eventFilter);
                         adapterLike = new AdapterRecyclerHomeLike(getActivity(), eventsLike, HomePageFragment.this);
+
                         // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
                         LinearLayoutManager linearLayoutManagerLike = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                         recyclerViewHomeLike.setLayoutManager(linearLayoutManagerLike);
@@ -99,8 +107,9 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
 
                 new TaskRunner().executeAsyncPool(new HomeController.FilterHomeTopEvent(data), (eventFilter) -> {
                     if (!HelperClass.isEmpty(eventFilter)) {
-                        this.eventsTop = eventFilter;
+                        this.eventsTop = new ArrayList<>(eventFilter);
                         adapterTop = new AdapterRecyclerHomeTop(getActivity(), eventsTop, HomePageFragment.this);
+
                         // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
                         LinearLayoutManager linearLayoutManagerTop = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                         recyclerViewHomeTop.setLayoutManager(linearLayoutManagerTop);

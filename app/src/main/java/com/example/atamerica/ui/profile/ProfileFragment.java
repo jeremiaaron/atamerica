@@ -93,7 +93,7 @@ public class ProfileFragment extends Fragment {
         AccountManager.User = null;
         EventItemCache.EventMoreThanNowList.clear();
         EventItemCache.EventLessThanNowList.clear();
-        EventItemCache.HomeBannerList.clear();
+        EventItemCache.HomeEventBannerList.clear();
         EventItemCache.HomeEventLikeList.clear();
         EventItemCache.HomeEventTopList.clear();
         EventItemCache.UpcomingEventList.clear();

@@ -27,7 +27,7 @@ public class HomeController {
                 return EventItemCache.EventMoreThanNowList;
             }
 
-            List<VwAllEventModel> events = new ArrayList<>();
+            List<VwAllEventModel> events;
 
             try {
                 events = DataHelper.Query.ReturnAsObjectList("SELECT * FROM VwAllEvent WHERE EventStartTime >= NOW() ORDER BY EventStartTime ASC, EventId ASC; ", VwAllEventModel.class, null);
@@ -41,9 +41,12 @@ public class HomeController {
                         new TaskRunner().executeAsyncPool(new RegisterController.CheckRegister(AccountManager.User.Email, event.EventId), (data2) -> event.Registered = (data2 != null && data2));
 
                         // Store information to cache
-                        EventItemCache.EventMoreThanNowList = events;
                         EventItemCache.EventCacheMap.put(event.EventId, event);
                     }
+
+                    // Store information to cache
+                    EventItemCache.EventMoreThanNowList.clear();
+                    EventItemCache.EventMoreThanNowList = new ArrayList<>(events);
                 }
             }
             catch (Exception e) {
@@ -51,7 +54,7 @@ public class HomeController {
                 e.printStackTrace();
             }
 
-            return events;
+            return EventItemCache.EventMoreThanNowList;
         }
     }
 
@@ -60,7 +63,7 @@ public class HomeController {
         private final List<VwAllEventModel> events;
 
         public FilterHomeBannerEvent(final List<VwAllEventModel> events) {
-            this.events = new ArrayList<>(events);
+            this.events = events;
         }
 
         @Override
@@ -68,12 +71,9 @@ public class HomeController {
             List<VwHomeBannerModel> bannerEvents = new ArrayList<>();
 
             // Check for cache
-            if (!HelperClass.isEmpty(EventItemCache.HomeBannerList)) {
-                bannerEvents = EventItemCache.HomeBannerList;
-            }
-            else {
+            if (HelperClass.isEmpty(EventItemCache.HomeEventBannerList)) {
                 try {
-                    // Select only three banner
+                    // Select only three banner at most
                     int minimum = Math.min(events.size(), 3);
                     for (int i = 0; i < minimum; i++) {
                         VwAllEventModel event = events.get(i);
@@ -82,15 +82,14 @@ public class HomeController {
                         bannerEvents.add(VwHomeBannerModel.Parse(event));
                     }
 
-                    EventItemCache.HomeBannerList = bannerEvents;
+                    EventItemCache.HomeEventBannerList = new ArrayList<>(bannerEvents);
                 }
                 catch (Exception e) {
-                    Log.e("ERROR: ", "Error querying banner events.");
                     e.printStackTrace();
                 }
             }
 
-            return bannerEvents;
+            return EventItemCache.HomeEventBannerList;
         }
     }
 
@@ -99,34 +98,32 @@ public class HomeController {
         private final List<VwAllEventModel> events;
 
         public FilterHomeLikeEvent(final List<VwAllEventModel> events) {
-            this.events = new ArrayList<>(events);
+            this.events = events;
         }
 
         @Override
         public List<VwEventThumbnailModel> call() {
-            List<VwEventThumbnailModel> likeEvents = new ArrayList<>();
-
             // Check for cache
-            if (!HelperClass.isEmpty(EventItemCache.HomeEventLikeList)) {
-                likeEvents = EventItemCache.HomeEventLikeList;
-            }
-            else {
+            if (HelperClass.isEmpty(EventItemCache.HomeEventLikeList)) {
+                List<VwEventThumbnailModel> likeEvents = new ArrayList<>();
+
                 try {
                     // Filter unused events from all events
-                    for (VwAllEventModel event : events) {
+                    int minimum = Math.min(events.size(), 10);
+                    for (int i = 0; i < minimum; i++) {
+                        VwAllEventModel event = events.get(i);
                         // Add into list, using parser
                         likeEvents.add(VwEventThumbnailModel.Parse(event));
                     }
 
-                    EventItemCache.HomeEventLikeList = likeEvents;
+                    EventItemCache.HomeEventLikeList = new ArrayList<>(likeEvents);
                 }
                 catch (Exception e) {
-                    Log.e("ERROR: ", "Error querying like events.");
                     e.printStackTrace();
                 }
             }
 
-            return likeEvents;
+            return EventItemCache.HomeEventLikeList;
         }
     }
 
@@ -135,38 +132,37 @@ public class HomeController {
         private final List<VwAllEventModel> events;
 
         public FilterHomeTopEvent(final List<VwAllEventModel> events) {
+            // Create copy, since this version require modifying the order of the events
             this.events = new ArrayList<>(events);
         }
 
         @Override
         public List<VwEventThumbnailModel> call() {
-            List<VwEventThumbnailModel> topEvents = new ArrayList<>();
-
             // Check for cache
-            if (!HelperClass.isEmpty(EventItemCache.HomeEventTopList)) {
-                topEvents = EventItemCache.HomeEventTopList;
-            }
-            else {
+            if (HelperClass.isEmpty(EventItemCache.HomeEventTopList)) {
+                List<VwEventThumbnailModel> topEvents = new ArrayList<>();
+
                 try {
                     // Sort by max capacity first, since default is by event start date
                     // Descending
                     events.sort((Comparator.comparingInt(vwAllEventModel -> vwAllEventModel.MaxCapacity)));
 
                     // Filter unused events from all events
-                    for (VwAllEventModel event : events) {
+                    int minimum = Math.min(events.size(), 10);
+                    for (int i = 0; i < minimum; i++) {
+                        VwAllEventModel event = events.get(i);
                         // Add into list, using parser
                         topEvents.add(VwEventThumbnailModel.Parse(event));
                     }
 
-                    EventItemCache.HomeEventTopList = topEvents;
+                    EventItemCache.HomeEventTopList = new ArrayList<>(topEvents);
                 }
                 catch (Exception e) {
-                    Log.e("ERROR: ", "Error querying top events.");
                     e.printStackTrace();
                 }
             }
 
-            return topEvents;
+            return EventItemCache.HomeEventTopList;
         }
     }
 

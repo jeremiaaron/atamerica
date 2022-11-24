@@ -1,11 +1,13 @@
 package com.example.atamerica.ui.upcoming;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +28,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atamerica.ChildActivity;
 import com.example.atamerica.R;
+import com.example.atamerica.cache.ConfigCache;
 import com.example.atamerica.controllers.UpcomingController;
 import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
 import com.example.atamerica.javaclass.HelperClass;
+import com.example.atamerica.models.views.VwAllEventModel;
 import com.example.atamerica.models.views.VwEventThumbnailModel;
 import com.example.atamerica.taskhandler.TaskRunner;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -36,6 +40,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpcoming.OnEventUpcomingClickListener {
 
@@ -46,10 +51,14 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
     private RadioButton                     rbNewest, rbLatest;
     private ImageView                       profileButton;
 
-    private AdapterRecyclerUpcoming         adapter;
+    AdapterRecyclerUpcoming                 adapter;
     private FragmentUpcomingPageBinding     binding;
 
-    private List<VwEventThumbnailModel>     models;
+    private List<VwAllEventModel>           events;
+    private List<VwEventThumbnailModel>     thumbnailModels;
+
+    private List<String>                    categories;
+    private int                             sortConfig;
 
     private CircularProgressIndicator       progressIndicator;
 
@@ -58,14 +67,9 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint({"SourceLockedOrientationActivity", "NotifyDataSetChanged"})
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        // request for current activity to allow internet connection
-        // this must be in every activity/fragments
-        ActivityCompat.requestPermissions(requireActivity(), new String[] {Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
 
         binding = FragmentUpcomingPageBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
@@ -80,16 +84,18 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         // Asynchronously bind recycler view
         new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(), (data) -> {
             if (!HelperClass.isEmpty(data)) {
-                new TaskRunner().executeAsyncPool(new UpcomingController.ConvertToThumbnailEvent(data), (filteredEvents) -> {
-                    this.models = new ArrayList<>(filteredEvents);
+                this.events = new ArrayList<>(data);
 
-                    progressIndicator.setVisibility(View.GONE);
-                    adapter = new AdapterRecyclerUpcoming(getActivity(), models, this);
+                new TaskRunner().executeAsyncPool(new UpcomingController.ConvertToThumbnailEvent(data), (filteredEvents) -> {
+                    this.thumbnailModels = new ArrayList<>(filteredEvents);
+
+                    adapter = new AdapterRecyclerUpcoming(getActivity(), thumbnailModels, this);
 
                     // GridLayoutManager for grid layout of the recycler view
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
                     recyclerView.setLayoutManager(gridLayoutManager);
                     recyclerView.setAdapter(adapter);
+                    progressIndicator.setVisibility(View.GONE);
                 });
             }
             else {
@@ -112,6 +118,8 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                     R.layout.bottom_sheet_category_layout, rootView.findViewById(R.id.bottomSheetContainer)
             );
 
+            categories = ConfigCache.Categories;
+
             TextView clearFilter = bottomSheetView.findViewById(R.id.clear_filter);
             clearFilter.setOnClickListener(view12 -> clearFilterCheck());
 
@@ -126,9 +134,42 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
             cbWomen             = bottomSheetView.findViewById(R.id.womenCheck);            setOnClickCheck(cbWomen);
             cbYseali            = bottomSheetView.findViewById(R.id.ysealiCheck);           setOnClickCheck(cbYseali);
 
+            for (String category : categories) {
+                if (Objects.equals(category, "Music and Culture")) cbMusic.setChecked(true);
+                if (Objects.equals(category, "Movie Screening")) cbMovie.setChecked(true);
+                if (Objects.equals(category, "American Education and Skills")) cbEducation.setChecked(true);
+                if (Objects.equals(category, "Science, Technology, and Innovation")) cbScience.setChecked(true);
+                if (Objects.equals(category, "Democracy and Governance")) cbDemocracy.setChecked(true);
+                if (Objects.equals(category, "Entrepreneurship and Business")) cbEntrepreneurship.setChecked(true);
+                if (Objects.equals(category, "Arts and Culture")) cbArts.setChecked(true);
+                if (Objects.equals(category, "Protecting Natural Resources")) cbProtecting.setChecked(true);
+                if (Objects.equals(category, "Women's Empowerment")) cbWomen.setChecked(true);
+                if (Objects.equals(category, "YSEALI and Alumi")) cbYseali.setChecked(true);
+            }
+
             Button applyButton = bottomSheetView.findViewById(R.id.apply_button);
             applyButton.setOnClickListener(view1 -> {
-                Toast.makeText(getActivity(), "Applied", Toast.LENGTH_SHORT).show();
+                categories = new ArrayList<>();
+
+                if (cbMusic.isChecked()) categories.add("Music and Culture");
+                if (cbMovie.isChecked()) categories.add("Movie Screening");
+                if (cbEducation.isChecked()) categories.add("American Education and Skills");
+                if (cbScience.isChecked()) categories.add("Science, Technology, and Innovation");
+                if (cbDemocracy.isChecked()) categories.add("Democracy and Governance");
+                if (cbEntrepreneurship.isChecked()) categories.add("Entrepreneurship and Business");
+                if (cbArts.isChecked()) categories.add("Arts and Culture");
+                if (cbProtecting.isChecked()) categories.add("Protecting Natural Resources");
+                if (cbWomen.isChecked()) categories.add("Women's Empowerment");
+                if (cbYseali.isChecked()) categories.add("YSEALI and Alumi");
+
+                ConfigCache.Categories = categories;
+
+                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events, categories, sortConfig), (data) -> {
+                    this.thumbnailModels.clear();
+                    this.thumbnailModels.addAll(data);
+                    adapter.notifyDataSetChanged();
+                });
+
                 bottomSheetDialog.dismiss();
             });
 
@@ -140,8 +181,28 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         sortButton.setOnClickListener(view -> {
             BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity());
             View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.bottom_sheet_sort_layout, rootView.findViewById(R.id.bottomSheetContainer));
+
+            this.sortConfig = ConfigCache.SortConfig;
+
             rbNewest = bottomSheetView.findViewById(R.id.newestRadio); setOnClickRadio(rbNewest);
             rbLatest = bottomSheetView.findViewById(R.id.latestRadio); setOnClickRadio(rbLatest);
+
+            if (sortConfig == 1) rbLatest.setChecked(true);
+            else rbNewest.setChecked(true);
+
+            Button applyButton = bottomSheetView.findViewById(R.id.apply_button);
+            applyButton.setOnClickListener(view1 -> {
+                this.sortConfig = (rbNewest.isChecked()) ? -1 : 1;
+
+                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events, categories, sortConfig), (data) -> {
+                    this.thumbnailModels.clear();
+                    this.thumbnailModels.addAll(data);
+                    adapter.notifyDataSetChanged();
+                });
+
+                bottomSheetDialog.dismiss();
+            });
+
             bottomSheetDialog.setContentView(bottomSheetView);
             bottomSheetDialog.show();
         });
@@ -180,7 +241,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
     public void onEventUpcomingClick(int position) {
         Intent intent = new Intent(getActivity(), ChildActivity.class);
         intent.putExtra("destination", "detailPageFragment");
-        intent.putExtra("event_id", models.get(position).EventId);
+        intent.putExtra("event_id", thumbnailModels.get(position).EventId);
         startActivity(intent);
     }
 

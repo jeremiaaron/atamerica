@@ -161,7 +161,7 @@ public class LoginFragment extends Fragment {
             }
             else {
                 editTextTextEmailAddress.setError("Email might be wrong.");
-                editTextTextPassword.setError("Email might be wrong.");
+                editTextTextPassword.setError("Password might be wrong.");
                 Toast.makeText(getContext(), "Error Authenticating User.", Toast.LENGTH_SHORT).show();
             }
 

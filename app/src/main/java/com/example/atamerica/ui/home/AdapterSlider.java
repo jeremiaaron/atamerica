@@ -48,9 +48,7 @@ public class AdapterSlider extends SliderViewAdapter<AdapterSlider.Holder> {
         viewHolder.homeDate.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(startDate));
         viewHolder.homeTime.setText(eventDuration);
 
-        new TaskRunner().executeAsyncPool(new DownloadBitmapTask(models.get(position).Path), (data) -> {
-            viewHolder.homeImage.setImageBitmap(data);
-        });
+        new TaskRunner().executeAsyncPool(new DownloadBitmapTask(models.get(position).Path), (data) -> viewHolder.homeImage.setImageBitmap(data));
 
         viewHolder.homeButton.setOnClickListener(view -> {
             Intent intent = new Intent(context, ChildActivity.class);

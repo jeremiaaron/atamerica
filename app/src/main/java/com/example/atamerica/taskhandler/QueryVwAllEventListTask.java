@@ -44,7 +44,6 @@ public class QueryVwAllEventListTask implements Callable<List<VwAllEventModel>> 
             }
         }
         catch (Exception e) {
-            Log.e("ERROR", "Error query VwEventModel; ");
             e.printStackTrace();
         }
 
