@@ -18,12 +18,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.atamerica.AuthenticateActivity;
 import com.example.atamerica.R;
 import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.databinding.FragmentProfileBinding;
+import com.example.atamerica.ui.booked.BookedPageFragment;
+import com.example.atamerica.ui.detail.DetailPageFragment;
 
 public class ProfileFragment extends Fragment {
 
@@ -31,7 +35,7 @@ public class ProfileFragment extends Fragment {
 
     private ImageView       ProfilePhoto;
     private TextView        username, email;
-    private Button          buttonLogout;
+    private Button          buttonBooked, buttonLogout;
 
     private int             SELECT_PICTURE = 200;
 
@@ -48,10 +52,12 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View mView = binding.getRoot();
 
+        buttonBooked        = mView.findViewById(R.id.booked_button);
         buttonLogout        = mView.findViewById(R.id.buttonLogout);
         username            = mView.findViewById(R.id.profile_name);
         email               = mView.findViewById(R.id.profile_email);
 
+        buttonBooked.setOnClickListener(view -> moveToBooked());
         buttonLogout.setOnClickListener(view -> LogOut());
 
         ProfilePhoto = mView.findViewById(R.id.profile_picture);
@@ -61,6 +67,21 @@ public class ProfileFragment extends Fragment {
         email.setText(AccountManager.User.Email);
 
         return mView;
+    }
+
+    private void moveToBooked() {
+        BookedPageFragment bookedPageFragment = new BookedPageFragment();
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.slide_in,  // enter
+                R.anim.fade_out,  // exit
+                R.anim.fade_in,   // popEnter
+                R.anim.slide_out  // popExit);
+        );
+        fragmentTransaction.replace(R.id.event_container, bookedPageFragment, null);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     private void LogOut() {

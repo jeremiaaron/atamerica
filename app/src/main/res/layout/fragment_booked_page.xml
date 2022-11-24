@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sf_pro_text_bold"
-            android:text="Event Registration"
+            android:text="Your Booked Events"
             android:textColor="@color/black"
             android:layout_marginVertical="18dp"
             android:layout_marginHorizontal="18dp"
@@ -34,7 +34,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewUpcoming"
+            android:id="@+id/recyclerViewBooked"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
