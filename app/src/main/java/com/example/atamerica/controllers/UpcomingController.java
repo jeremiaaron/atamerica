@@ -14,21 +14,33 @@ import com.example.atamerica.taskhandler.TaskRunner;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 public class UpcomingController {
 
     public static class GetEvents implements Callable<List<VwAllEventModel>> {
+
+        private final boolean queryNext;
+
+        public GetEvents(boolean queryNext) {
+            this.queryNext = queryNext;
+        }
+
         @Override
         public List<VwAllEventModel> call() {
             // Check for cache
-            if (HelperClass.isEmpty(EventItemCache.EventMoreThanNowList)) {
-                List<VwAllEventModel> events;
-
+            if (queryNext || HelperClass.isEmpty(EventItemCache.EventMoreThanNowList)) {
                 try {
-                    events = DataHelper.Query.ReturnAsObjectList("SELECT * FROM VwAllEvent WHERE EventStartTime >= NOW() ORDER BY EventStartTime ASC, EventId ASC; ", VwAllEventModel.class, null);
+                    List<VwAllEventModel> events = DataHelper.Query.ReturnAsObjectList("SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY EventStartTime) AS RowNumber, A.* FROM VwAllEvent A WHERE EventStartTime >= NOW()) B WHERE RowNumber >= ? AND RowNumber <= ? ORDER BY EventStartTime ASC, EventId ASC; ", VwAllEventModel.class,
+                            new Object[] { ConfigCache.UpcomingScrollIndex * 8, (ConfigCache.UpcomingScrollIndex + 1) * 8  });
 
                     if (!HelperClass.isEmpty(events)) {
+                        if (events.size() < 8) {
+                            ConfigCache.UpcomingQueryable = false;
+                        }
+
                         for (VwAllEventModel event : events) {
                             event.MapAttribute();
                             event.MapDocument();
@@ -38,9 +50,15 @@ public class UpcomingController {
 
                             // Store information to cache
                             EventItemCache.EventCacheMap.put(event.EventId, event);
-                        }
 
-                        EventItemCache.EventMoreThanNowList = new ArrayList<>(events);
+                            List<VwAllEventModel> eventsRemove = EventItemCache.EventMoreThanNowList
+                                    .stream()
+                                    .filter(doc -> Objects.equals(doc.EventId, event.EventId))
+                                    .collect(Collectors.toList());
+
+                            EventItemCache.EventMoreThanNowList.removeAll(eventsRemove);
+                            EventItemCache.EventMoreThanNowList.add(event);
+                        }
                     }
                 }
                 catch (Exception e) {
@@ -54,16 +72,18 @@ public class UpcomingController {
 
     public static class ConvertToThumbnailEvent implements Callable<List<VwEventThumbnailModel>> {
 
+        private final boolean queryNext;
         private final List<VwAllEventModel> events;
 
-        public ConvertToThumbnailEvent(final List<VwAllEventModel> events) {
+        public ConvertToThumbnailEvent(boolean queryNext, final List<VwAllEventModel> events) {
+            this.queryNext = queryNext;
             this.events = events;
         }
 
         @Override
         public List<VwEventThumbnailModel> call() {
             // Check for cache
-            if (HelperClass.isEmpty(EventItemCache.UpcomingEventList)) {
+            if (queryNext || HelperClass.isEmpty(EventItemCache.UpcomingEventList)) {
                 List<VwEventThumbnailModel> thumbnailEvents = new ArrayList<>();
 
                 try {
@@ -72,7 +92,8 @@ public class UpcomingController {
                         thumbnailEvents.add(VwEventThumbnailModel.Parse(event));
                     }
 
-                    EventItemCache.UpcomingEventList = new ArrayList<>(thumbnailEvents);
+                    EventItemCache.UpcomingEventList.clear();
+                    EventItemCache.UpcomingEventList.addAll(thumbnailEvents);
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -85,45 +106,32 @@ public class UpcomingController {
 
     public static class FilterEvents implements Callable<List<VwEventThumbnailModel>> {
 
-        private final List<String>          categories;
-        private final int                   sortConfig;
         private final List<VwAllEventModel> events;
 
-        public FilterEvents(final List<VwAllEventModel> events, List<String> categories, int sortConfig) {
+        public FilterEvents(final List<VwAllEventModel> events) {
             this.events = new ArrayList<>(events);
-            this.categories = categories;
-            this.sortConfig = sortConfig;
         }
 
         @Override
         public List<VwEventThumbnailModel> call() throws Exception {
             List<VwEventThumbnailModel> thumbnailEvents = new ArrayList<>();
 
-            // Check for cache
             try {
                 // Sort events by newest/latest
-                if (sortConfig == 1) { // latest
-                    events.sort(Comparator.comparing(event -> event.EventStartTime));
-                }
-                else {
-                    events.sort((event1, event2) -> event2.EventId.compareTo(event1.EventId));
-                }
+                if (ConfigCache.UpcomingSortConfig == 1) events.sort(Comparator.comparing(event -> event.EventStartTime)); // latest
+                else events.sort((event1, event2) -> event2.EventId.compareTo(event1.EventId));
 
                 // Filter events
                 for (VwAllEventModel event : events) {
-                    if (HelperClass.isEmpty(categories) || categories.contains(event.CategoryName)) {
+                    if (HelperClass.isEmpty(ConfigCache.UpcomingCategories) || ConfigCache.UpcomingCategories.contains(event.CategoryName)) {
                         thumbnailEvents.add(VwEventThumbnailModel.Parse(event));
                     }
                 }
 
-                EventItemCache.UpcomingEventList = new ArrayList<>(thumbnailEvents);
-
-                // Store options
-                ConfigCache.Categories = categories;
-                ConfigCache.SortConfig = sortConfig;
+                EventItemCache.UpcomingEventList.clear();
+                EventItemCache.UpcomingEventList.addAll(thumbnailEvents);
             }
             catch (Exception e) {
-                Log.e("ERROR: ", "Error querying events.");
                 e.printStackTrace();
             }
 

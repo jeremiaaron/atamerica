@@ -31,7 +31,7 @@
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             android:paddingStart="5dp"
-            android:text="Sort"
+            android:text="@string/sort_header"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
+            android:paddingHorizontal="5dp"
             android:id="@+id/RGroup">
 
             <RadioButton
@@ -61,7 +61,7 @@
                 android:textColor="@color/blue"
                 android:letterSpacing="0"
                 app:buttonTint="@color/blue"
-                android:text="Newest" />
+                android:text="@string/newest" />
 
             <RadioButton
                 android:id="@+id/latestRadio"
@@ -70,7 +70,7 @@
                 android:textColor="@color/blue"
                 android:letterSpacing="0"
                 app:buttonTint="@color/blue"
-                android:text="Latest" />
+                android:text="@string/latest" />
 
         </RadioGroup>
 
@@ -92,7 +92,7 @@
             android:layout_marginBottom="10dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:text="Apply"
+            android:text="@string/apply"
             android:textAllCaps="false"
             app:cornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="@+id/cardView"

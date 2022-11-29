@@ -11,6 +11,7 @@ import java.util.List;
 
 public class VwAllEventModel {
 
+    public int RowNumber;
     public String EventId;
     public String EventName;
     public Timestamp EventStartTime;

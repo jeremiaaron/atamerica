@@ -26,7 +26,6 @@ public class QueryVwAllEventTask implements Callable<VwAllEventModel> {
             return EventItemCache.EventCacheMap.get(this.eventId);
         }
         else {
-            // Check for cache
             try {
                 VwAllEventModel event = DataHelper.Query.ReturnAsObject("SELECT * FROM VwAllEvent WHERE EventId = ?; ", VwAllEventModel.class, new Object[] { this.eventId });
                 event.MapAttribute();
@@ -40,7 +39,6 @@ public class QueryVwAllEventTask implements Callable<VwAllEventModel> {
                 return event;
             }
             catch (Exception e) {
-                Log.e("ERROR", "Error query VwEventModel; ");
                 e.printStackTrace();
             }
 

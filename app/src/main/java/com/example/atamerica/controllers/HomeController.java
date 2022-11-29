@@ -30,7 +30,7 @@ public class HomeController {
             List<VwAllEventModel> events;
 
             try {
-                events = DataHelper.Query.ReturnAsObjectList("SELECT * FROM VwAllEvent WHERE EventStartTime >= NOW() ORDER BY EventStartTime ASC, EventId ASC; ", VwAllEventModel.class, null);
+                events = DataHelper.Query.ReturnAsObjectList("SELECT * FROM VwAllEvent WHERE EventStartTime >= NOW() ORDER BY EventStartTime ASC, EventId ASC LIMIT 10; ", VwAllEventModel.class, null);
 
                 if (!HelperClass.isEmpty(events)) {
                     for (VwAllEventModel event : events) {

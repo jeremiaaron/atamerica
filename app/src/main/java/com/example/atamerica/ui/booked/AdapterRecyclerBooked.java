@@ -14,23 +14,30 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atamerica.R;
+import com.example.atamerica.models.views.VwAllEventModel;
 import com.example.atamerica.models.views.VwEventThumbnailModel;
 import com.example.atamerica.taskhandler.DownloadBitmapTask;
 import com.example.atamerica.taskhandler.TaskRunner;
 import com.google.android.material.button.MaterialButton;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class AdapterRecyclerBooked extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context                             context;
     private final LayoutInflater                inflater;
-    private final List<VwEventThumbnailModel>   events;
+    private final List<VwAllEventModel>         events;
     private final OnEventBookedClickListener   onEventClickListener;
 
 
-    public AdapterRecyclerBooked(Context ctx, List<VwEventThumbnailModel> models, OnEventBookedClickListener onEventClickListener) {
-        this.events = models;
+    public AdapterRecyclerBooked(Context ctx, List<VwAllEventModel> events, OnEventBookedClickListener onEventClickListener) {
+        this.events = new ArrayList<>(events);
         this.inflater = LayoutInflater.from(ctx);
         this.onEventClickListener = onEventClickListener;
     }
@@ -45,27 +52,20 @@ public class AdapterRecyclerBooked extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Date startDate = new Date(events.get(position).EventStartTime.getTime());
+        Date endDate = new Date(events.get(position).EventEndTime.getTime());
+        String eventDuration = new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(startDate) + " - " + new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(endDate);
+
+        String path = events.get(position).DocumentList
+                .stream()
+                .filter(doc -> Objects.equals(doc.Title, "thumbnail"))
+                .collect(Collectors.toList()).get(0).Path;
+
         ArchiveViewHolder viewHolder = (ArchiveViewHolder) holder;
-
-/*        ViewGroup.MarginLayoutParams cardLayoutParams = (ViewGroup.MarginLayoutParams) viewHolder.cardView.getLayoutParams();
-
-        if (position % 2 == 0) {
-            cardLayoutParams.setMarginStart(dpToPixel(12));
-            cardLayoutParams.setMarginEnd(dpToPixel(0));
-        }
-        else {
-            cardLayoutParams.setMarginStart(dpToPixel(0));
-            cardLayoutParams.setMarginEnd(dpToPixel(12));
-        }
-        viewHolder.cardView.requestLayout();*/
-
-//        if (position == events.size() - 1 || position == events.size() - 2) {
-//            btnLayoutParams.setMargins(0, dpToPixel(12), 0, dpToPixel(12));
-//        }
-//        viewHolder.evt_button.requestLayout();
-
         viewHolder.evt_title.setText(events.get(position).EventName);
-        new TaskRunner().executeAsyncPool(new DownloadBitmapTask(events.get(position).Path), (data) -> viewHolder.evt_image.setImageBitmap(data));
+        new TaskRunner().executeAsyncPool(new DownloadBitmapTask(path), (data) -> viewHolder.evt_image.setImageBitmap(data));
+        viewHolder.evt_date.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(startDate));
+        viewHolder.evt_time.setText(eventDuration);
     }
 
     @Override

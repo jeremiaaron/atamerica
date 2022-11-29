@@ -18,4 +18,10 @@
     <string name="event_banner_image">Event Banner Image</string>
     <string name="categories">Categories</string>
     <string name="sort">Sort</string>
+    <string name="sort_header">Sort</string>
+    <string name="newest">Newest</string>
+    <string name="latest">Latest</string>
+    <string name="apply">Apply</string>
+    <string name="categories_header">Categories</string>
+    <string name="clear_filter">Clear Filter</string>
 </resources>

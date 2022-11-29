@@ -31,7 +31,7 @@
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             android:paddingStart="5dp"
-            android:text="Categories"
+            android:text="@string/categories_header"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Clear Filter"
+            android:text="@string/clear_filter"
             android:textColor="@color/red"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -67,8 +67,8 @@
             android:letterSpacing="0"
             app:buttonTint="@color/blue"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
-            android:text="Music &amp; Culture" />
+            android:paddingHorizontal="5dp"
+            android:text="@string/music_and_culture" />
 
         <View
             android:id="@+id/divider1"
@@ -87,8 +87,8 @@
             android:letterSpacing="0"
             app:buttonTint="@color/blue"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
-            android:text="Movie Screening" />
+            android:paddingHorizontal="5dp"
+            android:text="@string/movie_screening" />
 
         <View
             android:id="@+id/divider2"
@@ -108,8 +108,8 @@
             android:background="?selectableItemBackground"
             app:buttonTint="@color/blue"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
-            android:text="American Education and Skills" />
+            android:paddingHorizontal="5dp"
+            android:text="@string/american_education_and_skills" />
 
         <View
             android:id="@+id/divider3"
@@ -129,8 +129,8 @@
             android:background="?selectableItemBackground"
             app:buttonTint="@color/blue"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
-            android:text="Science, Technology, and Innovation" />
+            android:paddingHorizontal="5dp"
+            android:text="@string/science_technology_and_innovation" />
 
         <View
             android:id="@+id/divider4"
@@ -150,8 +150,8 @@
             android:background="?selectableItemBackground"
             app:buttonTint="@color/blue"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
-            android:text="Democracy and Governance" />
+            android:paddingHorizontal="5dp"
+            android:text="@string/democracy_and_governance" />
 
         <View
             android:id="@+id/divider5"
@@ -171,8 +171,8 @@
             android:background="?selectableItemBackground"
             app:buttonTint="@color/blue"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
-            android:text="Entrepreneurship and Business" />
+            android:paddingHorizontal="5dp"
+            android:text="@string/entrepreneurship_and_business" />
 
         <View
             android:id="@+id/divider6"
@@ -192,8 +192,8 @@
             android:background="?selectableItemBackground"
             app:buttonTint="@color/blue"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
-            android:text="Arts and Culture" />
+            android:paddingHorizontal="5dp"
+            android:text="@string/arts_and_culture" />
 
         <View
             android:id="@+id/divider7"
@@ -213,8 +213,8 @@
             android:background="?selectableItemBackground"
             app:buttonTint="@color/blue"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
-            android:text="Protecting Natural Resources" />
+            android:paddingHorizontal="5dp"
+            android:text="@string/protecting_natural_resources" />
 
         <View
             android:id="@+id/divider8"
@@ -234,8 +234,8 @@
             android:background="?selectableItemBackground"
             app:buttonTint="@color/blue"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
-            android:text="Women's Empowerment" />
+            android:paddingHorizontal="5dp"
+            android:text="@string/women_s_empowerment" />
 
         <View
             android:id="@+id/divider9"
@@ -255,8 +255,8 @@
             android:background="?selectableItemBackground"
             app:buttonTint="@color/blue"
             android:layoutDirection="rtl"
-            android:paddingLeft="5dp"
-            android:text="YSEALI and Alumni" />
+            android:paddingHorizontal="5dp"
+            android:text="@string/yseali_and_alumni" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/apply_button"
@@ -267,7 +267,7 @@
             android:layout_marginBottom="10dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:text="Apply"
+            android:text="@string/apply"
             android:textAllCaps="false"
             app:cornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="@+id/cardView"

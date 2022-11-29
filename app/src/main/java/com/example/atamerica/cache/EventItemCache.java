@@ -20,9 +20,9 @@ public class EventItemCache {
     public static List<VwAllEventModel> EventLessThanNowList = new ArrayList<>();
 
     // Home event caches
-    public static List<VwHomeBannerModel>       HomeEventBannerList = new ArrayList<>();
-    public static List<VwEventThumbnailModel>   HomeEventLikeList = new ArrayList<>();
-    public static List<VwEventThumbnailModel>   HomeEventTopList = new ArrayList<>();
+    public static List<VwHomeBannerModel> HomeEventBannerList = new ArrayList<>();
+    public static List<VwEventThumbnailModel> HomeEventLikeList = new ArrayList<>();
+    public static List<VwEventThumbnailModel> HomeEventTopList = new ArrayList<>();
 
     // Upcoming event caches
     public static List<VwEventThumbnailModel> UpcomingEventList = new ArrayList<>();
@@ -31,5 +31,6 @@ public class EventItemCache {
     public static List<VwEventThumbnailModel> ArchivedEventList = new ArrayList<>();
 
     // Store events that have been booked by user
+    public static List<VwAllEventModel> RegisteredEventList = new ArrayList<>();
     public static List<String> UserRegisteredEventList = new ArrayList<>();
 }

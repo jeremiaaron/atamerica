@@ -104,7 +104,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <!-- Circular progress indicator -->
+        <!-- Page circular progress indicator -->
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressIndicator"
             android:layout_width="wrap_content"

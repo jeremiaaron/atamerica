@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="music_and_culture">Music and Culture</string>
+    <string name="movie_screening">Movie Screening</string>
+    <string name="american_education_and_skills">American Education and Skills</string>
+    <string name="science_technology_and_innovation">Science, Technology, and Innovation</string>
+    <string name="democracy_and_governance">Democracy and Governance</string>
+    <string name="entrepreneurship_and_business">Entrepreneurship and Business</string>
+    <string name="arts_and_culture">Arts and Culture</string>
+    <string name="protecting_natural_resources">Protecting Natural Resources</string>
+    <string name="women_s_empowerment">Women\'s Empowerment</string>
+    <string name="yseali_and_alumni">YSEALI and Alumni</string>
+</resources>

@@ -27,7 +27,6 @@ import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.databinding.FragmentProfileBinding;
 import com.example.atamerica.ui.booked.BookedPageFragment;
-import com.example.atamerica.ui.detail.DetailPageFragment;
 
 public class ProfileFragment extends Fragment {
 
@@ -99,6 +98,7 @@ public class ProfileFragment extends Fragment {
         EventItemCache.UpcomingEventList.clear();
         EventItemCache.ArchivedEventList.clear();
         EventItemCache.EventCacheMap.clear();
+        EventItemCache.RegisteredEventList.clear();
         EventItemCache.UserRegisteredEventList.clear();
 
         Intent intent = new Intent(getActivity(), AuthenticateActivity.class);

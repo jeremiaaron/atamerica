@@ -1,12 +1,9 @@
 package com.example.atamerica.ui.upcoming;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
@@ -45,11 +41,9 @@ import java.util.Objects;
 public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpcoming.OnEventUpcomingClickListener {
 
     private RecyclerView                    recyclerView;
-    private Button                          categoryButton, sortButton;
     private CheckBox                        cbMusic, cbMovie, cbEducation, cbScience, cbDemocracy,
                                             cbEntrepreneurship, cbArts, cbProtecting, cbWomen, cbYseali;
     private RadioButton                     rbNewest, rbLatest;
-    private ImageView                       profileButton;
 
     AdapterRecyclerUpcoming                 adapter;
     private FragmentUpcomingPageBinding     binding;
@@ -57,9 +51,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
     private List<VwAllEventModel>           events;
     private List<VwEventThumbnailModel>     thumbnailModels;
 
-    private List<String>                    categories;
-    private int                             sortConfig;
-
+    private boolean                         isQuerying;
     private CircularProgressIndicator       progressIndicator;
 
     @Override
@@ -76,18 +68,24 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
         // Get views
         recyclerView        = rootView.findViewById(R.id.recyclerViewUpcoming);
-        categoryButton      = rootView.findViewById(R.id.categoryButton);
-        sortButton          = rootView.findViewById(R.id.sortButton);
-        profileButton       = rootView.findViewById(R.id.profileButton);
+        Button categoryButton = rootView.findViewById(R.id.categoryButton);
+        Button sortButton = rootView.findViewById(R.id.sortButton);
+        ImageView profileButton = rootView.findViewById(R.id.profileButton);
         progressIndicator   = rootView.findViewById(R.id.progressIndicator);
 
-        // Asynchronously bind recycler view
-        new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(), (data) -> {
-            if (!HelperClass.isEmpty(data)) {
-                this.events = new ArrayList<>(data);
+        events = new ArrayList<>();
+        thumbnailModels = new ArrayList<>();
+        isQuerying = false;
 
-                new TaskRunner().executeAsyncPool(new UpcomingController.ConvertToThumbnailEvent(data), (filteredEvents) -> {
-                    this.thumbnailModels = new ArrayList<>(filteredEvents);
+        // Asynchronously bind recycler view
+        new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(false), (data) -> {
+            if (!HelperClass.isEmpty(data)) {
+                this.events.clear();
+                this.events.addAll(data);
+
+                new TaskRunner().executeAsyncPool(new UpcomingController.ConvertToThumbnailEvent(false, data), (filteredEvents) -> {
+                    this.thumbnailModels.clear();
+                    this.thumbnailModels.addAll(filteredEvents);
 
                     adapter = new AdapterRecyclerUpcoming(getActivity(), thumbnailModels, this);
 
@@ -118,8 +116,6 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                     R.layout.bottom_sheet_category_layout, rootView.findViewById(R.id.bottomSheetContainer)
             );
 
-            categories = ConfigCache.Categories;
-
             TextView clearFilter = bottomSheetView.findViewById(R.id.clear_filter);
             clearFilter.setOnClickListener(view12 -> clearFilterCheck());
 
@@ -134,7 +130,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
             cbWomen             = bottomSheetView.findViewById(R.id.womenCheck);            setOnClickCheck(cbWomen);
             cbYseali            = bottomSheetView.findViewById(R.id.ysealiCheck);           setOnClickCheck(cbYseali);
 
-            for (String category : categories) {
+            for (String category : ConfigCache.UpcomingCategories) {
                 if (Objects.equals(category, "Music and Culture")) cbMusic.setChecked(true);
                 if (Objects.equals(category, "Movie Screening")) cbMovie.setChecked(true);
                 if (Objects.equals(category, "American Education and Skills")) cbEducation.setChecked(true);
@@ -144,27 +140,25 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                 if (Objects.equals(category, "Arts and Culture")) cbArts.setChecked(true);
                 if (Objects.equals(category, "Protecting Natural Resources")) cbProtecting.setChecked(true);
                 if (Objects.equals(category, "Women's Empowerment")) cbWomen.setChecked(true);
-                if (Objects.equals(category, "YSEALI and Alumi")) cbYseali.setChecked(true);
+                if (Objects.equals(category, "YSEALI and Alumni")) cbYseali.setChecked(true);
             }
 
             Button applyButton = bottomSheetView.findViewById(R.id.apply_button);
             applyButton.setOnClickListener(view1 -> {
-                categories = new ArrayList<>();
+                ConfigCache.UpcomingCategories.clear();
 
-                if (cbMusic.isChecked()) categories.add("Music and Culture");
-                if (cbMovie.isChecked()) categories.add("Movie Screening");
-                if (cbEducation.isChecked()) categories.add("American Education and Skills");
-                if (cbScience.isChecked()) categories.add("Science, Technology, and Innovation");
-                if (cbDemocracy.isChecked()) categories.add("Democracy and Governance");
-                if (cbEntrepreneurship.isChecked()) categories.add("Entrepreneurship and Business");
-                if (cbArts.isChecked()) categories.add("Arts and Culture");
-                if (cbProtecting.isChecked()) categories.add("Protecting Natural Resources");
-                if (cbWomen.isChecked()) categories.add("Women's Empowerment");
-                if (cbYseali.isChecked()) categories.add("YSEALI and Alumi");
+                if (cbMusic.isChecked()) ConfigCache.UpcomingCategories.add("Music and Culture");
+                if (cbMovie.isChecked()) ConfigCache.UpcomingCategories.add("Movie Screening");
+                if (cbEducation.isChecked()) ConfigCache.UpcomingCategories.add("American Education and Skills");
+                if (cbScience.isChecked()) ConfigCache.UpcomingCategories.add("Science, Technology, and Innovation");
+                if (cbDemocracy.isChecked()) ConfigCache.UpcomingCategories.add("Democracy and Governance");
+                if (cbEntrepreneurship.isChecked()) ConfigCache.UpcomingCategories.add("Entrepreneurship and Business");
+                if (cbArts.isChecked()) ConfigCache.UpcomingCategories.add("Arts and Culture");
+                if (cbProtecting.isChecked()) ConfigCache.UpcomingCategories.add("Protecting Natural Resources");
+                if (cbWomen.isChecked()) ConfigCache.UpcomingCategories.add("Women's Empowerment");
+                if (cbYseali.isChecked()) ConfigCache.UpcomingCategories.add("YSEALI and Alumni");
 
-                ConfigCache.Categories = categories;
-
-                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events, categories, sortConfig), (data) -> {
+                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events), (data) -> {
                     this.thumbnailModels.clear();
                     this.thumbnailModels.addAll(data);
                     adapter.notifyDataSetChanged();
@@ -182,19 +176,17 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
             BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity());
             View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.bottom_sheet_sort_layout, rootView.findViewById(R.id.bottomSheetContainer));
 
-            this.sortConfig = ConfigCache.SortConfig;
-
             rbNewest = bottomSheetView.findViewById(R.id.newestRadio); setOnClickRadio(rbNewest);
             rbLatest = bottomSheetView.findViewById(R.id.latestRadio); setOnClickRadio(rbLatest);
 
-            if (sortConfig == 1) rbLatest.setChecked(true);
+            if (ConfigCache.UpcomingSortConfig == 1) rbLatest.setChecked(true);
             else rbNewest.setChecked(true);
 
             Button applyButton = bottomSheetView.findViewById(R.id.apply_button);
             applyButton.setOnClickListener(view1 -> {
-                this.sortConfig = (rbNewest.isChecked()) ? -1 : 1;
+                ConfigCache.UpcomingSortConfig = (rbNewest.isChecked()) ? -1 : 1;
 
-                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events, categories, sortConfig), (data) -> {
+                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events), (data) -> {
                     this.thumbnailModels.clear();
                     this.thumbnailModels.addAll(data);
                     adapter.notifyDataSetChanged();
@@ -205,6 +197,45 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
             bottomSheetDialog.setContentView(bottomSheetView);
             bottomSheetDialog.show();
+        });
+
+        // On scroll bottom reached listener
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                // direction integers: -1 for up, 1 for down, 0 will always return false.
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
+                    if (ConfigCache.UpcomingQueryable) {
+                        progressIndicator.setVisibility(View.VISIBLE);
+
+                        isQuerying = true;
+                        ConfigCache.UpcomingScrollIndex += 1;
+                        Log.e("ERROR", "" + ConfigCache.UpcomingScrollIndex);
+
+                        // Asynchronously bind recycler view
+                        new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(true), (data) -> {
+                            if (!HelperClass.isEmpty(data)) {
+                                events.clear();
+                                events.addAll(data);
+
+                                new TaskRunner().executeAsyncPool(new UpcomingController.ConvertToThumbnailEvent(true, data), (filteredEvents) -> {
+                                    thumbnailModels.clear();
+                                    thumbnailModels.addAll(filteredEvents);
+                                    adapter.notifyDataSetChanged();
+                                    isQuerying = false;
+                                });
+                            }
+                            else {
+                                Toast.makeText(getContext(), "Connection Error", Toast.LENGTH_LONG).show();
+                            }
+
+                            progressIndicator.setVisibility(View.GONE);
+                        });
+                    }
+                }
+            }
         });
 
         return rootView;
