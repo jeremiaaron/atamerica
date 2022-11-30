@@ -7,9 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,6 +29,8 @@ import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.databinding.FragmentProfileBinding;
 import com.example.atamerica.ui.booked.BookedPageFragment;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.IOException;
 
@@ -66,7 +66,7 @@ public class ProfileFragment extends Fragment {
         buttonLogout.setOnClickListener(view -> LogOut());
 
         ProfilePhoto = mView.findViewById(R.id.profile_picture);
-        ProfilePhoto.setOnClickListener(view -> imageChooser());
+        ProfilePhoto.setOnClickListener(view -> StartCropAc());
 
         username.setText(AccountManager.User.FullName);
         email.setText(AccountManager.User.Email);
@@ -111,23 +111,21 @@ public class ProfileFragment extends Fragment {
         requireActivity().finish();
     }
 
-    void imageChooser(){
-        Intent i = new Intent();
-
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-
-        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+    void StartCropAc(){
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setAspectRatio(1,1)
+                .start(getContext(), this);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE){
-                Uri selectedImageUri = data.getData();
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), selectedImageUri);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), resultUri);
                     ProfilePhoto.setImageBitmap(bitmap);
 
 //                    DataHelper.Query.ExecuteNonQuery("INSERT INTO ProfileImage SET ProfileImage = ? WHERE user = ?", ??)
@@ -138,29 +136,57 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    // Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), selectedImageUri);
-    private void onSelectFromGalleryResult(Intent data){
-        Uri selectedImageUri = data.getData();
-        String[] projection = {MediaStore.MediaColumns.DATA};
-        Cursor cursor = getActivity().managedQuery(selectedImageUri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        cursor.moveToFirst();
+//    void imageChooser(){
+//        Intent i = new Intent();
+//
+//        i.setType("image/*");
+//        i.setAction(Intent.ACTION_GET_CONTENT);
+//
+//        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+//    }
 
-        String selectedImagePath = cursor.getString(column_index);
 
-        Bitmap bm;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(selectedImagePath, options);
-        final int REQUIRED_SIZE = 200;
-        int scale = 1;
-        while (options.outWidth / scale / 2 >= REQUIRED_SIZE && options.outHeight / scale / 2 >= REQUIRED_SIZE)
-            scale *= 2;
-        options.inSampleSize = scale;
-        options.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(selectedImagePath, options);
-
-        ProfilePhoto.setImageBitmap(bm);
-    }
+//    public void onActivityResult(int requestCode, int resultCode, Intent data){
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (resultCode == RESULT_OK) {
+//            if (requestCode == SELECT_PICTURE){
+//                Uri selectedImageUri = data.getData();
+//                try {
+//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), selectedImageUri);
+//                    ProfilePhoto.setImageBitmap(bitmap);
+//
+////                    DataHelper.Query.ExecuteNonQuery("INSERT INTO ProfileImage SET ProfileImage = ? WHERE user = ?", ??)
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
+//
+//    private void onSelectFromGalleryResult(Intent data){
+//        Uri selectedImageUri = data.getData();
+//
+//        String[] projection = {MediaStore.MediaColumns.DATA};
+//        Cursor cursor = getActivity().managedQuery(selectedImageUri, projection, null, null, null);
+//        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+//        cursor.moveToFirst();
+//
+//        String selectedImagePath = cursor.getString(column_index);
+//
+//        Bitmap bm;
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(selectedImagePath, options);
+//        final int REQUIRED_SIZE = 200;
+//        int scale = 1;
+//        while (options.outWidth / scale / 2 >= REQUIRED_SIZE && options.outHeight / scale / 2 >= REQUIRED_SIZE)
+//            scale *= 2;
+//        options.inSampleSize = scale;
+//        options.inJustDecodeBounds = false;
+//        bm = BitmapFactory.decodeFile(selectedImagePath, options);
+//
+//        ProfilePhoto.setImageBitmap(bm);
+//    }
 
 }

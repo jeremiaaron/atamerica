@@ -35,7 +35,7 @@
             app:layout_constraintTop_toBottomOf="@id/btnBack"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profile_picture"
             android:layout_width="120dp"
             android:layout_height="120dp"
@@ -46,7 +46,8 @@
             app:srcCompat="@drawable/grey_profile_image"
             app:layout_constraintTop_toBottomOf="@+id/pageHeader"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearanceOverlay="@style/circular"/>
 
         <TextView
             android:id="@+id/profile_name"
