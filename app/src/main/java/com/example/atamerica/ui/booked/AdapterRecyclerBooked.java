@@ -33,11 +33,11 @@ public class AdapterRecyclerBooked extends RecyclerView.Adapter<RecyclerView.Vie
     private Context                             context;
     private final LayoutInflater                inflater;
     private final List<VwAllEventModel>         events;
-    private final OnEventBookedClickListener   onEventClickListener;
+    private final OnEventBookedClickListener    onEventClickListener;
 
 
     public AdapterRecyclerBooked(Context ctx, List<VwAllEventModel> events, OnEventBookedClickListener onEventClickListener) {
-        this.events = new ArrayList<>(events);
+        this.events = events;
         this.inflater = LayoutInflater.from(ctx);
         this.onEventClickListener = onEventClickListener;
     }

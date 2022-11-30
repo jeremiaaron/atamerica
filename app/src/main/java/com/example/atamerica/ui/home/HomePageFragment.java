@@ -24,6 +24,7 @@ import com.example.atamerica.javaclass.HelperClass;
 import com.example.atamerica.models.views.VwEventThumbnailModel;
 import com.example.atamerica.models.views.VwHomeBannerModel;
 import com.example.atamerica.taskhandler.TaskRunner;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderView;
@@ -41,6 +42,7 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
     private AdapterRecyclerHomeLike     adapterLike;
     private AdapterRecyclerHomeTop      adapterTop;
     private AdapterSlider               adapterSlider;
+    private BottomNavigationView        bottomNavigationView;
 
     private SliderView                  sliderView;
 
@@ -69,6 +71,7 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
         recyclerViewHomeTop = rootView.findViewById(R.id.recyclerViewHomeTop);
         sliderView = rootView.findViewById(R.id.slider_view);
         progressIndicator = rootView.findViewById(R.id.progressIndicator);
+        bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation_view);
         ImageView profileButton = rootView.findViewById(R.id.profileButton);
 
         // Query data into fragment all event model list
@@ -76,6 +79,40 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
             if (!HelperClass.isEmpty(data)) {
                 // Filter home banner event
                 new TaskRunner().executeAsyncPool(new HomeController.FilterHomeBannerEvent(data), (eventFilter) -> {
+                    new TaskRunner().executeAsyncPool(new HomeController.FilterHomeLikeEvent(data), (eventFilter2) -> {
+                        new TaskRunner().executeAsyncPool(new HomeController.FilterHomeTopEvent(data), (eventFilter3) -> {
+                            if (!HelperClass.isEmpty(eventFilter3)) {
+                                this.eventsTop = new ArrayList<>(eventFilter3);
+                                adapterTop = new AdapterRecyclerHomeTop(getActivity(), eventsTop, HomePageFragment.this);
+
+                                // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
+                                LinearLayoutManager linearLayoutManagerTop = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                                recyclerViewHomeTop.setLayoutManager(linearLayoutManagerTop);
+                                recyclerViewHomeTop.setAdapter(adapterTop);
+                            }
+                            else {
+                                Toast.makeText(getContext(), "Connection Error", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        if (!HelperClass.isEmpty(eventFilter2)) {
+                            this.eventsLike = new ArrayList<>(eventFilter2);
+                            adapterLike = new AdapterRecyclerHomeLike(getActivity(), eventsLike, HomePageFragment.this);
+
+                            // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
+                            LinearLayoutManager linearLayoutManagerLike = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                            recyclerViewHomeLike.setLayoutManager(linearLayoutManagerLike);
+                            recyclerViewHomeLike.setAdapter(adapterLike);
+                        }
+                        else {
+                            Toast.makeText(getContext(), "Connection Error", Toast.LENGTH_LONG).show();
+                        }
+
+                        progressIndicator.setVisibility(View.GONE);
+                        contentContainer.setVisibility(View.VISIBLE);
+                        bottomNavigationView.setVisibility(View.VISIBLE);
+                    });
+
                     if (!HelperClass.isEmpty(eventFilter)) {
                         this.eventsBanner = new ArrayList<>(eventFilter); // Copy local to fragment
 
@@ -89,39 +126,6 @@ public class HomePageFragment extends Fragment implements AdapterRecyclerHomeLik
                         Toast.makeText(getContext(), "Connection Error", Toast.LENGTH_LONG).show();
                     }
                 });
-
-                new TaskRunner().executeAsyncPool(new HomeController.FilterHomeLikeEvent(data), (eventFilter) -> {
-                    if (!HelperClass.isEmpty(eventFilter)) {
-                        this.eventsLike = new ArrayList<>(eventFilter);
-                        adapterLike = new AdapterRecyclerHomeLike(getActivity(), eventsLike, HomePageFragment.this);
-
-                        // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
-                        LinearLayoutManager linearLayoutManagerLike = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                        recyclerViewHomeLike.setLayoutManager(linearLayoutManagerLike);
-                        recyclerViewHomeLike.setAdapter(adapterLike);
-                    }
-                    else {
-                        Toast.makeText(getContext(), "Connection Error", Toast.LENGTH_LONG).show();
-                    }
-                });
-
-                new TaskRunner().executeAsyncPool(new HomeController.FilterHomeTopEvent(data), (eventFilter) -> {
-                    if (!HelperClass.isEmpty(eventFilter)) {
-                        this.eventsTop = new ArrayList<>(eventFilter);
-                        adapterTop = new AdapterRecyclerHomeTop(getActivity(), eventsTop, HomePageFragment.this);
-
-                        // LinearLayoutManager for horizontal scrolling layout for EYML recycler view
-                        LinearLayoutManager linearLayoutManagerTop = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                        recyclerViewHomeTop.setLayoutManager(linearLayoutManagerTop);
-                        recyclerViewHomeTop.setAdapter(adapterTop);
-                    }
-                    else {
-                        Toast.makeText(getContext(), "Connection Error", Toast.LENGTH_LONG).show();
-                    }
-                });
-
-                progressIndicator.setVisibility(View.GONE);
-                contentContainer.setVisibility(View.VISIBLE);
             }
             else {
                 Toast.makeText(getContext(), "Connection Error", Toast.LENGTH_LONG).show();

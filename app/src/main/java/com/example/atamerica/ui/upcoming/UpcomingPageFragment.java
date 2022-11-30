@@ -204,7 +204,6 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
                 // direction integers: -1 for up, 1 for down, 0 will always return false.
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
                     if (ConfigCache.UpcomingQueryable) {
@@ -216,20 +215,15 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
                         // Asynchronously bind recycler view
                         new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(true), (data) -> {
-                            if (!HelperClass.isEmpty(data)) {
-                                events.clear();
-                                events.addAll(data);
+                            events.clear();
+                            events.addAll(data);
 
-                                new TaskRunner().executeAsyncPool(new UpcomingController.ConvertToThumbnailEvent(true, data), (filteredEvents) -> {
-                                    thumbnailModels.clear();
-                                    thumbnailModels.addAll(filteredEvents);
-                                    adapter.notifyDataSetChanged();
-                                    isQuerying = false;
-                                });
-                            }
-                            else {
-                                Toast.makeText(getContext(), "Connection Error", Toast.LENGTH_LONG).show();
-                            }
+                            new TaskRunner().executeAsyncPool(new UpcomingController.ConvertToThumbnailEvent(true, data), (filteredEvents) -> {
+                                thumbnailModels.clear();
+                                thumbnailModels.addAll(filteredEvents);
+                                adapter.notifyDataSetChanged();
+                                isQuerying = false;
+                            });
 
                             progressIndicator.setVisibility(View.GONE);
                         });

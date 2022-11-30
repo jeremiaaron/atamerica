@@ -1,50 +1,28 @@
 package com.example.atamerica.ui.booked;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.atamerica.ChildActivity;
 import com.example.atamerica.R;
 import com.example.atamerica.controllers.BookedController;
 import com.example.atamerica.databinding.FragmentBookedPageBinding;
-import com.example.atamerica.databinding.FragmentUpcomingPageBinding;
-import com.example.atamerica.dbhandler.DataHelper;
-import com.example.atamerica.models.AppEventModel;
-import com.example.atamerica.models.EventDocumentModel;
 import com.example.atamerica.models.views.VwAllEventModel;
-import com.example.atamerica.taskhandler.QueryVwEventThumbnailTask;
 import com.example.atamerica.taskhandler.TaskRunner;
 import com.example.atamerica.ui.detail.DetailPageFragment;
-import com.example.atamerica.ui.upcoming.AdapterRecyclerUpcoming;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class BookedPageFragment extends Fragment implements AdapterRecyclerBooked.OnEventBookedClickListener {
@@ -53,8 +31,8 @@ public class BookedPageFragment extends Fragment implements AdapterRecyclerBooke
     AdapterRecyclerBooked           adapter;
 
     RecyclerView                    recyclerView;
-    ImageView                       profileButton;
 
+    private boolean                 isQuerying;
     private List<VwAllEventModel>   events;
 
     @Override
@@ -72,6 +50,7 @@ public class BookedPageFragment extends Fragment implements AdapterRecyclerBooke
         // Define recycle view in the activity
         recyclerView = mView.findViewById(R.id.recyclerViewBooked);
         events = new ArrayList<>();
+        isQuerying = false;
 
         // Define recycler adapter for the recycler view
         new TaskRunner().executeAsyncPool(new BookedController.GetEvents(false), (data) -> {
@@ -82,6 +61,29 @@ public class BookedPageFragment extends Fragment implements AdapterRecyclerBooke
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setAdapter(adapter);
+        });
+
+        // Pull to refresh
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                // direction integers: -1 for up, 1 for down, 0 will always return false.
+                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
+                    isQuerying = true;
+
+                    // Asynchronously bind recycler view
+                    new TaskRunner().executeAsyncPool(new BookedController.GetEvents(true), (data) -> {
+                        events.clear();
+                        events.addAll(data);
+                        adapter.notifyDataSetChanged();
+                        isQuerying = false;
+                    });
+
+                    Toast.makeText(getContext(), "QUERY", Toast.LENGTH_LONG).show();
+                }
+            }
         });
 
         return mView;

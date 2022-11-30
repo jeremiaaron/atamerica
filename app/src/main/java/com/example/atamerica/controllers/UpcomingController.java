@@ -53,7 +53,7 @@ public class UpcomingController {
 
                             List<VwAllEventModel> eventsRemove = EventItemCache.EventMoreThanNowList
                                     .stream()
-                                    .filter(doc -> Objects.equals(doc.EventId, event.EventId))
+                                    .filter(evt -> Objects.equals(evt.EventId, event.EventId))
                                     .collect(Collectors.toList());
 
                             EventItemCache.EventMoreThanNowList.removeAll(eventsRemove);

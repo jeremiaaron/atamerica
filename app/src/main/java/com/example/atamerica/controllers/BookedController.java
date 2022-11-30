@@ -30,9 +30,9 @@ public class BookedController {
             if (isRefresh || HelperClass.isEmpty(EventItemCache.RegisteredEventList)) {
                 List<String> registeredEventIds = DataHelper.Query.ReturnAsList("SELECT EventId FROM MemberRegister WHERE Email = ? ORDER BY RegisterDate; ", new Object[] {AccountManager.User.Email});
 
-                if (!HelperClass.isEmpty(registeredEventIds)) {
-                    EventItemCache.RegisteredEventList.clear();
+                EventItemCache.RegisteredEventList.clear();
 
+                if (!HelperClass.isEmpty(registeredEventIds)) {
                     for (String eventId : registeredEventIds) {
                         // Check cache
                         if (EventItemCache.EventCacheMap.containsKey(eventId)) {
