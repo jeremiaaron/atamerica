@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
     private List<VwAllEventModel>           events;
     private List<VwEventThumbnailModel>     thumbnailModels;
 
-    private boolean                         isQuerying;
+    private boolean                         isQuerying, queryAble;
     private CircularProgressIndicator       progressIndicator;
 
     @Override
@@ -67,15 +66,16 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         View rootView = binding.getRoot();
 
         // Get views
-        recyclerView        = rootView.findViewById(R.id.recyclerViewUpcoming);
-        Button categoryButton = rootView.findViewById(R.id.categoryButton);
-        Button sortButton = rootView.findViewById(R.id.sortButton);
+        recyclerView            = rootView.findViewById(R.id.recyclerViewUpcoming);
+        Button categoryButton   = rootView.findViewById(R.id.categoryButton);
+        Button sortButton       = rootView.findViewById(R.id.sortButton);
         ImageView profileButton = rootView.findViewById(R.id.profileButton);
-        progressIndicator   = rootView.findViewById(R.id.progressIndicator);
+        progressIndicator       = rootView.findViewById(R.id.progressIndicator);
 
-        events = new ArrayList<>();
-        thumbnailModels = new ArrayList<>();
-        isQuerying = false;
+        events                  = new ArrayList<>();
+        thumbnailModels         = new ArrayList<>();
+        isQuerying              = false;
+        queryAble               = true;
 
         // Asynchronously bind recycler view
         new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(false), (data) -> {
@@ -83,7 +83,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                 this.events.clear();
                 this.events.addAll(data);
 
-                new TaskRunner().executeAsyncPool(new UpcomingController.ConvertToThumbnailEvent(false, data), (filteredEvents) -> {
+                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data), (filteredEvents) -> {
                     this.thumbnailModels.clear();
                     this.thumbnailModels.addAll(filteredEvents);
 
@@ -204,23 +204,24 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+
                 // direction integers: -1 for up, 1 for down, 0 will always return false.
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
-                    if (ConfigCache.UpcomingQueryable) {
+                    if (queryAble) {
                         progressIndicator.setVisibility(View.VISIBLE);
 
                         isQuerying = true;
                         ConfigCache.UpcomingScrollIndex += 1;
-                        Log.e("ERROR", "" + ConfigCache.UpcomingScrollIndex);
 
                         // Asynchronously bind recycler view
                         new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(true), (data) -> {
                             events.clear();
                             events.addAll(data);
+                            queryAble = ConfigCache.UpcomingQueryable;
 
-                            new TaskRunner().executeAsyncPool(new UpcomingController.ConvertToThumbnailEvent(true, data), (filteredEvents) -> {
+                            new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data), (filteredFilteredEvents) -> {
                                 thumbnailModels.clear();
-                                thumbnailModels.addAll(filteredEvents);
+                                thumbnailModels.addAll(filteredFilteredEvents);
                                 adapter.notifyDataSetChanged();
                                 isQuerying = false;
                             });
@@ -228,6 +229,29 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                             progressIndicator.setVisibility(View.GONE);
                         });
                     }
+                }
+                else if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
+                    progressIndicator.setVisibility(View.VISIBLE);
+
+                    isQuerying = true;
+                    int currentRow = ConfigCache.UpcomingScrollIndex;
+                    ConfigCache.UpcomingScrollIndex = 0;
+
+                    // Asynchronously bind recycler view
+                    new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(true), (data) -> {
+                        events.clear();
+                        events.addAll(data);
+                        ConfigCache.UpcomingScrollIndex = currentRow;
+
+                        new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data), (filteredFilteredEvents) -> {
+                            thumbnailModels.clear();
+                            thumbnailModels.addAll(filteredFilteredEvents);
+                            adapter.notifyDataSetChanged();
+                            isQuerying = false;
+                        });
+
+                        progressIndicator.setVisibility(View.GONE);
+                    });
                 }
             }
         });

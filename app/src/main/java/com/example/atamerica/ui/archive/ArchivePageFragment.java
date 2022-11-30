@@ -51,6 +51,7 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
     private List<VwAllEventModel>       events;
     private List<VwEventThumbnailModel> thumbnailModels;
 
+    private boolean                     isQuerying, queryAble;
     private CircularProgressIndicator   progressIndicator;
 
     @Override
@@ -72,33 +73,33 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
         filterLayout        = mView.findViewById(R.id.filterLayout);
         progressIndicator   = mView.findViewById(R.id.progressIndicator);
 
-        events = new ArrayList<>();
-        thumbnailModels = new ArrayList<>();
+        events              = new ArrayList<>();
+        thumbnailModels     = new ArrayList<>();
+        isQuerying          = false;
+        queryAble           = true;
 
         // Asynchronously bind
-        new TaskRunner().executeAsyncPool(new ArchiveController.GetEvent(), (data) -> {
+        new TaskRunner().executeAsyncPool(new ArchiveController.GetEvents(false), (data) -> {
             if (!HelperClass.isEmpty(data)) {
                 this.events.clear();
                 this.events.addAll(data);
 
-                new TaskRunner().executeAsyncPool(new ArchiveController.ConvertToThumbnailEvent(data), (filterEvents) -> {
-                    if (!HelperClass.isEmpty(filterEvents)) {
-                        this.thumbnailModels.clear();
-                        this.thumbnailModels.addAll(filterEvents);
+                new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(data), (filterEvents) -> {
+                    this.thumbnailModels.clear();
+                    this.thumbnailModels.addAll(filterEvents);
 
-                        // Define recycler adapter for the recycler view
-                        adapter = new AdapterRecyclerArchive(getActivity(), this.thumbnailModels, this);
+                    // Define recycler adapter for the recycler view
+                    adapter = new AdapterRecyclerArchive(getActivity(), this.thumbnailModels, this);
 
-                        // GridLayoutManager for grid layout of the recycler view
-                        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
-                        recyclerView.setLayoutManager(gridLayoutManager);
-                        recyclerView.setAdapter(adapter);
+                    // GridLayoutManager for grid layout of the recycler view
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+                    recyclerView.setLayoutManager(gridLayoutManager);
+                    recyclerView.setAdapter(adapter);
 
-                        recyclerView.setVisibility(View.VISIBLE);
-                        topBarLayout.setVisibility(View.VISIBLE);
-                        filterLayout.setVisibility(View.VISIBLE);
-                        progressIndicator.setVisibility(View.GONE);
-                    }
+                    recyclerView.setVisibility(View.VISIBLE);
+                    topBarLayout.setVisibility(View.VISIBLE);
+                    filterLayout.setVisibility(View.VISIBLE);
+                    progressIndicator.setVisibility(View.GONE);
                 });
             }
             else {
@@ -208,6 +209,63 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
 
             bottomSheetDialog.setContentView(bottomSheetView);
             bottomSheetDialog.show();
+        });
+
+        // On scroll bottom reached listener
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                // direction integers: -1 for up, 1 for down, 0 will always return false.
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
+                    if (queryAble) {
+                        progressIndicator.setVisibility(View.VISIBLE);
+
+                        isQuerying = true;
+                        ConfigCache.ArchivedScrollIndex += 1;
+
+                        // Asynchronously bind recycler view
+                        new TaskRunner().executeAsyncPool(new ArchiveController.GetEvents(true), (data) -> {
+                            events.clear();
+                            events.addAll(data);
+                            queryAble = ConfigCache.ArchivedQueryable;
+
+                            new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(data), (filteredFilteredEvents) -> {
+                                thumbnailModels.clear();
+                                thumbnailModels.addAll(filteredFilteredEvents);
+                                adapter.notifyDataSetChanged();
+                                isQuerying = false;
+                            });
+
+                            progressIndicator.setVisibility(View.GONE);
+                        });
+                    }
+                }
+                else if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
+                    progressIndicator.setVisibility(View.VISIBLE);
+
+                    isQuerying = true;
+                    int currentRow = ConfigCache.ArchivedScrollIndex;
+                    ConfigCache.ArchivedScrollIndex = 0;
+
+                    // Asynchronously bind recycler view
+                    new TaskRunner().executeAsyncPool(new ArchiveController.GetEvents(true), (data) -> {
+                        events.clear();
+                        events.addAll(data);
+                        ConfigCache.ArchivedScrollIndex = currentRow;
+
+                        new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(data), (filteredFilteredEvents) -> {
+                            thumbnailModels.clear();
+                            thumbnailModels.addAll(filteredFilteredEvents);
+                            adapter.notifyDataSetChanged();
+                            isQuerying = false;
+                        });
+
+                        progressIndicator.setVisibility(View.GONE);
+                    });
+                }
+            }
         });
 
         return mView;

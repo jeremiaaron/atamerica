@@ -10,6 +10,7 @@ public class ConfigCache {
     public static List<String> UpcomingCategories = new ArrayList<>();
     public static int UpcomingSortConfig = 1;
 
+    public static boolean ArchivedQueryable = true;
     public static int ArchivedScrollIndex = 0;
     public static List<String> ArchivedCategories = new ArrayList<>();
     public static int ArchivedSortConfig = 1;

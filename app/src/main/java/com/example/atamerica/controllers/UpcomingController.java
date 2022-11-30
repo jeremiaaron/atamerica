@@ -1,7 +1,5 @@
 package com.example.atamerica.controllers;
 
-import android.util.Log;
-
 import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.cache.ConfigCache;
 import com.example.atamerica.cache.EventItemCache;
@@ -22,24 +20,22 @@ public class UpcomingController {
 
     public static class GetEvents implements Callable<List<VwAllEventModel>> {
 
-        private final boolean queryNext;
+        private final boolean refreshQuery;
 
-        public GetEvents(boolean queryNext) {
-            this.queryNext = queryNext;
+        public GetEvents(boolean refreshQuery) {
+            this.refreshQuery = refreshQuery;
         }
 
         @Override
         public List<VwAllEventModel> call() {
             // Check for cache
-            if (queryNext || HelperClass.isEmpty(EventItemCache.EventMoreThanNowList)) {
+            if (refreshQuery || HelperClass.isEmpty(EventItemCache.EventMoreThanNowList)) {
                 try {
                     List<VwAllEventModel> events = DataHelper.Query.ReturnAsObjectList("SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY EventStartTime) AS RowNumber, A.* FROM VwAllEvent A WHERE EventStartTime >= NOW()) B WHERE RowNumber >= ? AND RowNumber <= ? ORDER BY EventStartTime ASC, EventId ASC; ", VwAllEventModel.class,
                             new Object[] { ConfigCache.UpcomingScrollIndex * 8, (ConfigCache.UpcomingScrollIndex + 1) * 8  });
 
                     if (!HelperClass.isEmpty(events)) {
-                        if (events.size() < 8) {
-                            ConfigCache.UpcomingQueryable = false;
-                        }
+                        ConfigCache.UpcomingQueryable = !(events.size() < 8);
 
                         for (VwAllEventModel event : events) {
                             event.MapAttribute();

@@ -12,22 +12,31 @@ import com.example.atamerica.taskhandler.TaskRunner;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 public class ArchiveController {
 
-    public static class GetEvent implements Callable<List<VwAllEventModel>> {
+    public static class GetEvents implements Callable<List<VwAllEventModel>> {
+
+        private final boolean refreshQuery;
+
+        public GetEvents(boolean refreshQuery) {
+            this.refreshQuery = refreshQuery;
+        }
 
         @Override
         public List<VwAllEventModel> call() {
             // Check for cache
-            if (HelperClass.isEmpty(EventItemCache.EventLessThanNowList)) {
-                List<VwAllEventModel> events;
-
+            if (refreshQuery || HelperClass.isEmpty(EventItemCache.EventLessThanNowList)) {
                 try {
-                    events = DataHelper.Query.ReturnAsObjectList("SELECT * FROM VwAllEvent WHERE EventStartTime < NOW() ORDER BY EventStartTime ASC, EventId ASC; ", VwAllEventModel.class, null);
+                    List<VwAllEventModel> events = DataHelper.Query.ReturnAsObjectList("SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY EventStartTime) AS RowNumber, A.* FROM VwAllEvent A WHERE EventStartTime <= NOW()) B WHERE RowNumber >= ? AND RowNumber <= ? ORDER BY EventStartTime ASC, EventId ASC; ", VwAllEventModel.class,
+                            new Object[] { ConfigCache.ArchivedScrollIndex * 8, (ConfigCache.ArchivedScrollIndex + 1) * 8  });
 
                     if (!HelperClass.isEmpty(events)) {
+                        ConfigCache.ArchivedQueryable = !(events.size() < 8);
+
                         for (VwAllEventModel event : events) {
                             event.MapAttribute();
                             event.MapDocument();
@@ -37,10 +46,16 @@ public class ArchiveController {
 
                             // Store information to cache
                             EventItemCache.EventCacheMap.put(event.EventId, event);
-                        }
 
-                        EventItemCache.EventLessThanNowList.clear();
-                        EventItemCache.EventLessThanNowList.addAll(events);
+                            // Filter duplicated events
+                            List<VwAllEventModel> eventsRemove = EventItemCache.EventLessThanNowList
+                                    .stream()
+                                    .filter(evt -> Objects.equals(evt.EventId, event.EventId))
+                                    .collect(Collectors.toList());
+
+                            EventItemCache.EventLessThanNowList.removeAll(eventsRemove);
+                            EventItemCache.EventLessThanNowList.add(event);
+                        }
                     }
                 }
                 catch (Exception e) {
@@ -53,41 +68,7 @@ public class ArchiveController {
 
     }
 
-    public static class ConvertToThumbnailEvent implements Callable<List<VwEventThumbnailModel>> {
-
-        private final List<VwAllEventModel> events;
-
-        public ConvertToThumbnailEvent(final List<VwAllEventModel> events) {
-            this.events = events;
-        }
-
-        @Override
-        public List<VwEventThumbnailModel> call() {
-            List<VwEventThumbnailModel> thumbnailEvents = new ArrayList<>();
-
-            // Check for cache
-            if (HelperClass.isEmpty(EventItemCache.ArchivedEventList)) {
-                try {
-                    // Select only three banner
-                    for (VwAllEventModel event : events) {
-                        // Add into list, using parser
-                        thumbnailEvents.add(VwEventThumbnailModel.Parse(event));
-                    }
-
-                    EventItemCache.ArchivedEventList.clear();
-                    EventItemCache.ArchivedEventList.addAll(thumbnailEvents);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return EventItemCache.ArchivedEventList;
-        }
-    }
-
     public static class FilterEvents implements Callable<List<VwEventThumbnailModel>> {
-
         private final List<VwAllEventModel> events;
 
         public FilterEvents(final List<VwAllEventModel> events) {
