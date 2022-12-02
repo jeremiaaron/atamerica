@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
+        tools:ignore="HardcodedText"
         tools:context=".ui.profile.ProfileFragment">
 
         <!-- Top Bar -->
@@ -19,7 +20,8 @@
             app:tint="@color/blue"
             app:srcCompat="@drawable/arrow_back_vector"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="ContentDescription" />
 
         <!-- Header -->
         <TextView
@@ -46,8 +48,8 @@
             app:srcCompat="@drawable/grey_profile_image"
             app:layout_constraintTop_toBottomOf="@+id/pageHeader"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:shapeAppearanceOverlay="@style/circular"/>
+            app:layout_constraintEnd_toEndOf="parent" />
+<!--            app:shapeAppearanceOverlay="@style/circular"-->
 
         <TextView
             android:id="@+id/profile_name"

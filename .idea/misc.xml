@@ -9,10 +9,12 @@
         <entry key="..\:/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/atamerica/app/src/main/res/layout/activity_register_page.xml" value="0.33" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1655" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable-v24/search_input_field.xml" value="0.181" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable-v24/transparent_gradient_red.xml" value="0.174" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.187" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/calendar_icon_small.xml" value="0.1815" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/checkbox_color.xml" value="0.2025" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/custom_input_field.xml" value="0.181" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/data.xml" value="0.2115" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/gradient_blue_red.xml" value="0.1985" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/home_icon.xml" value="0.174" />
@@ -21,7 +23,7 @@
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/ic_atamericaicon.xml" value="0.176" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1655" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/rounded_square.xml" value="0.2" />
-        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/textfield_border.xml" value="0.1845" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/textfield_border.xml" value="0.176" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/ticket_icon.xml" value="0.1985" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/time_icon_small.xml" value="0.1815" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/drawable/transparent_gradient.xml" value="0.238" />
@@ -59,15 +61,15 @@
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_blank.xml" value="0.22342342342342342" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_booked_page.xml" value="0.22" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_description.xml" value="0.264" />
-        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_detail_page.xml" value="0.17" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_detail_page.xml" value="0.2" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_guest.xml" value="0.21105072463768115" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_home_page.xml" value="0.22342342342342342" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_layout.xml" value="0.22342342342342342" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_login.xml" value="0.2112420670897552" />
-        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_profile.xml" value="0.22342342342342342" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_register_page.xml" value="0.2" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_sign_up.xml" value="0.21105072463768115" />
-        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_upcoming_page.xml" value="0.22342342342342342" />
+        <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_upcoming_page.xml" value="0.2" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/fragment_video.xml" value="0.19157608695652173" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/home_like_recycler_layout.xml" value="0.22342342342342342" />
         <entry key="..\:/Documents/AndroidStudioProjects/atamerica/app/src/main/res/layout/home_recycler_layout.xml" value="0.22342342342342342" />
@@ -96,10 +98,10 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17_PREVIEW" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
-    <option name="id" value="Android" />
+    <option name="id" value="jpab" />
   </component>
 </project>

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
@@ -70,6 +71,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         Button categoryButton   = rootView.findViewById(R.id.categoryButton);
         Button sortButton       = rootView.findViewById(R.id.sortButton);
         ImageView profileButton = rootView.findViewById(R.id.profileButton);
+        SearchView searchBar    = rootView.findViewById(R.id.searchBar);
         progressIndicator       = rootView.findViewById(R.id.progressIndicator);
 
         events                  = new ArrayList<>();
@@ -197,6 +199,27 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
             bottomSheetDialog.setContentView(bottomSheetView);
             bottomSheetDialog.show();
+        });
+
+        // Search event bar
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events, newText), (data) -> {
+                    thumbnailModels.clear();
+                    thumbnailModels.addAll(data);
+                    adapter.notifyDataSetChanged();
+                });
+
+                return true;
+            }
         });
 
         // On scroll bottom reached listener

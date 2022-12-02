@@ -34,10 +34,10 @@
         <item>Memberantas kemiskinan bukanlah tindakan amal. Ini adalah tindakan keadilan dan kunci untuk membuka potensi manusia yang sangat besar! Pelajari lebih lanjut dari para pahlawan akar rumput ini tentang apa yang dapat kita lakukan untuk mendukung tujuan ini!</item>
     </string-array>
 
-    <integer-array name="home_banners">
+<!--    <integer-array name="home_banners">
         <item>@drawable/evt1_detail_img</item>
         <item>@drawable/evt2_detail_img</item>
         <item>@drawable/evt3_detail_img</item>
-    </integer-array>
+    </integer-array>-->
 
 </resources>

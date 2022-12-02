@@ -103,9 +103,16 @@ public class UpcomingController {
     public static class FilterEvents implements Callable<List<VwEventThumbnailModel>> {
 
         private final List<VwAllEventModel> events;
+        private final String searchText;
 
         public FilterEvents(final List<VwAllEventModel> events) {
             this.events = new ArrayList<>(events);
+            this.searchText = "";
+        }
+
+        public FilterEvents(final List<VwAllEventModel> events, String searchText) {
+            this.events = new ArrayList<>(events);
+            this.searchText = searchText;
         }
 
         @Override
@@ -119,7 +126,8 @@ public class UpcomingController {
 
                 // Filter events
                 for (VwAllEventModel event : events) {
-                    if (HelperClass.isEmpty(ConfigCache.UpcomingCategories) || ConfigCache.UpcomingCategories.contains(event.CategoryName)) {
+                    if (event.EventName.toLowerCase().contains(searchText.toLowerCase())
+                            && (HelperClass.isEmpty(ConfigCache.UpcomingCategories) || ConfigCache.UpcomingCategories.contains(event.CategoryName))) {
                         thumbnailEvents.add(VwEventThumbnailModel.Parse(event));
                     }
                 }

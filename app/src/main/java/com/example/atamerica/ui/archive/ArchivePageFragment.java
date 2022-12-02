@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
@@ -26,6 +27,7 @@ import com.example.atamerica.ChildActivity;
 import com.example.atamerica.R;
 import com.example.atamerica.cache.ConfigCache;
 import com.example.atamerica.controllers.ArchiveController;
+import com.example.atamerica.controllers.UpcomingController;
 import com.example.atamerica.databinding.FragmentArchivePageBinding;
 import com.example.atamerica.javaclass.HelperClass;
 import com.example.atamerica.models.views.VwAllEventModel;
@@ -68,15 +70,16 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
         View mView = binding.getRoot();
 
         // Define recycle view in the activity
-        recyclerView        = mView.findViewById(R.id.recyclerViewArchive);
-        topBarLayout        = mView.findViewById(R.id.topBarLayout);
-        filterLayout        = mView.findViewById(R.id.filterLayout);
-        progressIndicator   = mView.findViewById(R.id.progressIndicator);
+        SearchView searchBar    = mView.findViewById(R.id.searchBar);
+        recyclerView            = mView.findViewById(R.id.recyclerViewArchive);
+        topBarLayout            = mView.findViewById(R.id.topBarLayout);
+        filterLayout            = mView.findViewById(R.id.filterLayout);
+        progressIndicator       = mView.findViewById(R.id.progressIndicator);
 
-        events              = new ArrayList<>();
-        thumbnailModels     = new ArrayList<>();
-        isQuerying          = false;
-        queryAble           = true;
+        events                  = new ArrayList<>();
+        thumbnailModels         = new ArrayList<>();
+        isQuerying              = false;
+        queryAble               = true;
 
         // Asynchronously bind
         new TaskRunner().executeAsyncPool(new ArchiveController.GetEvents(false), (data) -> {
@@ -209,6 +212,27 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
 
             bottomSheetDialog.setContentView(bottomSheetView);
             bottomSheetDialog.show();
+        });
+
+        // Search event bar
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(events, newText), (data) -> {
+                    thumbnailModels.clear();
+                    thumbnailModels.addAll(data);
+                    adapter.notifyDataSetChanged();
+                });
+
+                return true;
+            }
         });
 
         // On scroll bottom reached listener

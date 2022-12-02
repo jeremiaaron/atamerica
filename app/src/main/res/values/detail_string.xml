@@ -57,7 +57,7 @@
         <item>Kunjungi pusat beberapa taman nasional dan museum terbaik di dunia, serta restoran terkenal! Tonton Instagram kami untuk merasakan keseruan Washington DC bersama Naura, langsung dari AS!</item>
     </string-array>
 
-    <integer-array name="evt_front_images_ids">
+<!--    <integer-array name="evt_front_images_ids">
         <item>@drawable/evt1_unfolding</item>
         <item>@drawable/evt2_margarita_theater</item>
         <item>@drawable/evt3_sustainable_development</item>
@@ -77,7 +77,7 @@
         <item>@drawable/evt6_detail_img</item>
         <item>@drawable/evt7_detail_img</item>
         <item>@drawable/evt8_detail_img</item>
-    </integer-array>
+    </integer-array>-->
 
     <string name="description">Description</string>
     <string name="button_register">Register Now</string>

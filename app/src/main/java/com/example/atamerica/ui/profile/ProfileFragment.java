@@ -29,8 +29,8 @@ import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.databinding.FragmentProfileBinding;
 import com.example.atamerica.ui.booked.BookedPageFragment;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
+//import com.theartofdev.edmodo.cropper.CropImage;
+//import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.IOException;
 
@@ -38,7 +38,7 @@ public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
 
-    private ImageView       ProfilePhoto;
+//    private ImageView       profilePhoto;
     private TextView        username, email;
     private Button          buttonBooked, buttonLogout;
 
@@ -65,8 +65,8 @@ public class ProfileFragment extends Fragment {
         buttonBooked.setOnClickListener(view -> moveToBooked());
         buttonLogout.setOnClickListener(view -> LogOut());
 
-        ProfilePhoto = mView.findViewById(R.id.profile_picture);
-        ProfilePhoto.setOnClickListener(view -> StartCropAc());
+//        ProfilePhoto = mView.findViewById(R.id.profile_picture);
+//        ProfilePhoto.setOnClickListener(view -> StartCropAc());
 
         username.setText(AccountManager.User.FullName);
         email.setText(AccountManager.User.Email);
@@ -111,7 +111,7 @@ public class ProfileFragment extends Fragment {
         requireActivity().finish();
     }
 
-    void StartCropAc(){
+/*    void StartCropAc(){
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1,1)
@@ -126,7 +126,7 @@ public class ProfileFragment extends Fragment {
                 Uri resultUri = result.getUri();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), resultUri);
-                    ProfilePhoto.setImageBitmap(bitmap);
+                    profilePhoto.setImageBitmap(bitmap);
 
 //                    DataHelper.Query.ExecuteNonQuery("INSERT INTO ProfileImage SET ProfileImage = ? WHERE user = ?", ??)
                 } catch (IOException e) {
@@ -134,6 +134,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         }
-    }
+    }*/
 
 }
