@@ -21,6 +21,7 @@ import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.atamerica.ChildActivity;
 import com.example.atamerica.R;
@@ -44,6 +45,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
     private CheckBox                        cbMusic, cbMovie, cbEducation, cbScience, cbDemocracy,
                                             cbEntrepreneurship, cbArts, cbProtecting, cbWomen, cbYseali;
     private RadioButton                     rbNewest, rbLatest;
+    private SearchView                      searchBar;
 
     AdapterRecyclerUpcoming                 adapter;
     private FragmentUpcomingPageBinding     binding;
@@ -53,6 +55,8 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
     private boolean                         isQuerying, queryAble;
     private CircularProgressIndicator       progressIndicator;
+
+    private SwipeRefreshLayout              swipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,8 +75,9 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
         Button categoryButton   = rootView.findViewById(R.id.categoryButton);
         Button sortButton       = rootView.findViewById(R.id.sortButton);
         ImageView profileButton = rootView.findViewById(R.id.profileButton);
-        SearchView searchBar    = rootView.findViewById(R.id.searchBar);
+        searchBar               = rootView.findViewById(R.id.searchBar);
         progressIndicator       = rootView.findViewById(R.id.progressIndicator);
+        swipeRefreshLayout      = rootView.findViewById(R.id.swipeRefreshLayout);
 
         events                  = new ArrayList<>();
         thumbnailModels         = new ArrayList<>();
@@ -85,7 +90,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                 this.events.clear();
                 this.events.addAll(data);
 
-                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data), (filteredEvents) -> {
+                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data, null), (filteredEvents) -> {
                     this.thumbnailModels.clear();
                     this.thumbnailModels.addAll(filteredEvents);
 
@@ -160,7 +165,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                 if (cbWomen.isChecked()) ConfigCache.UpcomingCategories.add("Women's Empowerment");
                 if (cbYseali.isChecked()) ConfigCache.UpcomingCategories.add("YSEALI and Alumni");
 
-                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events), (data) -> {
+                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events, searchBar.getQuery().toString()), (data) -> {
                     this.thumbnailModels.clear();
                     this.thumbnailModels.addAll(data);
                     adapter.notifyDataSetChanged();
@@ -188,7 +193,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
             applyButton.setOnClickListener(view1 -> {
                 ConfigCache.UpcomingSortConfig = (rbNewest.isChecked()) ? -1 : 1;
 
-                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events), (data) -> {
+                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events, searchBar.getQuery().toString()), (data) -> {
                     this.thumbnailModels.clear();
                     this.thumbnailModels.addAll(data);
                     adapter.notifyDataSetChanged();
@@ -211,7 +216,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                // Calls for filter events
                 new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(events, newText), (data) -> {
                     thumbnailModels.clear();
                     thumbnailModels.addAll(data);
@@ -231,7 +236,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                 // direction integers: -1 for up, 1 for down, 0 will always return false.
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
                     if (queryAble) {
-                        progressIndicator.setVisibility(View.VISIBLE);
+                        // progressIndicator.setVisibility(View.VISIBLE);
 
                         isQuerying = true;
                         ConfigCache.UpcomingScrollIndex += 1;
@@ -242,41 +247,42 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                             events.addAll(data);
                             queryAble = ConfigCache.UpcomingQueryable;
 
-                            new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data), (filteredFilteredEvents) -> {
+                            new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data, searchBar.getQuery().toString()), (filteredFilteredEvents) -> {
                                 thumbnailModels.clear();
                                 thumbnailModels.addAll(filteredFilteredEvents);
                                 adapter.notifyDataSetChanged();
                                 isQuerying = false;
                             });
 
-                            progressIndicator.setVisibility(View.GONE);
+                            // progressIndicator.setVisibility(View.GONE);
                         });
                     }
                 }
-                else if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
-                    progressIndicator.setVisibility(View.VISIBLE);
-
-                    isQuerying = true;
-                    int currentRow = ConfigCache.UpcomingScrollIndex;
-                    ConfigCache.UpcomingScrollIndex = 0;
-
-                    // Asynchronously bind recycler view
-                    new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(true), (data) -> {
-                        events.clear();
-                        events.addAll(data);
-                        ConfigCache.UpcomingScrollIndex = currentRow;
-
-                        new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data), (filteredFilteredEvents) -> {
-                            thumbnailModels.clear();
-                            thumbnailModels.addAll(filteredFilteredEvents);
-                            adapter.notifyDataSetChanged();
-                            isQuerying = false;
-                        });
-
-                        progressIndicator.setVisibility(View.GONE);
-                    });
-                }
             }
+        });
+
+        // on below line we are adding refresh listener
+        // for our swipe to refresh method.
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // on below line we are setting is refreshing to false.
+            swipeRefreshLayout.setRefreshing(false);
+
+            // Resetting row number in cache to fetch new events
+            int currentRow = ConfigCache.UpcomingScrollIndex;
+            ConfigCache.UpcomingScrollIndex = 0;
+
+            // Fetch new event and refresh adapter
+            new TaskRunner().executeAsyncPool(new UpcomingController.GetEvents(true), (data) -> {
+                events.clear();
+                events.addAll(data);
+                ConfigCache.UpcomingScrollIndex = currentRow;
+
+                new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data, searchBar.getQuery().toString()), (filteredFilteredEvents) -> {
+                    thumbnailModels.clear();
+                    thumbnailModels.addAll(filteredFilteredEvents);
+                    adapter.notifyDataSetChanged();
+                });
+            });
         });
 
         return rootView;

@@ -1,5 +1,7 @@
 package com.example.atamerica.controllers;
 
+import android.text.TextUtils;
+
 import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.cache.ConfigCache;
 import com.example.atamerica.cache.EventItemCache;
@@ -66,49 +68,10 @@ public class UpcomingController {
         }
     }
 
-    public static class ConvertToThumbnailEvent implements Callable<List<VwEventThumbnailModel>> {
-
-        private final boolean queryNext;
-        private final List<VwAllEventModel> events;
-
-        public ConvertToThumbnailEvent(boolean queryNext, final List<VwAllEventModel> events) {
-            this.queryNext = queryNext;
-            this.events = events;
-        }
-
-        @Override
-        public List<VwEventThumbnailModel> call() {
-            // Check for cache
-            if (queryNext || HelperClass.isEmpty(EventItemCache.UpcomingEventList)) {
-                List<VwEventThumbnailModel> thumbnailEvents = new ArrayList<>();
-
-                try {
-                    for (VwAllEventModel event : events) {
-                        // Add into list, using parser
-                        thumbnailEvents.add(VwEventThumbnailModel.Parse(event));
-                    }
-
-                    EventItemCache.UpcomingEventList.clear();
-                    EventItemCache.UpcomingEventList.addAll(thumbnailEvents);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return EventItemCache.UpcomingEventList;
-        }
-    }
-
     public static class FilterEvents implements Callable<List<VwEventThumbnailModel>> {
 
         private final List<VwAllEventModel> events;
         private final String searchText;
-
-        public FilterEvents(final List<VwAllEventModel> events) {
-            this.events = new ArrayList<>(events);
-            this.searchText = "";
-        }
 
         public FilterEvents(final List<VwAllEventModel> events, String searchText) {
             this.events = new ArrayList<>(events);
@@ -126,7 +89,7 @@ public class UpcomingController {
 
                 // Filter events
                 for (VwAllEventModel event : events) {
-                    if (event.EventName.toLowerCase().contains(searchText.toLowerCase())
+                    if (event.EventName.toLowerCase().contains(TextUtils.isEmpty(searchText) ? "" : searchText.toLowerCase())
                             && (HelperClass.isEmpty(ConfigCache.UpcomingCategories) || ConfigCache.UpcomingCategories.contains(event.CategoryName))) {
                         thumbnailEvents.add(VwEventThumbnailModel.Parse(event));
                     }

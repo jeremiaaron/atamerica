@@ -22,12 +22,12 @@ import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.atamerica.ChildActivity;
 import com.example.atamerica.R;
 import com.example.atamerica.cache.ConfigCache;
 import com.example.atamerica.controllers.ArchiveController;
-import com.example.atamerica.controllers.UpcomingController;
 import com.example.atamerica.databinding.FragmentArchivePageBinding;
 import com.example.atamerica.javaclass.HelperClass;
 import com.example.atamerica.models.views.VwAllEventModel;
@@ -49,12 +49,15 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
     private CheckBox                    cbMusic, cbMovie, cbEducation, cbScience, cbDemocracy, cbEntrepreneurship,
                                         cbArts, cbProtecting, cbWomen, cbYseali;
     private RadioButton                 rbNewest, rbLatest;
+    private SearchView                  searchBar;
 
     private List<VwAllEventModel>       events;
     private List<VwEventThumbnailModel> thumbnailModels;
 
     private boolean                     isQuerying, queryAble;
     private CircularProgressIndicator   progressIndicator;
+
+    private SwipeRefreshLayout          swipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,11 +73,12 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
         View mView = binding.getRoot();
 
         // Define recycle view in the activity
-        SearchView searchBar    = mView.findViewById(R.id.searchBar);
+        searchBar               = mView.findViewById(R.id.searchBar);
         recyclerView            = mView.findViewById(R.id.recyclerViewArchive);
         topBarLayout            = mView.findViewById(R.id.topBarLayout);
         filterLayout            = mView.findViewById(R.id.filterLayout);
         progressIndicator       = mView.findViewById(R.id.progressIndicator);
+        swipeRefreshLayout      = mView.findViewById(R.id.swipeRefreshLayout);
 
         events                  = new ArrayList<>();
         thumbnailModels         = new ArrayList<>();
@@ -87,7 +91,7 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
                 this.events.clear();
                 this.events.addAll(data);
 
-                new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(data), (filterEvents) -> {
+                new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(data, null), (filterEvents) -> {
                     this.thumbnailModels.clear();
                     this.thumbnailModels.addAll(filterEvents);
 
@@ -169,7 +173,7 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
                 if (cbWomen.isChecked()) ConfigCache.ArchivedCategories.add("Women's Empowerment");
                 if (cbYseali.isChecked()) ConfigCache.ArchivedCategories.add("YSEALI and Alumni");
 
-                new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(events), (data) -> {
+                new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(events, searchBar.getQuery().toString()), (data) -> {
                     this.thumbnailModels.clear();
                     this.thumbnailModels.addAll(data);
                     adapter.notifyDataSetChanged();
@@ -201,7 +205,7 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
             applyButton.setOnClickListener(view1 -> {
                 ConfigCache.ArchivedSortConfig = (rbNewest.isChecked()) ? -1 : 1;
 
-                new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(events), (data) -> {
+                new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(events, searchBar.getQuery().toString()), (data) -> {
                     this.thumbnailModels.clear();
                     this.thumbnailModels.addAll(data);
                     adapter.notifyDataSetChanged();
@@ -255,7 +259,7 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
                             events.addAll(data);
                             queryAble = ConfigCache.ArchivedQueryable;
 
-                            new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(data), (filteredFilteredEvents) -> {
+                            new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(data, searchBar.getQuery().toString()), (filteredFilteredEvents) -> {
                                 thumbnailModels.clear();
                                 thumbnailModels.addAll(filteredFilteredEvents);
                                 adapter.notifyDataSetChanged();
@@ -266,30 +270,31 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
                         });
                     }
                 }
-                else if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
-                    progressIndicator.setVisibility(View.VISIBLE);
-
-                    isQuerying = true;
-                    int currentRow = ConfigCache.ArchivedScrollIndex;
-                    ConfigCache.ArchivedScrollIndex = 0;
-
-                    // Asynchronously bind recycler view
-                    new TaskRunner().executeAsyncPool(new ArchiveController.GetEvents(true), (data) -> {
-                        events.clear();
-                        events.addAll(data);
-                        ConfigCache.ArchivedScrollIndex = currentRow;
-
-                        new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(data), (filteredFilteredEvents) -> {
-                            thumbnailModels.clear();
-                            thumbnailModels.addAll(filteredFilteredEvents);
-                            adapter.notifyDataSetChanged();
-                            isQuerying = false;
-                        });
-
-                        progressIndicator.setVisibility(View.GONE);
-                    });
-                }
             }
+        });
+
+        // on below line we are adding refresh listener
+        // for our swipe to refresh method.
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // on below line we are setting is refreshing to false.
+            swipeRefreshLayout.setRefreshing(false);
+
+            // Resetting row number in cache to fetch new events
+            int currentRow = ConfigCache.ArchivedScrollIndex;
+            ConfigCache.ArchivedScrollIndex = 0;
+
+            // Fetch new event and refresh adapter
+            new TaskRunner().executeAsyncPool(new ArchiveController.GetEvents(true), (data) -> {
+                events.clear();
+                events.addAll(data);
+                ConfigCache.ArchivedScrollIndex = currentRow;
+
+                new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(data, searchBar.getQuery().toString()), (filteredFilteredEvents) -> {
+                    thumbnailModels.clear();
+                    thumbnailModels.addAll(filteredFilteredEvents);
+                    adapter.notifyDataSetChanged();
+                });
+            });
         });
 
         return mView;

@@ -1,5 +1,7 @@
 package com.example.atamerica.controllers;
 
+import android.text.TextUtils;
+
 import com.example.atamerica.cache.AccountManager;
 import com.example.atamerica.cache.ConfigCache;
 import com.example.atamerica.cache.EventItemCache;
@@ -73,11 +75,6 @@ public class ArchiveController {
         private final List<VwAllEventModel> events;
         private final String searchText;
 
-        public FilterEvents(final List<VwAllEventModel> events) {
-            this.events = new ArrayList<>(events);
-            this.searchText = "";
-        }
-
         public FilterEvents(final List<VwAllEventModel> events, String searchText) {
             this.events = new ArrayList<>(events);
             this.searchText = searchText;
@@ -94,7 +91,7 @@ public class ArchiveController {
 
                 // Filter events
                 for (VwAllEventModel event : events) {
-                    if (event.EventName.toLowerCase().contains(searchText.toLowerCase())
+                    if (event.EventName.toLowerCase().contains(TextUtils.isEmpty(searchText) ? "" : searchText.toLowerCase())
                             && (HelperClass.isEmpty(ConfigCache.ArchivedCategories) || ConfigCache.ArchivedCategories.contains(event.CategoryName))) {
                         thumbnailEvents.add(VwEventThumbnailModel.Parse(event));
                     }
