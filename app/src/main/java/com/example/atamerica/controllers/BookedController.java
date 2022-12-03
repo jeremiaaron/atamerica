@@ -3,6 +3,7 @@ package com.example.atamerica.controllers;
 import android.util.Log;
 
 import com.example.atamerica.cache.AccountManager;
+import com.example.atamerica.cache.ConfigCache;
 import com.example.atamerica.cache.EventItemCache;
 import com.example.atamerica.dbhandler.DataHelper;
 import com.example.atamerica.javaclass.HelperClass;
@@ -10,6 +11,7 @@ import com.example.atamerica.models.views.VwAllEventModel;
 import com.example.atamerica.taskhandler.QueryVwAllEventTask;
 import com.example.atamerica.taskhandler.TaskRunner;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -56,6 +58,9 @@ public class BookedController {
                             }
                         }
                     }
+
+                    // Sort by upcoming events
+                    EventItemCache.RegisteredEventList.sort(Comparator.comparing(event -> event.EventStartTime)); // latest
                 }
             }
 

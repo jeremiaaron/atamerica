@@ -1,5 +1,6 @@
 package com.example.atamerica.ui.archive;
 
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,7 +43,7 @@ public class ArchiveDetailPageFragment extends Fragment {
     private ScrollView                          scrollView;
 
     private String                              eventId;
-    private MaterialButton                      watchBtn;
+    private MaterialButton                      watchBtn, evtCategory;
     private FragmentArchiveDetailPageBinding    binding;
 
     private TabLayout                           tabLayout;
@@ -59,6 +60,7 @@ public class ArchiveDetailPageFragment extends Fragment {
         this.eventId = getArguments() != null ? getArguments().getString("event_id") : "";
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -71,6 +73,7 @@ public class ArchiveDetailPageFragment extends Fragment {
         scrollView          = mView.findViewById(R.id.scroll_view);
         watchBtn            = mView.findViewById(R.id.watch_button);
         progressIndicator   = mView.findViewById(R.id.progressIndicator);
+        evtCategory         = mView.findViewById(R.id.evtCategory);
 
         // Get model detail asynchronously
         new TaskRunner().executeAsyncPool(new QueryVwAllEventTask(this.eventId), (data) -> {
@@ -126,6 +129,7 @@ public class ArchiveDetailPageFragment extends Fragment {
                 TextView evtYear    = mView.findViewById(R.id.evtYear);
 
                 evtTitle.setText(model.EventName);
+                evtCategory.setText(model.CategoryName);
                 new TaskRunner().executeAsyncPool(new DownloadBitmapTask(model.DocumentList
                         .stream()
                         .filter(doc -> Objects.equals(doc.Title, "detail_header"))

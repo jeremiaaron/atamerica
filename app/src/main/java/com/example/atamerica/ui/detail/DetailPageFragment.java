@@ -44,7 +44,7 @@ public class DetailPageFragment extends Fragment {
     private FrameLayout                 frameLayout;
     private ScrollView                  scrollView;
 
-    private MaterialButton              fullBtn, unregisterBtn, registerBtn;
+    private MaterialButton              fullBtn, unregisterBtn, registerBtn, evtCategory;
 
     private TabLayout                   tabLayout;
     private ViewPager2                  viewPager2;
@@ -77,6 +77,7 @@ public class DetailPageFragment extends Fragment {
         fullBtn             = mView.findViewById(R.id.fully_booked_button);
         unregisterBtn       = mView.findViewById(R.id.unregister_button);
         registerBtn         = mView.findViewById(R.id.register_button);
+        evtCategory         = mView.findViewById(R.id.evtCategory);
         TextView evtTitle   = mView.findViewById(R.id.evtTitle);
         ImageView evtImg    = mView.findViewById(R.id.evtImg);
         TextView evtDate    = mView.findViewById(R.id.dateContent);
@@ -135,6 +136,7 @@ public class DetailPageFragment extends Fragment {
                 String eventDuration = new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(startDate) + " - " + new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(endDate);
 
                 evtTitle.setText(model.EventName);
+                evtCategory.setText(model.CategoryName);
 
                 new TaskRunner().executeAsyncPool(new DownloadBitmapTask(model.DocumentList
                         .stream()

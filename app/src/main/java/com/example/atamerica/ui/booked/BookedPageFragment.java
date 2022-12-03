@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.atamerica.R;
 import com.example.atamerica.controllers.BookedController;
@@ -27,20 +28,20 @@ import java.util.List;
 
 public class BookedPageFragment extends Fragment implements AdapterRecyclerBooked.OnEventBookedClickListener {
 
-    FragmentBookedPageBinding       binding;
-    AdapterRecyclerBooked           adapter;
+    private FragmentBookedPageBinding       binding;
+    private AdapterRecyclerBooked           adapter;
 
-    RecyclerView                    recyclerView;
+    private RecyclerView                    recyclerView;
+    private List<VwAllEventModel>           events;
 
-    private boolean                 isQuerying;
-    private List<VwAllEventModel>   events;
+    private SwipeRefreshLayout              swipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    @SuppressLint("SourceLockedOrientationActivity")
+    @SuppressLint({"SourceLockedOrientationActivity", "NotifyDataSetChanged"})
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -48,9 +49,9 @@ public class BookedPageFragment extends Fragment implements AdapterRecyclerBooke
         View mView = binding.getRoot();
 
         // Define recycle view in the activity
-        recyclerView = mView.findViewById(R.id.recyclerViewBooked);
-        events = new ArrayList<>();
-        isQuerying = false;
+        recyclerView        = mView.findViewById(R.id.recyclerViewBooked);
+        swipeRefreshLayout  = mView.findViewById(R.id.swipeRefreshLayout);
+        events              = new ArrayList<>();
 
         // Define recycler adapter for the recycler view
         new TaskRunner().executeAsyncPool(new BookedController.GetEvents(false), (data) -> {
@@ -63,27 +64,20 @@ public class BookedPageFragment extends Fragment implements AdapterRecyclerBooke
             recyclerView.setAdapter(adapter);
         });
 
-        // Pull to refresh
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+        // on below line we are adding refresh listener
+        // for our swipe to refresh method.
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // on below line we are setting is refreshing to false.
+            swipeRefreshLayout.setRefreshing(false);
 
-                // direction integers: -1 for up, 1 for down, 0 will always return false.
-                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
-                    isQuerying = true;
+            // Asynchronously bind recycler view
+            new TaskRunner().executeAsyncPool(new BookedController.GetEvents(true), (data) -> {
+                events.clear();
+                events.addAll(data);
+                adapter.notifyDataSetChanged();
 
-                    // Asynchronously bind recycler view
-                    new TaskRunner().executeAsyncPool(new BookedController.GetEvents(true), (data) -> {
-                        events.clear();
-                        events.addAll(data);
-                        adapter.notifyDataSetChanged();
-                        isQuerying = false;
-                    });
-
-                    Toast.makeText(getContext(), "QUERY", Toast.LENGTH_LONG).show();
-                }
-            }
+                Toast.makeText(getContext(), "QUERY", Toast.LENGTH_LONG).show();
+            });
         });
 
         return mView;

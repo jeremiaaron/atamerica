@@ -35,7 +35,6 @@ public class AdapterRecyclerBooked extends RecyclerView.Adapter<RecyclerView.Vie
     private final List<VwAllEventModel>         events;
     private final OnEventBookedClickListener    onEventClickListener;
 
-
     public AdapterRecyclerBooked(Context ctx, List<VwAllEventModel> events, OnEventBookedClickListener onEventClickListener) {
         this.events = events;
         this.inflater = LayoutInflater.from(ctx);
@@ -66,6 +65,7 @@ public class AdapterRecyclerBooked extends RecyclerView.Adapter<RecyclerView.Vie
         new TaskRunner().executeAsyncPool(new DownloadBitmapTask(path), (data) -> viewHolder.evt_image.setImageBitmap(data));
         viewHolder.evt_date.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(startDate));
         viewHolder.evt_time.setText(eventDuration);
+        viewHolder.evt_category.setText(events.get(position).CategoryName);
     }
 
     @Override
@@ -81,6 +81,7 @@ public class AdapterRecyclerBooked extends RecyclerView.Adapter<RecyclerView.Vie
         CardView cardView;
         TextView evt_title, evt_date, evt_time;
         ImageView evt_image;
+        MaterialButton evt_category;
         OnEventBookedClickListener onEventClickListener;
 
         public ArchiveViewHolder(@NonNull View itemView, OnEventBookedClickListener onEventClickListener) {
@@ -90,6 +91,7 @@ public class AdapterRecyclerBooked extends RecyclerView.Adapter<RecyclerView.Vie
             evt_image = itemView.findViewById(R.id.evt_image);
             evt_date = itemView.findViewById(R.id.evt_date);
             evt_time = itemView.findViewById(R.id.evt_time);
+            evt_category = itemView.findViewById(R.id.evt_category);
             this.onEventClickListener = onEventClickListener;
 
             cardView.setOnClickListener(this);

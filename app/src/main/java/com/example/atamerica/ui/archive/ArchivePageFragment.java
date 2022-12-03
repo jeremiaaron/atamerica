@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -329,7 +330,7 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
     public void onEventArchiveClick(int position) {
         Intent intent = new Intent(getActivity(), ChildActivity.class);
         intent.putExtra("destination", "archiveDetailPageFragment");
-        intent.putExtra("event_id", this.events.get(position).EventId);
+        intent.putExtra("event_id", this.thumbnailModels.get(position).EventId);
         startActivity(intent);
     }
 }
