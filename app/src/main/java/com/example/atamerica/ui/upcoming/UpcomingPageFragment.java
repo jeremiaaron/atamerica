@@ -278,6 +278,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                 ConfigCache.UpcomingScrollIndex = currentRow;
 
                 new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data, searchBar.getQuery().toString()), (filteredFilteredEvents) -> {
+                    queryAble = true;
                     thumbnailModels.clear();
                     thumbnailModels.addAll(filteredFilteredEvents);
                     adapter.notifyDataSetChanged();

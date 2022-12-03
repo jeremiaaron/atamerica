@@ -230,6 +230,7 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
             public boolean onQueryTextChange(String newText) {
 
                 new TaskRunner().executeAsyncPool(new ArchiveController.FilterEvents(events, newText), (data) -> {
+                    queryAble = true;
                     thumbnailModels.clear();
                     thumbnailModels.addAll(data);
                     adapter.notifyDataSetChanged();
@@ -248,7 +249,6 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
                 // direction integers: -1 for up, 1 for down, 0 will always return false.
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
                     if (queryAble) {
-                        progressIndicator.setVisibility(View.VISIBLE);
 
                         isQuerying = true;
                         ConfigCache.ArchivedScrollIndex += 1;
@@ -265,8 +265,6 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
                                 adapter.notifyDataSetChanged();
                                 isQuerying = false;
                             });
-
-                            progressIndicator.setVisibility(View.GONE);
                         });
                     }
                 }
