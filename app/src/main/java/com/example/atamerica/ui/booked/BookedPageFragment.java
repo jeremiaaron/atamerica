@@ -76,7 +76,7 @@ public class BookedPageFragment extends Fragment implements AdapterRecyclerBooke
                 events.addAll(data);
                 adapter.notifyDataSetChanged();
 
-                Toast.makeText(getContext(), "QUERY", Toast.LENGTH_LONG).show();
+                // Toast.makeText(getContext(), "QUERY", Toast.LENGTH_LONG).show();
             });
         });
 

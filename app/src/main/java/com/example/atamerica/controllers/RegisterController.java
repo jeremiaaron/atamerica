@@ -20,13 +20,13 @@ public class RegisterController {
 
         @Override
         public Boolean call() {
-            if (EventItemCache.UserRegisteredEventList.contains(email + eventId)) {
+            if (EventItemCache.UserRegisteredEventList.contains(eventId)) {
                 return true;
             }
             else {
                 int registered = DataHelper.Query.ReturnAsInt("SELECT COUNT(*) AS Cnt FROM MemberRegister WHERE EventId = ? AND Email = ?; ", new Object[] { eventId, email });
                 if (registered > 0) {
-                    EventItemCache.UserRegisteredEventList.add(email + eventId);
+                    EventItemCache.UserRegisteredEventList.add(eventId);
                     return true;
                 }
             }
@@ -34,6 +34,7 @@ public class RegisterController {
             return false;
         }
     }
+
 
     public static class RegisterUser implements Callable<String> {
 
@@ -46,12 +47,18 @@ public class RegisterController {
             this.eventId = eventId;
         }
 
+        /**
+         * @return String,
+         * "A" indicates success
+         * "B" indicates error
+         * "C" indicates exists
+         */
         @Override
         public String call() {
             try {
                 // Check if already registered
-                if (EventItemCache.UserRegisteredEventList.contains(email + eventId)) {
-                    returnStatus = "B";
+                if (EventItemCache.UserRegisteredEventList.contains(eventId)) {
+                    returnStatus = "C";
                 }
                 else {
                     boolean execute = DataHelper.Query.ExecuteNonQuery("INSERT INTO MemberRegister (EventId, Email, RegisterDate, RegistrationStatus) VALUES (?, ?, NOW(), 'A'); ", new Object[] { eventId, email });
@@ -61,8 +68,11 @@ public class RegisterController {
                         if (EventItemCache.EventCacheMap.containsKey(eventId)) {
                             Objects.requireNonNull(EventItemCache.EventCacheMap.get(eventId)).Registered = true;
 
-                            EventItemCache.UserRegisteredEventList.remove(email + eventId);
-                            EventItemCache.UserRegisteredEventList.add(email + eventId);
+                            EventItemCache.RegisteredEventList.remove(EventItemCache.EventCacheMap.get(eventId));
+                            EventItemCache.RegisteredEventList.add(EventItemCache.EventCacheMap.get(eventId));
+
+                            EventItemCache.UserRegisteredEventList.remove(eventId);
+                            EventItemCache.UserRegisteredEventList.add(eventId);
                         }
                     }
                     else {
@@ -89,17 +99,24 @@ public class RegisterController {
             this.eventId = eventId;
         }
 
+        /**
+         * @return String,
+         * "A" indicates success
+         * "B" indicates error
+         * "C" indicates doesn't exists
+         */
         @Override
         public String call() {
             try {
                 // Check if already registered
-                if (EventItemCache.UserRegisteredEventList.contains(email + eventId)) {
+                if (EventItemCache.UserRegisteredEventList.contains(eventId)) {
                     boolean execute = DataHelper.Query.ExecuteNonQuery("DELETE FROM MemberRegister WHERE EventId = ? AND Email = ?;  ", new Object[] { eventId, email });
                     if (execute) {
                         // Rsync event cache
                         if (EventItemCache.EventCacheMap.containsKey(eventId)) {
                             Objects.requireNonNull(EventItemCache.EventCacheMap.get(eventId)).Registered = false;
-                            EventItemCache.UserRegisteredEventList.remove(email + eventId);
+                            EventItemCache.RegisteredEventList.remove(EventItemCache.EventCacheMap.get(eventId));
+                            EventItemCache.UserRegisteredEventList.remove(eventId);
                         }
                     }
                     else {
@@ -107,7 +124,7 @@ public class RegisterController {
                     }
                 }
                 else {
-                    returnStatus = "B";
+                    returnStatus = "C";
                 }
             }
             catch (Exception e) {

@@ -236,7 +236,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                 // direction integers: -1 for up, 1 for down, 0 will always return false.
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
                     if (queryAble) {
-                        // progressIndicator.setVisibility(View.VISIBLE);
+                         progressIndicator.setVisibility(View.VISIBLE);
 
                         isQuerying = true;
                         ConfigCache.UpcomingScrollIndex += 1;
@@ -254,7 +254,7 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                                 isQuerying = false;
                             });
 
-                            // progressIndicator.setVisibility(View.GONE);
+                             progressIndicator.setVisibility(View.GONE);
                         });
                     }
                 }
@@ -278,7 +278,6 @@ public class UpcomingPageFragment extends Fragment implements AdapterRecyclerUpc
                 ConfigCache.UpcomingScrollIndex = currentRow;
 
                 new TaskRunner().executeAsyncPool(new UpcomingController.FilterEvents(data, searchBar.getQuery().toString()), (filteredFilteredEvents) -> {
-                    queryAble = true;
                     thumbnailModels.clear();
                     thumbnailModels.addAll(filteredFilteredEvents);
                     adapter.notifyDataSetChanged();

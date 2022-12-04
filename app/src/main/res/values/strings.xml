@@ -28,4 +28,6 @@
 
     <!-- Booked -->
     <string name="booked_header">Your Booked Events</string>
+    <string name="guest">Guest</string>
+    <string name="watch_now">Watch Now</string>
 </resources>

@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +33,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -41,10 +42,10 @@ import java.util.stream.Collectors;
 
 public class DetailPageFragment extends Fragment {
 
-    private FrameLayout                 frameLayout;
+    private LinearLayout                frameLayout;
     private ScrollView                  scrollView;
 
-    private MaterialButton              fullBtn, unregisterBtn, registerBtn, evtCategory;
+    private MaterialButton              fullBtn, unregisterBtn, registerBtn, evtCategory, watch_button;
 
     private TabLayout                   tabLayout;
     private ViewPager2                  viewPager2;
@@ -77,6 +78,7 @@ public class DetailPageFragment extends Fragment {
         fullBtn             = mView.findViewById(R.id.fully_booked_button);
         unregisterBtn       = mView.findViewById(R.id.unregister_button);
         registerBtn         = mView.findViewById(R.id.register_button);
+        watch_button        = mView.findViewById(R.id.watch_button);
         evtCategory         = mView.findViewById(R.id.evtCategory);
         TextView evtTitle   = mView.findViewById(R.id.evtTitle);
         ImageView evtImg    = mView.findViewById(R.id.evtImg);
@@ -91,6 +93,13 @@ public class DetailPageFragment extends Fragment {
 
                 // Button detail
                 if (model.Registered) {
+                    // Check if current event falls between the event duration
+                    // Enables the watch now button
+                    Timestamp nowTime = new Timestamp(System.currentTimeMillis());
+                    if (nowTime.after(data.EventStartTime) && nowTime.before(data.EventEndTime)) {
+                        watch_button.setVisibility(View.VISIBLE);
+                    }
+
                     unregisterBtn.setVisibility(View.VISIBLE);
                 }
                 else if (model.MaxCapacity == model.RegisteredCount) {
@@ -163,6 +172,13 @@ public class DetailPageFragment extends Fragment {
                     successDialog.setContentView(R.layout.fragment_popup_success);
 
                     successDialog.setOnDismissListener(dialog -> {
+                        // Check if current event falls between the event duration
+                        // Enables the watch now button
+                        Timestamp nowTime = new Timestamp(System.currentTimeMillis());
+                        if (nowTime.after(model.EventStartTime) && nowTime.before(model.EventEndTime)) {
+                            watch_button.setVisibility(View.VISIBLE);
+                        }
+
                         unregisterBtn.setVisibility(View.VISIBLE);
                         registerBtn.setVisibility(View.GONE);
                     });
@@ -198,6 +214,7 @@ public class DetailPageFragment extends Fragment {
                     successDialog.setOnDismissListener(dialog -> {
                         unregisterBtn.setVisibility(View.GONE);
                         registerBtn.setVisibility(View.VISIBLE);
+                        watch_button.setVisibility(View.GONE);
                     });
 
                     successDialog.findViewById(R.id.btnDismiss).setOnClickListener(view2 -> successDialog.dismiss());
@@ -216,6 +233,14 @@ public class DetailPageFragment extends Fragment {
 
                 progressIndicator.setVisibility(View.GONE);
             });
+        });
+
+        // TODO: Add live view from here
+        watch_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
         });
 
         // Fully booked button

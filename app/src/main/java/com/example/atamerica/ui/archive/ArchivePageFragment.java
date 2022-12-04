@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -250,6 +249,7 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
                 // direction integers: -1 for up, 1 for down, 0 will always return false.
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isQuerying) {
                     if (queryAble) {
+                        progressIndicator.setVisibility(View.VISIBLE);
 
                         isQuerying = true;
                         ConfigCache.ArchivedScrollIndex += 1;
@@ -266,6 +266,8 @@ public class ArchivePageFragment extends Fragment implements AdapterRecyclerArch
                                 adapter.notifyDataSetChanged();
                                 isQuerying = false;
                             });
+
+                            progressIndicator.setVisibility(View.GONE);
                         });
                     }
                 }

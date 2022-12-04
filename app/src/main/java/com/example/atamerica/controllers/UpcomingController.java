@@ -33,7 +33,7 @@ public class UpcomingController {
             // Check for cache
             if (refreshQuery || HelperClass.isEmpty(EventItemCache.EventMoreThanNowList)) {
                 try {
-                    List<VwAllEventModel> events = DataHelper.Query.ReturnAsObjectList("SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY EventStartTime) AS RowNumber, A.* FROM VwAllEvent A WHERE EventStartTime >= NOW()) B WHERE RowNumber >= ? AND RowNumber <= ? ORDER BY EventStartTime ASC, EventId ASC; ", VwAllEventModel.class,
+                    List<VwAllEventModel> events = DataHelper.Query.ReturnAsObjectList("SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY EventEndTime) AS RowNumber, A.* FROM VwAllEvent A WHERE EventEndTime >= NOW()) B WHERE RowNumber >= ? AND RowNumber <= ? ORDER BY EventEndTime ASC, EventId ASC; ", VwAllEventModel.class,
                             new Object[] { ConfigCache.UpcomingScrollIndex * 8, (ConfigCache.UpcomingScrollIndex + 1) * 8  });
 
                     if (!HelperClass.isEmpty(events)) {
@@ -44,7 +44,16 @@ public class UpcomingController {
                             event.MapDocument();
 
                             // Check for registration status
-                            new TaskRunner().executeAsyncPool(new RegisterController.CheckRegister(AccountManager.User.Email, event.EventId), (data2) -> event.Registered = (data2 != null && data2));
+                            new TaskRunner().executeAsyncPool(new RegisterController.CheckRegister(AccountManager.User.Email, event.EventId), (data2) -> {
+                                if (data2 != null && data2) {
+                                    event.Registered = true;
+                                    EventItemCache.RegisteredEventList.add(event);
+                                }
+                                else {
+                                    event.Registered = false;
+                                    EventItemCache.RegisteredEventList.remove(event);
+                                }
+                            });
 
                             // Store information to cache
                             EventItemCache.EventCacheMap.put(event.EventId, event);
@@ -84,7 +93,7 @@ public class UpcomingController {
 
             try {
                 // Sort events by newest/latest
-                if (ConfigCache.UpcomingSortConfig == 1) events.sort(Comparator.comparing(event -> event.EventStartTime)); // latest
+                if (ConfigCache.UpcomingSortConfig == 1) events.sort(Comparator.comparing(event -> event.EventEndTime));
                 else events.sort((event1, event2) -> event2.EventId.compareTo(event1.EventId));
 
                 // Filter events

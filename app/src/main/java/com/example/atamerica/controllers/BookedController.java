@@ -60,7 +60,7 @@ public class BookedController {
                     }
 
                     // Sort by upcoming events
-                    EventItemCache.RegisteredEventList.sort(Comparator.comparing(event -> event.EventStartTime)); // latest
+                    EventItemCache.RegisteredEventList.sort(Comparator.comparing(event -> event.EventEndTime)); // latest
                 }
             }
 

@@ -218,7 +218,7 @@
                 android:insetBottom="0dp"
                 android:letterSpacing="0"
                 android:paddingVertical="9dp"
-                android:text="Watch Now"
+                android:text="@string/watch_now"
                 android:textAllCaps="false"
                 android:textSize="14dp"
                 app:cornerRadius="8dp"

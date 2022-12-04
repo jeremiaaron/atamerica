@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
   <androidx.constraintlayout.widget.ConstraintLayout
-      xmlns:tools="http://schemas.android.com/tools"
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       tools:ignore="contentDescription"
@@ -15,11 +15,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="18dp"
-        app:tint="@color/blue"
+        android:minWidth="18dp"
+        android:minHeight="18dp"
         android:onClick="backActivity"
-        app:srcCompat="@drawable/arrow_back_vector"
+        android:contentDescription="@string/back_button"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:srcCompat="@drawable/arrow_back_vector"
+        app:tint="@color/blue" />
 
     <ScrollView
         android:id="@+id/scroll_view"
@@ -75,8 +78,8 @@
             android:letterSpacing="0"
             android:onClick="moveToRegister"
             android:fontFamily="@font/montserrat_medium"
-            android:textSize="10sp"
-            android:text="Music &amp; Culture"
+            android:textSize="11sp"
+            android:text=""
             android:textAllCaps="false"
             android:clickable="false"
             app:cornerRadius="24dp"
@@ -90,7 +93,7 @@
             android:layout_marginTop="18dp"
             android:layout_marginStart="18dp"
             android:layout_marginEnd="18dp"
-            android:text="@string/evt1_title"
+            android:text=""
             android:letterSpacing="-0.01"
             android:textColor="@color/black"
             android:textSize="18sp" />
@@ -115,7 +118,7 @@
               android:layout_weight="1"
               android:layout_marginTop="5dp"
               android:layout_marginStart="18dp"
-              android:text="@string/evt1_date"
+              android:text=""
               android:textSize="14sp"
               android:textColor="@color/blue"
               android:includeFontPadding="false"
@@ -131,7 +134,7 @@
               android:layout_weight="1"
               android:layout_marginTop="5dp"
               android:layout_marginStart="18dp"
-              android:text="@string/evt1_time"
+              android:text=""
               android:textSize="14sp"
               android:textColor="@color/blue"
               android:includeFontPadding="false"
@@ -156,12 +159,12 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description"/>
+                android:text="@string/description"/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Guest"/>
+                android:text="@string/guest"/>
 
           </com.google.android.material.tabs.TabLayout>
 
@@ -180,18 +183,19 @@
 
     </ScrollView>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/scroll_view"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:orientation="horizontal">
 
       <com.google.android.material.button.MaterialButton
           android:id="@+id/fully_booked_button"
-          android:layout_width="match_parent"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="18dp"
           android:layout_marginVertical="18dp"
@@ -212,11 +216,34 @@
           app:iconGravity="textStart"
           app:iconPadding="10dp"
           app:iconSize="0dp"
+          android:layout_weight="1"
+          android:visibility="gone" />
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/watch_button"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="18dp"
+          android:layout_marginVertical="18dp"
+          android:backgroundTint="@color/blue"
+          android:insetTop="0dp"
+          android:insetBottom="0dp"
+          android:letterSpacing="0"
+          android:paddingVertical="9dp"
+          android:text="@string/watch_now"
+          android:textAllCaps="false"
+          android:textSize="14sp"
+          app:cornerRadius="8dp"
+          app:icon="@drawable/video_icon"
+          app:iconGravity="textStart"
+          app:iconPadding="10dp"
+          app:iconSize="0dp"
+          android:layout_weight="1"
           android:visibility="gone" />
 
       <com.google.android.material.button.MaterialButton
           android:id="@+id/unregister_button"
-          android:layout_width="match_parent"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="18dp"
           android:layout_marginVertical="18dp"
@@ -233,11 +260,12 @@
           app:iconGravity="textStart"
           app:iconPadding="10dp"
           app:iconSize="0dp"
+          android:layout_weight="1"
           android:visibility="gone" />
 
       <com.google.android.material.button.MaterialButton
           android:id="@+id/register_button"
-          android:layout_width="match_parent"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="18dp"
           android:layout_marginVertical="18dp"
@@ -254,8 +282,10 @@
           app:iconGravity="textStart"
           app:iconPadding="10dp"
           app:iconSize="0dp"
+          android:layout_weight="1"
           android:visibility="gone" />
-    </FrameLayout>
+
+    </LinearLayout>
 
     <!-- Circular progress indicator -->
     <com.google.android.material.progressindicator.CircularProgressIndicator
