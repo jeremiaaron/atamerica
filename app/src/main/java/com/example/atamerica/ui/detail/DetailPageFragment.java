@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.atamerica.R;
@@ -28,6 +30,7 @@ import com.example.atamerica.models.views.VwAllEventModel;
 import com.example.atamerica.taskhandler.DownloadBitmapTask;
 import com.example.atamerica.taskhandler.QueryVwAllEventTask;
 import com.example.atamerica.taskhandler.TaskRunner;
+import com.example.atamerica.ui.video.VideoFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
@@ -239,7 +242,17 @@ public class DetailPageFragment extends Fragment {
         watch_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                VideoFragment videoFragment = new VideoFragment();
 
+                Bundle bundle_register = new Bundle();
+                bundle_register.putString("event_link", model.EventLink);
+                videoFragment.setArguments(bundle_register);
+
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.event_container, videoFragment, null);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
