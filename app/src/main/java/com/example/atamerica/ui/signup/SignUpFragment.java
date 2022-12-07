@@ -151,6 +151,8 @@ public class SignUpFragment extends Fragment {
                     transaction.replace(R.id.authenticateContainer, new LoginFragment(), null);
                     transaction.addToBackStack(null);
                     transaction.commit();
+
+                    break;
                 case "Exists":
                     Toast.makeText(getContext(), "Email already exists as user.", Toast.LENGTH_SHORT).show();
                     break;

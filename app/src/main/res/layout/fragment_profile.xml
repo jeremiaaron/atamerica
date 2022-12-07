@@ -125,7 +125,8 @@
             app:layout_constraintTop_toBottomOf="@+id/booked_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:strokeColor="@color/blue" />
+            app:strokeColor="@color/blue"
+            android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonLogout"

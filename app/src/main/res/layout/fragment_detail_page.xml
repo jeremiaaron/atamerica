@@ -159,11 +159,13 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:tabTextAppearance="@style/tabFont"
                 android:text="@string/description"/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:tabTextAppearance="@style/tabFont"
                 android:text="@string/guest"/>
 
           </com.google.android.material.tabs.TabLayout>

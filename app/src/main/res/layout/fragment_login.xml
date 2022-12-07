@@ -87,7 +87,8 @@
         android:textColor="@color/blue"
         app:layout_constraintTop_toTopOf="@id/checkboxRememberMe"
         app:layout_constraintBottom_toBottomOf="@+id/checkboxRememberMe"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/buttonSignIn"

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -214,6 +215,9 @@ public class DetailPageFragment extends Fragment {
                     successDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     successDialog.setContentView(R.layout.fragment_popup_success);
 
+                    TextView tvtvtv = successDialog.findViewById(R.id.successMessage);
+                    tvtvtv.setText(getResources().getString(R.string.successUnregisteredMessage));
+
                     successDialog.setOnDismissListener(dialog -> {
                         unregisterBtn.setVisibility(View.GONE);
                         registerBtn.setVisibility(View.VISIBLE);
@@ -238,22 +242,18 @@ public class DetailPageFragment extends Fragment {
             });
         });
 
-        // TODO: Add live view from here
-        watch_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                VideoFragment videoFragment = new VideoFragment();
+        watch_button.setOnClickListener(view -> {
+            VideoFragment videoFragment = new VideoFragment();
 
-                Bundle bundle_register = new Bundle();
-                bundle_register.putString("event_link", model.EventLink);
-                videoFragment.setArguments(bundle_register);
+            Bundle bundle_register = new Bundle();
+            bundle_register.putString("event_link", model.EventLink);
+            videoFragment.setArguments(bundle_register);
 
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.event_container, videoFragment, null);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.event_container, videoFragment, null);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
 
         // Fully booked button

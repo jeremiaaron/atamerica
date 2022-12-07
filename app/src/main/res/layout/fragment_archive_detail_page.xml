@@ -167,6 +167,7 @@
                         app:tabSelectedTextColor="@color/blue"
                         app:tabTextColor="@color/dark_gray"
                         android:background="@color/white"
+                        app:tabTextAppearance="@style/tabFont"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" >
@@ -174,11 +175,13 @@
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:tabTextAppearance="@style/tabFont"
                             android:text="Description"/>
 
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:tabTextAppearance="@style/tabFont"
                             android:text="Guest"/>
 
                     </com.google.android.material.tabs.TabLayout>

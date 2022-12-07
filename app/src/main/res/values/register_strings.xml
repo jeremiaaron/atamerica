@@ -16,8 +16,9 @@
 
     <string name="hooray">Hooray!</string>
     <string name="oops">Oops!</string>
-    <string name="successMessage">Congratulations, you are successfully registered. You can check your email now!</string>
-    <string name="failedMessage">Oh no! Something went wrong with your registration. It’s okay, you can try to regist again.</string>
+    <string name="successMessage">Congratulations, you have successfully registered. You can check your email now!</string>
+    <string name="successUnregisteredMessage">You have successfully unregistered. See you next time!</string>
+    <string name="failedMessage">Oh no! Something went wrong with your registration. It’s okay, you can try to register again.</string>
 
     <string name="backButton">Back</string>
 </resources>
